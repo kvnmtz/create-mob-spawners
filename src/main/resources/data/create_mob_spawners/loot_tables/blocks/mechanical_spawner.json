@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "create_mob_spawners:mechanical_spawner"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

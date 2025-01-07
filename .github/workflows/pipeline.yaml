@@ -1,0 +1,44 @@
+name: Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read # for checkout
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build & Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          MODRINTH_PAT: ${{ secrets.MODRINTH_PAT }}
+        run: |
+          chmod +x ./build.sh
+          chmod +x ./gradlew
+          npx semantic-release@24

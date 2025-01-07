@@ -1,0 +1,61 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "create_mob_spawners:item/soul_catcher"
+	},
+	"elements": [
+		{
+			"from": [7.5, 8.65147, 5.29853],
+			"to": [8.5, 12.65147, 6.29853],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10.65147, 6.34853]},
+			"faces": {
+				"north": {"uv": [6, 14, 14, 16], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [14, 14, 16, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [14, 14, 16, 16], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.5, 8.65147, 5.29853],
+			"to": [8.5, 12.65147, 6.29853],
+			"rotation": {"angle": -45, "axis": "z", "origin": [8, 10.65147, 6.34853]},
+			"faces": {
+				"north": {"uv": [6, 14, 14, 16], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [14, 14, 16, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [14, 14, 16, 16], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [7.5, 8.65147, 5.29853],
+			"to": [8.5, 12.65147, 6.29853],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 10.65147, 6.34853]},
+			"faces": {
+				"north": {"uv": [6, 14, 14, 16], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [6, 14, 14, 16], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [14, 14, 16, 16], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [14, 14, 16, 16], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 10.15147, 5.29853],
+			"to": [10, 11.15147, 6.29853],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10.65147, 6.34853]},
+			"faces": {
+				"north": {"uv": [6, 14, 14, 16], "texture": "#0"},
+				"east": {"uv": [14, 14, 16, 16], "texture": "#0"},
+				"south": {"uv": [6, 14, 14, 16], "texture": "#0"},
+				"west": {"uv": [14, 14, 16, 16], "texture": "#0"},
+				"up": {"uv": [6, 14, 14, 16], "texture": "#0"},
+				"down": {"uv": [6, 14, 14, 16], "texture": "#0"}
+			}
+		}
+	]
+}

@@ -1,0 +1,40 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": false,
+  "key": {
+    "A": {
+      "item": "create:brass_casing"
+    },
+    "B": {
+      "item": "create:brass_sheet"
+    },
+    "C": {
+      "item": "create:shaft"
+    },
+    "D": {
+      "item": "minecraft:chain"
+    },
+    "E": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "F": {
+      "item": "minecraft:end_crystal"
+    },
+    "G": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "H": {
+      "item": "create:experience_block"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DEFED",
+    "DEGED",
+    "DEHED",
+    "ABCBA"
+  ],
+  "result": {
+    "item": "create_mob_spawners:mechanical_spawner"
+  }
+}
