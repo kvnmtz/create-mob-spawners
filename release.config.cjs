@@ -23,5 +23,6 @@ module.exports = {
       },
     ],
     './create_version_modrinth.js',
+    './create_version_curseforge.js',
   ],
 };
