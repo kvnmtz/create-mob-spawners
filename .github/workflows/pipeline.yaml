@@ -36,7 +36,7 @@ jobs:
 
       - name: Build & Release
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # default token, will not trigger release events, use semantic-release plugins on 'success' instead
           MODRINTH_PAT: ${{ secrets.MODRINTH_PAT }}
         run: |
           chmod +x ./build.sh
