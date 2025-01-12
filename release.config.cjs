@@ -6,6 +6,14 @@ module.exports = {
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
+    './update-version.js',
+    [
+      '@semantic-release/git',
+      {
+        assets: ['gradle.properties'],
+        message: 'chore(release): update version for ${nextRelease.version} [skip ci]',
+      },
+    ],
     [
       '@semantic-release/exec',
       {
