@@ -16,6 +16,7 @@ import dev.kvnmtz.createmobspawners.items.ModCreativeModeTabs;
 import dev.kvnmtz.createmobspawners.items.registry.ModItems;
 import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
+import dev.kvnmtz.createmobspawners.ponder.PonderIndex;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -89,6 +90,7 @@ public class CreateMobSpawners
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             BlockEntityRenderers.register(ModBlockEntities.SPAWNER_BE.get(), MechanicalSpawnerBlockEntityRenderer::new);
+            PonderIndex.register();
         }
     }
 }
