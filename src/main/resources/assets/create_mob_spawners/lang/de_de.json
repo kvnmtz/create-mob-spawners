@@ -13,6 +13,13 @@
   "item.create_mob_spawners.soul_catcher": "Seelenfänger",
   "item.create_mob_spawners.soul_catcher.tooltip.summary": "Enthält die Seele einer Kreatur. Sie kann entweder durch einen Rechtsklick auf die gewünschte Position _freigelassen_ oder in einem _Mechanischen Spawner_ platziert werden.",
 
+  "create_mob_spawners.ponder.soul_catcher.header": "Seelenfänger",
+  "create_mob_spawners.ponder.soul_catcher.text_1": "Siehst du dieses unschuldige Schwein? Wir werden es einfangen.",
+  "create_mob_spawners.ponder.soul_catcher.text_2": "Um die Seele einer Kreatur einzufangen, muss sie vorerst geschwächt werden (z.B. durch einen Wurftrank der Schwäche)",
+  "create_mob_spawners.ponder.soul_catcher.text_3": "Klicke nun mit einem leeren Seelenfänger mit der rechten Maustaste auf die Kreatur, um ihre Seele einzufangen",
+  "create_mob_spawners.ponder.soul_catcher.text_4": "Wunderbar! Das Schwein wurde gefangen.",
+  "create_mob_spawners.ponder.soul_catcher.text_5": "Wenn du es wieder freilassen willst, rechtsklicke einfach die gewünschte Position mit dem Seelenfänger",
+
   "block.create_mob_spawners.mechanical_spawner": "Mechanischer Spawner",
   "block.create_mob_spawners.mechanical_spawner.tooltip.summary": "Nutzt die Kraft regenerativer Magie um Kreaturen zu erschaffen. Benötigt _Rotationsenergie_, muss mit _Trank der Regeneration_ betankt werden und ein _Seelenfänger_ muss darin platziert werden, um zu funktionieren.",
 

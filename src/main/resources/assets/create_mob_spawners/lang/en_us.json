@@ -13,6 +13,13 @@
   "item.create_mob_spawners.soul_catcher": "Soul Catcher",
   "item.create_mob_spawners.soul_catcher.tooltip.summary": "Contains a mob's soul. It can either be _released_ by right-clicking the desired position or placed inside a _Mechanical Spawner_.",
 
+  "create_mob_spawners.ponder.soul_catcher.header": "Soul Catcher",
+  "create_mob_spawners.ponder.soul_catcher.text_1": "See this innocent pig? Let's catch it.",
+  "create_mob_spawners.ponder.soul_catcher.text_2": "In order to catch a mob's soul, it needs to be weakened (e.g. with a Splash Potion of Healing)",
+  "create_mob_spawners.ponder.soul_catcher.text_3": "Now, right-click it with an empty Soul Catcher to start catching its soul",
+  "create_mob_spawners.ponder.soul_catcher.text_4": "Gotcha! The pig was caught.",
+  "create_mob_spawners.ponder.soul_catcher.text_5": "If you want to release it again, just right-click the desired position with the Soul Catcher",
+
   "block.create_mob_spawners.mechanical_spawner": "Mechanical Spawner",
   "block.create_mob_spawners.mechanical_spawner.tooltip.summary": "Utilizes the power of regenerative magic to spawn mobs. It needs _rotational force_, a supply of _Potion of Regeneration_ liquid and a _Soul Catcher_ placed inside to function.",
 

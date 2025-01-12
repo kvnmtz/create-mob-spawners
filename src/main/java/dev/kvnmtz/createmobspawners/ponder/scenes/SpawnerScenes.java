@@ -124,7 +124,7 @@ public abstract class SpawnerScenes {
         scene.idle(7);
         scene.world.modifyBlockEntity(new BlockPos(spawnerPos), MechanicalSpawnerBlockEntity.class, MechanicalSpawnerBlockEntity::ejectSoulCatcher);
         scene.idle(10);
-        scene.overlay.showText(40).attachKeyFrame().placeNearTarget().pointAt(spawnerCenter).text("The Soul Catcher can be ejected by right-clicking the Spawner while sneaking.");
+        scene.overlay.showText(40).attachKeyFrame().placeNearTarget().pointAt(spawnerCenter).text("The Soul Catcher can be ejected by right-clicking the Spawner while sneaking");
 
         scene.idleSeconds(2);
 
