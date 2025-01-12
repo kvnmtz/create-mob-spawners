@@ -39,6 +39,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeItem;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -207,6 +208,13 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         }
 
         startCatchingEntity(target, player, itemStack);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    protected static void onEntityRemoved(EntityLeaveLevelEvent event) {
+        var entity = event.getEntity();
+        shrinkingEntitiesToStartTimeMap.remove(entity);
     }
 
     private static void cancelCatch(LivingEntity entity) {
