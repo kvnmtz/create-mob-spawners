@@ -38,6 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # default token, will not trigger release events, use semantic-release plugins on 'success' instead
           MODRINTH_PAT: ${{ secrets.MODRINTH_PAT }}
+          CURSEFORGE_PAT: ${{ secrets.CURSEFORGE_PAT }}
         run: |
           chmod +x ./build.sh
           chmod +x ./gradlew
