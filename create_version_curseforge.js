@@ -1,3 +1,5 @@
+// This is probably the worst API I ever had to interact with.
+
 const axios = require('axios').default;
 const FormData = require('form-data');
 const fs = require("node:fs");
@@ -28,8 +30,8 @@ function escapeControlCharacters(str) {
 module.exports = {
   verifyConditions: async (pluginConfig, context) => {
     const {env} = context;
-    if (!env.MODRINTH_PAT.length) {
-      throw AggregateError('No Modrinth personal access token provided');
+    if (!env.CURSEFORGE_PAT.length) {
+      throw AggregateError('No Curseforge personal access token provided');
     }
   },
   success: async (pluginConfig, context) => {
@@ -38,54 +40,22 @@ module.exports = {
     const changelog = escapeControlCharacters(nextRelease.notes);
 
     const {env} = context;
-    const modrinthToken = env.MODRINTH_PAT;
+    const curseforgeToken = env.CURSEFORGE_PAT;
 
     const formData = new FormData();
-    formData.append('data', `{
-      "name": "Create: Mob Spawners ${version}",
-      "version_number": "${version}",
+    formData.append('metadata', `{
       "changelog": "${changelog}",
-      "dependencies": [
-        {
-          "version_id": null,
-          "project_id": "LNytGWDc",
-          "file_name": null,
-          "dependency_type": "required"
-        },
-        {
-          "version_id": null,
-          "project_id": "nvQzSEkH",
-          "file_name": null,
-          "dependency_type": "optional"
-        },
-        {
-          "version_id": null,
-          "project_id": "u6dRKJwZ",
-          "file_name": null,
-          "dependency_type": "optional"
-        }
-      ],
-      "game_versions": [
-        "1.20.1"
-      ],
-      "loaders": [
-        "forge",
-        "neoforge"
-      ],
-      "version_type": "release",
-      "featured": true,
-      "status": "listed",
-      "project_id": "bklciXlt",
-      "file_parts": [
-        "file"
-      ]
+      "changelogType": "markdown",
+      "displayName": "Create: Mob Spawners ${version}",
+      "gameVersions": [9990, 10150, 7498],
+      "releaseType": "release"
     }`);
     formData.append('file', fs.createReadStream(`./build/reobfJar/create-mob-spawners-1.20.1-${version}.jar`));
 
     let headers = formData.getHeaders();
-    headers.authorization = modrinthToken;
+    headers['X-Api-Token'] = curseforgeToken;
 
-    await axios.post('https://api.modrinth.com/v2/version', formData, {
+    await axios.post('https://minecraft.curseforge.com/api/projects/1175578/upload-file', formData, {
       headers: headers,
     });
   }

@@ -72,7 +72,6 @@ public class ClientboundEntityCatchPacket {
                     ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, entityBoundingBox.getCenter(), pointInFrontOfPlayer, 0.5, Vec3.ZERO);
                     break;
                 case FINISHED:
-                    SoulCatcherItem.removeShrinkingEntity(entity);
                     ParticleUtils.drawParticles(ParticleTypes.REVERSE_PORTAL, level, entityCenter, ParticleUtils.getParticleCountForEntity(entity), entityBoundingBox.getXsize() / 3, entityBoundingBox.getYsize() / 3, entityBoundingBox.getZsize() / 3, Vec3.ZERO);
                     break;
             }

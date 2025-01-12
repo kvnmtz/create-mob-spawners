@@ -14,7 +14,6 @@ import dev.kvnmtz.createmobspawners.network.ClientboundSpawnerEventPacket;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
 import dev.kvnmtz.createmobspawners.utils.DropUtils;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -339,10 +338,12 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
         if (level.isClientSide) {
             if (level.random.nextInt(6) == 0) {
-                ParticleUtils.drawParticles(ParticleTypes.ENTITY_EFFECT, (ClientLevel) level, getBlockPos().getCenter(), 3, 0.2, 0.2, 0.2, new Vec3(205 / 255.0, 92 / 255.0, 171 / 255.0));
+                ParticleUtils.drawParticles(ParticleTypes.ENTITY_EFFECT, level, getBlockPos().getCenter(), 3, 0.2, 0.2, 0.2, new Vec3(205 / 255.0, 92 / 255.0, 171 / 255.0));
             }
             return;
         }
+
+        if (isVirtual()) return;
 
         if (delayTicks != -1) {
             delayTicks--;

@@ -31,6 +31,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -39,6 +40,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.extensions.IForgeItem;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -74,8 +76,10 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         }
     }
 
+    /// use on server
     private static final HashMap<LivingEntity, ShrinkingEntityData> shrinkingEntities = new HashMap<>();
 
+    /// use on client
     private static final HashMap<Entity, Long> shrinkingEntitiesToStartTimeMap = new HashMap<>();
 
     public static void addShrinkingEntity(Entity entity) {
@@ -209,6 +213,13 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         startCatchingEntity(target, player, itemStack);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    protected static void onEntityRemoved(EntityLeaveLevelEvent event) {
+        var entity = event.getEntity();
+        shrinkingEntitiesToStartTimeMap.remove(entity);
+    }
+
     private static void cancelCatch(LivingEntity entity) {
         var data = shrinkingEntities.get(entity);
         if (data.hadAi && entity instanceof Mob mob) {
@@ -223,6 +234,11 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         var boundingBox = entity.getBoundingBox();
         var volume = BoundingBoxUtils.getBoundingBoxVolume(boundingBox);
         return (float) (1.3811 * Math.pow(volume, 0.5026));
+    }
+
+    public static int getCatchingDurationInTicks(AABB boundingBox) {
+        var volume = BoundingBoxUtils.getBoundingBoxVolume(boundingBox);
+        return Math.round((float) (1.3811 * Math.pow(volume, 0.5026)) * 20);
     }
 
     private static void onShrinkComplete(LivingEntity entity) {
