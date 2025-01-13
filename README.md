@@ -26,6 +26,10 @@ This is how it looks ingame:
 
 ![Soul Catcher Screencast](docs/soul_catcher_anim.webp)
 
+Ponder scene:
+
+![Soul Catcher Ponder](docs/soul_catcher_ponder.webp)
+
 ### Mechanical Spawner
 
 ![Mechanical Spawner](docs/mechanical_spawner.png)
@@ -40,3 +44,7 @@ It can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
 This is how it looks ingame:
 
 ![Mechanical Spawner Screencast](docs/mechanical_spawner_anim.webp)
+
+Ponder scene:
+
+![Mechanical Spawner Ponder](docs/mechanical_spawner_ponder.webp)
