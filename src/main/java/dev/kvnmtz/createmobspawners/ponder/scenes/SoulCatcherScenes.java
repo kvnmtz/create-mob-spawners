@@ -124,7 +124,7 @@ public abstract class SoulCatcherScenes {
             double d1 = (double)(i >> 8 & 255) / (double)255.0F;
             double d2 = (double)(i & 255) / (double)255.0F;
             level.addParticle(ParticleTypes.ENTITY_EFFECT, pig.getRandomX(0.5F), pig.getRandomY(), pig.getRandomZ(0.5F), d0, d1, d2);
-        }, 1, 80);
+        }, 1, 107);
 
         scene.idleSeconds(3);
 
