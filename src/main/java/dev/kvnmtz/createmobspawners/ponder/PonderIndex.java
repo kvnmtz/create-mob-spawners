@@ -13,5 +13,6 @@ public class PonderIndex {
     public static void register() {
         HELPER.addStoryBoard(ModBlocks.SPAWNER.getId(), "spawner", SpawnerScenes::spawner);
         HELPER.addStoryBoard(ModItems.EMPTY_SOUL_CATCHER.getId(), "soul_catcher", SoulCatcherScenes::soulCatcher);
+        HELPER.addStoryBoard(ModItems.SOUL_CATCHER.getId(), "soul_catcher", SoulCatcherScenes::soulCatcher);
     }
 }
