@@ -17,6 +17,7 @@ import dev.kvnmtz.createmobspawners.items.registry.ModItems;
 import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
 import dev.kvnmtz.createmobspawners.ponder.PonderIndex;
+import dev.kvnmtz.createmobspawners.ponder.scenes.SoulCatcherScenes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -54,6 +55,8 @@ public class CreateMobSpawners
 
         MinecraftForge.EVENT_BUS.register(SoulCatcherItem.class);
         MinecraftForge.EVENT_BUS.register(MechanicalSpawnerBlock.class);
+
+        MinecraftForge.EVENT_BUS.register(SoulCatcherScenes.class);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

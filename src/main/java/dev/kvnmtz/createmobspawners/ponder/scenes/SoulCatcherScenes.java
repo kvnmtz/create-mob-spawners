@@ -4,7 +4,9 @@ import com.simibubi.create.foundation.ponder.PonderWorld;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
+import com.simibubi.create.foundation.ponder.ui.PonderUI;
 import com.simibubi.create.foundation.utility.Pointing;
+import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.items.registry.ModItems;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
@@ -20,12 +22,39 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.joml.Quaternionf;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class SoulCatcherScenes {
-    public static void soulCatcher(SceneBuilder scene, SceneBuildingUtil util) {
+    private static final Quaternionf alignedCameraOrientation = new Quaternionf().rotateYXZ((float) Math.toRadians(35.0), (float) Math.toRadians(25.0), 0.f);
+    private static Quaternionf originalCameraOrientation;
+
+    @SubscribeEvent
+    protected static void preRenderScreen(ScreenEvent.Render.Pre event) {
+        if (!(event.getScreen() instanceof PonderUI ponderUi)) return;
+        if (!ponderUi.getActiveScene().getId().equals(CreateMobSpawners.asResource("soul_catcher"))) return;
+
+        var entityRendererDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        originalCameraOrientation = entityRendererDispatcher.cameraOrientation();
+
+        /* Little hack to make the thrown splash potion face the camera in the ponder scene */
+        entityRendererDispatcher.overrideCameraOrientation(alignedCameraOrientation);
+    }
+
+    @SubscribeEvent
+    protected static void postRenderScreen(ScreenEvent.Render.Post event) {
+        if (!(event.getScreen() instanceof PonderUI ponderUi)) return;
+        if (!ponderUi.getActiveScene().getId().equals(CreateMobSpawners.asResource("soul_catcher"))) return;
+
+        var entityRendererDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        entityRendererDispatcher.overrideCameraOrientation(originalCameraOrientation);
+    }
+
+    public static void soulCatcher(SceneBuilder scene, SceneBuildingUtil ignoredUtil) {
         scene.title("soul_catcher", "Soul Catcher");
         scene.showBasePlate();
 
