@@ -25,27 +25,39 @@ public class ClientboundSpawnerEventPacket {
         this(buffer.readBlockPos(), buffer.readInt());
     }
 
+    public BlockPos getSpawnerPosition() {
+        return spawnerPosition;
+    }
+
+    public int getSpawnedEntityId() {
+        return spawnedEntityId;
+    }
+
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(spawnerPosition);
         buffer.writeInt(spawnedEntityId);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientboundSpawnerEventPacketHandler.handle(this)));
+        ctx.get().setPacketHandled(true);
+    }
+
+    private static class ClientboundSpawnerEventPacketHandler {
+        public static void handle(ClientboundSpawnerEventPacket packet) {
             var level = Minecraft.getInstance().level;
             if (level == null) return;
 
-            var entity = Minecraft.getInstance().level.getEntity(spawnedEntityId);
+            var entity = Minecraft.getInstance().level.getEntity(packet.getSpawnedEntityId());
             if (entity == null) return;
 
             var entityBoundingBox = entity.getBoundingBox();
             var entityCenter = entityBoundingBox.getCenter();
-            var spawnerCenter = spawnerPosition.getCenter();
+            var spawnerCenter = packet.getSpawnerPosition().getCenter();
 
             ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, spawnerCenter, entityCenter, 0.5, Vec3.ZERO);
             ParticleUtils.drawParticles(ParticleTypes.WITCH, level, entityCenter, ParticleUtils.getParticleCountForEntity(entity), entityBoundingBox.getXsize() / 3, entityBoundingBox.getYsize() / 3, entityBoundingBox.getZsize() / 3, Vec3.ZERO);
             ParticleUtils.drawParticles(ParticleTypes.ENTITY_EFFECT, level, spawnerCenter, 40, 0.5, 0.5, 0.5, new Vec3(205 / 255.0, 92 / 255.0, 171 / 255.0));
-        }));
-        ctx.get().setPacketHandled(true);
+        }
     }
 }

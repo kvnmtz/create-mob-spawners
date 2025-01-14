@@ -24,20 +24,33 @@ public class ClientboundEntityReleasePacket {
         this(buffer.readInt(), buffer.readInt());
     }
 
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeInt(entityId);
         buffer.writeInt(playerId);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientboundEntityReleasePacketHandler.handle(this)));
+        ctx.get().setPacketHandled(true);
+    }
+
+    private static class ClientboundEntityReleasePacketHandler {
+        public static void handle(ClientboundEntityReleasePacket packet) {
             var level = Minecraft.getInstance().level;
             if (level == null) return;
 
-            var entity = Minecraft.getInstance().level.getEntity(entityId);
+            var entity = Minecraft.getInstance().level.getEntity(packet.getEntityId());
             if (entity == null) return;
 
-            var player = Minecraft.getInstance().level.getEntity(playerId);
+            var player = Minecraft.getInstance().level.getEntity(packet.getPlayerId());
             if (player == null) return;
 
             var entityBoundingBox = entity.getBoundingBox();
@@ -48,7 +61,6 @@ public class ClientboundEntityReleasePacket {
 
             ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, entityCenter, pointInFrontOfPlayer, 0.5, Vec3.ZERO);
             ParticleUtils.drawParticles(ParticleTypes.WITCH, level, entityCenter, ParticleUtils.getParticleCountForEntity(entity), entityBoundingBox.getXsize() / 3, entityBoundingBox.getYsize() / 3, entityBoundingBox.getZsize() / 3, Vec3.ZERO);
-        }));
-        ctx.get().setPacketHandled(true);
+        }
     }
 }

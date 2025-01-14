@@ -34,6 +34,18 @@ public class ClientboundEntityCatchPacket {
         this(buffer.readInt(), buffer.readInt(), EntityCatchState.values()[buffer.readByte()]);
     }
 
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public EntityCatchState getState() {
+        return state;
+    }
+
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeInt(entityId);
         buffer.writeInt(playerId);
@@ -41,19 +53,24 @@ public class ClientboundEntityCatchPacket {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientboundEntityCatchPacketHandler.handle(this)));
+        ctx.get().setPacketHandled(true);
+    }
+
+    private static class ClientboundEntityCatchPacketHandler {
+        public static void handle(ClientboundEntityCatchPacket packet) {
             var level = Minecraft.getInstance().level;
             if (level == null) return;
 
-            var entity = Minecraft.getInstance().level.getEntity(entityId);
+            var entity = Minecraft.getInstance().level.getEntity(packet.getEntityId());
             if (entity == null) return;
 
-            if (state == EntityCatchState.CANCELED) {
+            if (packet.getState() == EntityCatchState.CANCELED) {
                 SoulCatcherItem.removeShrinkingEntity(entity);
                 return;
             }
 
-            var player = Minecraft.getInstance().level.getEntity(playerId);
+            var player = Minecraft.getInstance().level.getEntity(packet.getPlayerId());
             if (player == null) return;
 
             var entityBoundingBox = entity.getBoundingBox();
@@ -62,7 +79,7 @@ public class ClientboundEntityCatchPacket {
             var direction = entityCenter.subtract(playerCenter).normalize();
             var pointInFrontOfPlayer = playerCenter.add(direction.multiply(0.66f, 0.66f, 0.66f));
 
-            switch (state) {
+            switch (packet.getState()) {
                 case STARTED:
                     SoulCatcherItem.addShrinkingEntity(entity);
                     ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, entityBoundingBox.getCenter(), pointInFrontOfPlayer, 0.5, Vec3.ZERO);
@@ -75,7 +92,6 @@ public class ClientboundEntityCatchPacket {
                     ParticleUtils.drawParticles(ParticleTypes.REVERSE_PORTAL, level, entityCenter, ParticleUtils.getParticleCountForEntity(entity), entityBoundingBox.getXsize() / 3, entityBoundingBox.getYsize() / 3, entityBoundingBox.getZsize() / 3, Vec3.ZERO);
                     break;
             }
-        }));
-        ctx.get().setPacketHandled(true);
+        }
     }
 }
