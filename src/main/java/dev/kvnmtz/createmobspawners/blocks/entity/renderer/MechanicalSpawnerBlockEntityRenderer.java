@@ -47,7 +47,7 @@ public class MechanicalSpawnerBlockEntityRenderer extends KineticBlockEntityRend
             ms.popPose();
         }
 
-        var fluidLevel = be.getFluidLevel();
+        var fluidLevel = be.getTank().getPrimaryTank().getFluidLevel();
         if (fluidLevel != null) {
             var capHeight = 1.f/16.f + 1.f/128.f;
             var tankHullWidth = 1.75f/16.f;

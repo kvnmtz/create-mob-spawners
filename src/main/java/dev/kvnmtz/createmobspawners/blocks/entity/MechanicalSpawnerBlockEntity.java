@@ -3,7 +3,6 @@ package dev.kvnmtz.createmobspawners.blocks.entity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
 import dev.kvnmtz.createmobspawners.blocks.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
@@ -53,14 +52,9 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     }
 
     private SmartFluidTankBehaviour tank;
-    private LerpedFloat fluidLevel;
 
-    public LerpedFloat getFluidLevel() {
-        return fluidLevel;
-    }
-
-    private float getFillState() {
-        return (float) tank.getPrimaryHandler().getFluidAmount() / (float) tank.getPrimaryHandler().getCapacity();
+    public SmartFluidTankBehaviour getTank() {
+        return tank;
     }
 
     public FluidStack getFluidStack() {
@@ -77,14 +71,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     protected void read(CompoundTag compound, boolean clientPacket) {
         super.read(compound, clientPacket);
         storedEntityData.deserializeNBT(compound.getCompound("EntityStorage"));
-
-        if (clientPacket) {
-            var fillState = this.getFillState();
-            if (fluidLevel == null) {
-                fluidLevel = LerpedFloat.linear().startWithValue(fillState);
-            }
-            fluidLevel.chase(fillState, 0.5f, LerpedFloat.Chaser.EXP);
-        }
     }
 
     @Override
@@ -97,13 +83,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             return potionType.equals("minecraft:regeneration")
                     || potionType.equals("minecraft:strong_regeneration")
                     || potionType.equals("minecraft:long_regeneration");
-        });
-        tank.whenFluidUpdates(() -> {
-            if (!isVirtual()) return;
-            if (fluidLevel == null) {
-                fluidLevel = LerpedFloat.linear().startWithValue(this.getFillState());
-            }
-            fluidLevel.chase(this.getFillState(), 0.5f, LerpedFloat.Chaser.EXP);
         });
         behaviours.add(tank);
     }
@@ -328,10 +307,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         super.tick();
 
         if (level == null) return;
-
-        if (level.isClientSide && fluidLevel != null) {
-            fluidLevel.tickChaser();
-        }
 
         var unableToProgress = getReasonForNotProgressing().isPresent();
         if (unableToProgress) return;
