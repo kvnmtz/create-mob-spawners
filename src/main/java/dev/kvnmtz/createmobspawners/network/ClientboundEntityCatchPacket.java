@@ -83,7 +83,7 @@ public class ClientboundEntityCatchPacket {
                 case STARTED:
                     SoulCatcherItem.addShrinkingEntity(entity);
                     ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, entityBoundingBox.getCenter(), pointInFrontOfPlayer, 0.5, Vec3.ZERO);
-                    ParticleUtils.drawParticles(ParticleTypes.WITCH, level, entityCenter, ParticleUtils.getParticleCountForEntity(entity), entityBoundingBox.getXsize() / 3, entityBoundingBox.getYsize() / 3, entityBoundingBox.getZsize() / 3, Vec3.ZERO);
+                    ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, level, entityBoundingBox, entity.position(), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(entity), 0.75f);
                     break;
                 case IN_PROGRESS:
                     ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, entityBoundingBox.getCenter(), pointInFrontOfPlayer, 0.5, Vec3.ZERO);

@@ -105,16 +105,10 @@ public abstract class SpawnerScenes {
 
             return pig;
         });
-        scene.effects.emitParticles(
-                Vec3.ZERO,
-                (w, unused1, unused2, unused3) -> {
-                    var bb = pigBoundingBox.get();
-                    var center = new Vec3(1, 1 + bb.getYsize() / 2, 1);
-                    ParticleUtils.drawParticles(ParticleTypes.WITCH, w, center, ParticleUtils.getParticleCountForBoundingBox(bb), bb.getXsize() / 3, bb.getYsize() / 3, bb.getZsize() / 3, Vec3.ZERO);
-                },
-                1,
-                1
-        );
+        scene.effects.emitParticles(Vec3.ZERO, (w, unused1, unused2, unused3) -> {
+            var bb = pigBoundingBox.get();
+            ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, w, bb, new Vec3(1, 1, 1), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForBoundingBox(bb), 0.75f);
+        }, 1, 1);
 
         var pigPosition = new Vec3(1, 1.5, 1);
         scene.overlay.showText(60).attachKeyFrame().placeNearTarget().pointAt(pigPosition).text("Given some time, the Spawner will spawn the applied mob type on a nearby position");

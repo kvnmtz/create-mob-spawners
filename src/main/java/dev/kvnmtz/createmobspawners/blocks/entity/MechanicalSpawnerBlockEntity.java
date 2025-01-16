@@ -20,10 +20,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -312,9 +313,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (unableToProgress) return;
 
         if (level.isClientSide) {
-            if (level.random.nextInt(6) == 0) {
-                ParticleUtils.drawParticles(ParticleTypes.ENTITY_EFFECT, level, getBlockPos().getCenter(), 3, 0.2, 0.2, 0.2, new Vec3(205 / 255.0, 92 / 255.0, 171 / 255.0));
-            }
+            ParticleUtils.drawPotionEffectParticles(level, getRenderBoundingBox(), getBlockPos().getCenter().subtract(0, 0.5, 0), PotionUtils.getColor(Potions.REGENERATION), 1);
             return;
         }
 

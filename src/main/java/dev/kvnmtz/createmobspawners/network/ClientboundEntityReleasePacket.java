@@ -60,7 +60,7 @@ public class ClientboundEntityReleasePacket {
             var pointInFrontOfPlayer = playerCenter.add(direction.multiply(0.66f, 0.66f, 0.66f));
 
             ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, entityCenter, pointInFrontOfPlayer, 0.5, Vec3.ZERO);
-            ParticleUtils.drawParticles(ParticleTypes.WITCH, level, entityCenter, ParticleUtils.getParticleCountForEntity(entity), entityBoundingBox.getXsize() / 3, entityBoundingBox.getYsize() / 3, entityBoundingBox.getZsize() / 3, Vec3.ZERO);
+            ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, level, entityBoundingBox, entity.position(), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(entity), 0.75f);
         }
     }
 }

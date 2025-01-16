@@ -152,11 +152,7 @@ public abstract class SoulCatcherScenes {
 
         scene.effects.emitParticles(Vec3.ZERO, (level, unused1, unused2, unused3) -> {
             var pig = pigReference.get();
-            int i = potionColor.get();
-            double d0 = (double)(i >> 16 & 255) / (double)255.0F;
-            double d1 = (double)(i >> 8 & 255) / (double)255.0F;
-            double d2 = (double)(i & 255) / (double)255.0F;
-            level.addParticle(ParticleTypes.ENTITY_EFFECT, pig.getRandomX(0.5F), pig.getRandomY(), pig.getRandomZ(0.5F), d0, d1, d2);
+            ParticleUtils.drawPotionEffectParticles(level, pig.getBoundingBox(), pig.position(), potionColor.get(), 1);
         }, 1, 107);
 
         scene.idleSeconds(3);
@@ -170,9 +166,8 @@ public abstract class SoulCatcherScenes {
         scene.idle(7);
 
         scene.world.modifyEntity(pigEntity, pig -> {
-            var bb = pigReference.get().getBoundingBox();
             SoulCatcherItem.addShrinkingEntity(pig);
-            ParticleUtils.drawParticles(ParticleTypes.WITCH, pig.level(), pigCenter, ParticleUtils.getParticleCountForEntity(pig), bb.getXsize() / 3, bb.getYsize() / 3, bb.getZsize() / 3, Vec3.ZERO);
+            ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, pig.level(), pig.getBoundingBox(), pig.position(), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(pig), 0.75f);
         });
 
         scene.idle(SoulCatcherItem.getCatchingDurationInTicks(AABB.ofSize(Vec3.ZERO, 0.9f, 0.9f, 0.9f)));
@@ -203,9 +198,7 @@ public abstract class SoulCatcherScenes {
             pig.setYRot(pig.yRotO = 180);
             pig.setYHeadRot(pig.yHeadRotO = 180);
 
-            var bb = pig.getBoundingBox();
-
-            ParticleUtils.drawParticles(ParticleTypes.WITCH, w, pigCenter, ParticleUtils.getParticleCountForEntity(pig), bb.getXsize() / 3, bb.getYsize() / 3, bb.getZsize() / 3, Vec3.ZERO);
+            ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, pig.level(), pig.getBoundingBox(), pig.position(), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(pig), 0.75f);
 
             return pig;
         });
