@@ -1,6 +1,9 @@
 package dev.kvnmtz.createmobspawners.network;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
+import dev.kvnmtz.createmobspawners.network.packet.ClientboundEntityCatchPacket;
+import dev.kvnmtz.createmobspawners.network.packet.ClientboundEntityReleasePacket;
+import dev.kvnmtz.createmobspawners.network.packet.ClientboundSpawnerEventPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;

@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.network;
+package dev.kvnmtz.createmobspawners.network.packet;
 
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.network;
+package dev.kvnmtz.createmobspawners.network.packet;
 
 import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;

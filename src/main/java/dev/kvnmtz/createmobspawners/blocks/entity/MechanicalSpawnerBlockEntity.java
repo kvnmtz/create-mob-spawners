@@ -9,7 +9,7 @@ import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
 import dev.kvnmtz.createmobspawners.items.registry.ModItems;
-import dev.kvnmtz.createmobspawners.network.ClientboundSpawnerEventPacket;
+import dev.kvnmtz.createmobspawners.network.packet.ClientboundSpawnerEventPacket;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
 import dev.kvnmtz.createmobspawners.recipe.ModRecipes;
 import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;
