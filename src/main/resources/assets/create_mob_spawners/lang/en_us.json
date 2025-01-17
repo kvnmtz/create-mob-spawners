@@ -43,8 +43,7 @@
   "create_mob_spawners.waila.spawner_delay_reason.entity_creation_error": "Could not create entity",
   "create_mob_spawners.waila.spawner_delay_reason.too_many_entities": "Too many entities nearby",
   "create_mob_spawners.waila.spawner_no_progress_reason.no_soul": "No soul stored inside",
-  "create_mob_spawners.waila.spawner_no_progress_reason.no_regeneration_potion_liquid": "No Potion of Regeneration liquid",
-  "create_mob_spawners.waila.spawner_no_progress_reason.not_enough_regeneration_potion_liquid": "Not enough Potion of Regeneration liquid",
+  "create_mob_spawners.waila.spawner_no_progress_reason.not_enough_fluid": "Not enough fluid",
   "create_mob_spawners.waila.spawner_no_progress_reason.no_rotational_force": "No rotational force",
   "create_mob_spawners.waila.spawner_title": "%s (%s)"
 }

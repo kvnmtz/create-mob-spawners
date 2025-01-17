@@ -11,11 +11,12 @@ import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
 import dev.kvnmtz.createmobspawners.items.registry.ModItems;
 import dev.kvnmtz.createmobspawners.network.ClientboundSpawnerEventPacket;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
+import dev.kvnmtz.createmobspawners.recipe.ModRecipes;
+import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;
 import dev.kvnmtz.createmobspawners.utils.DropUtils;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -74,16 +75,33 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         storedEntityData.deserializeNBT(compound.getCompound("EntityStorage"));
     }
 
+    Optional<SpawningRecipe> getCurrentRecipe() {
+        if (level == null) return Optional.empty();
+
+        var potentialRecipes = level.getRecipeManager().getAllRecipesFor(ModRecipes.SPAWNING.get());
+        for (var recipe : potentialRecipes) {
+            if (recipe.getFluidIngredient().getMatchingFluidStacks().contains(getFluidStack())) {
+                return Optional.of(recipe);
+            }
+        }
+
+        return Optional.empty();
+    }
+
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         tank = SmartFluidTankBehaviour.single(this, 1000);
         tank.getPrimaryHandler().setValidator(fluidStack -> {
-            var tag = fluidStack.getTag();
-            if (tag == null) return false;
-            var potionType = tag.getString("Potion");
-            return potionType.equals("minecraft:regeneration")
-                    || potionType.equals("minecraft:strong_regeneration")
-                    || potionType.equals("minecraft:long_regeneration");
+            if (level == null) return false;
+
+            var potentialRecipes = level.getRecipeManager().getAllRecipesFor(ModRecipes.SPAWNING.get());
+            for (var recipe : potentialRecipes) {
+                if (recipe.getFluidIngredient().getMatchingFluidStacks().contains(fluidStack)) {
+                    return true;
+                }
+            }
+
+            return false;
         });
         behaviours.add(tank);
     }
@@ -108,16 +126,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         });
     }
 
-    private int getNecessaryFluidAmountForSpawning() {
-        var fluid = tank.getPrimaryHandler().getFluid();
-        var potionType = fluid.getTag().getString("Potion");
-        if (potionType.equals("minecraft:strong_regeneration") || potionType.equals("minecraft:long_regeneration")) {
-            return 100;
-        }
-
-        return 200;
-    }
-
     private static final int SPAWN_RANGE = 4;
     private static final int MAX_NEARBY_ENTITIES = 6;
 
@@ -127,11 +135,18 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         return Math.min(Math.round(spawnProgress * 100), 100);
     }
 
+    public static float getProgressForTick(float speed, int baseDuration) {
+        return (0.05f * Mth.abs(speed) + 0.95f) / (float) baseDuration;
+    }
+
     private void addProgressForTick() {
         if (spawnProgress >= 1.f) return;
 
-        final var BASE_TICKS_FOR_SPAWNING = 1200; // 1 minute at 1 RPM -> 4s at 256 RPM
-        spawnProgress += (0.05f * Mth.abs(speed) + 0.95f) / (float) BASE_TICKS_FOR_SPAWNING;
+        var optRecipe = getCurrentRecipe();
+        if (optRecipe.isEmpty()) return;
+
+        var recipe = optRecipe.get();
+        spawnProgress += getProgressForTick(speed, recipe.getBaseSpawningDurationTicks());
     }
 
     private int delayTicks = -1;
@@ -151,8 +166,12 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     }
 
     private void useFluid() {
+        var optRecipe = getCurrentRecipe();
+        if (optRecipe.isEmpty()) return;
+        var recipe = optRecipe.get();
+
         var fluid = tank.getPrimaryHandler().getFluid();
-        fluid.setAmount(fluid.getAmount() - getNecessaryFluidAmountForSpawning());
+        fluid.setAmount(fluid.getAmount() - recipe.getFluidIngredient().getRequiredAmount());
     }
 
     private Optional<EntityType<?>> getEntityTypeFromStoredEntityData() {
@@ -168,10 +187,10 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     }
 
     private abstract static class EntitySpawnResult {
-        private static class SuccessfulResult extends EntitySpawnResult {
+        private static class Success extends EntitySpawnResult {
             private final Entity entity;
 
-            private SuccessfulResult(Entity entity) {
+            private Success(Entity entity) {
                 this.entity = entity;
             }
 
@@ -180,10 +199,10 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             }
         }
 
-        private static class DelayResult extends EntitySpawnResult {
+        private static class Delay extends EntitySpawnResult {
             private final DelayReason reason;
 
-            private DelayResult(DelayReason reason) {
+            private Delay(DelayReason reason) {
                 this.reason = reason;
             }
 
@@ -212,21 +231,21 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     }
 
     private EntitySpawnResult spawnEntity() {
-        if (this.level == null) return new EntitySpawnResult.DelayResult(DelayReason.UNKNOWN);
+        if (this.level == null) return new EntitySpawnResult.Delay(DelayReason.UNKNOWN);
         var level = (ServerLevel) this.level;
 
         var optEntityType = getEntityTypeFromStoredEntityData();
-        if (optEntityType.isEmpty()) return new EntitySpawnResult.DelayResult(DelayReason.INVALID_ENTITY);
+        if (optEntityType.isEmpty()) return new EntitySpawnResult.Delay(DelayReason.INVALID_ENTITY);
 
         var entityType = optEntityType.get();
         var blockPos = getBlockPos();
 
         var entity = entityType.create(level);
-        if (entity == null) return new EntitySpawnResult.DelayResult(DelayReason.ENTITY_CREATION_ERROR);
+        if (entity == null) return new EntitySpawnResult.Delay(DelayReason.ENTITY_CREATION_ERROR);
 
         var nearbyEntities = level.getEntitiesOfClass(entity.getClass(), (new AABB(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX() + 1, blockPos.getY() + 1, blockPos.getZ() + 1)).inflate(SPAWN_RANGE)).size();
         if (nearbyEntities >= MAX_NEARBY_ENTITIES)
-            return new EntitySpawnResult.DelayResult(DelayReason.TOO_MANY_ENTITIES);
+            return new EntitySpawnResult.Delay(DelayReason.TOO_MANY_ENTITIES);
 
         var random = level.getRandom();
 
@@ -235,13 +254,13 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         var z = (double) blockPos.getZ() + (random.nextDouble() - random.nextDouble()) * (double) SPAWN_RANGE + (double) 0.5F;
 
         if (!level.noCollision(entityType.getAABB(x, y, z)))
-            return new EntitySpawnResult.DelayResult(DelayReason.SEARCHING_POSITION);
+            return new EntitySpawnResult.Delay(DelayReason.SEARCHING_POSITION);
 
         var yaw = Mth.wrapDegrees(random.nextFloat() * 360.0f);
         entity.moveTo(x, y, z, yaw, 0);
         if (entity instanceof Mob mob) {
             if (!mob.checkSpawnObstruction(level))
-                return new EntitySpawnResult.DelayResult(DelayReason.SEARCHING_POSITION);
+                return new EntitySpawnResult.Delay(DelayReason.SEARCHING_POSITION);
 
             //noinspection deprecation,OverrideOnly
             mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
@@ -251,27 +270,39 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
         level.gameEvent(entity, GameEvent.ENTITY_PLACE, BlockPos.containing(x, y, z));
 
-        return new EntitySpawnResult.SuccessfulResult(entity);
+        return new EntitySpawnResult.Success(entity);
     }
 
     private void trySpawnEntity() {
         if (level == null) return;
 
+        var optRecipe = getCurrentRecipe();
+        if (optRecipe.isEmpty()) return;
+
+        var recipe = optRecipe.get();
+        var additionalSpawnTries = recipe.getAdditionalSpawnTries();
+
         var result = spawnEntity();
-        if (result instanceof EntitySpawnResult.SuccessfulResult successfulResult) {
+        if (result instanceof EntitySpawnResult.Success successfulResult) {
             useFluid();
             var center = getBlockPos().getCenter();
             PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), successfulResult.getEntity().getId()), center, 16, level.dimension());
             spawnProgress = 0;
-        } else if (result instanceof EntitySpawnResult.DelayResult delayResult) {
+
+            for (var i = 0; i < additionalSpawnTries; i++) {
+                var subsequentResult = spawnEntity();
+                if (subsequentResult instanceof EntitySpawnResult.Success subsequentSuccessfulResult) {
+                    PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), subsequentSuccessfulResult.getEntity().getId()), center, 16, level.dimension());
+                }
+            }
+        } else if (result instanceof EntitySpawnResult.Delay delayResult) {
             delay(delayResult.getReason().getDelayTicks(), delayResult.getReason());
         }
     }
 
     private enum ReasonForNotProgressing {
         NO_SOUL,
-        NO_REGENERATION_POTION_LIQUID,
-        NOT_ENOUGH_REGENERATION_POTION_LIQUID,
+        NOT_ENOUGH_FLUID,
         NO_ROTATIONAL_FORCE,
     }
 
@@ -280,19 +311,20 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             return Optional.of(ReasonForNotProgressing.NO_ROTATIONAL_FORCE);
         }
 
-        var fluid = tank.getPrimaryHandler().getFluid();
-        if (fluid.getTag() == null) {
-            return Optional.of(ReasonForNotProgressing.NO_REGENERATION_POTION_LIQUID);
-        }
-        if (fluid.getAmount() < getNecessaryFluidAmountForSpawning()) {
-            if (fluid.getAmount() == 0) {
-                return Optional.of(ReasonForNotProgressing.NO_REGENERATION_POTION_LIQUID);
-            }
-            return Optional.of(ReasonForNotProgressing.NOT_ENOUGH_REGENERATION_POTION_LIQUID);
-        }
-
         if (storedEntityData.isEmpty()) {
             return Optional.of(ReasonForNotProgressing.NO_SOUL);
+        }
+
+        var optRecipe = getCurrentRecipe();
+        if (optRecipe.isEmpty()) {
+            return Optional.of(ReasonForNotProgressing.NOT_ENOUGH_FLUID);
+        }
+
+        var recipe = optRecipe.get();
+        var fluid = tank.getPrimaryHandler().getFluid();
+
+        if (fluid.getAmount() < recipe.getFluidIngredient().getRequiredAmount()) {
+            return Optional.of(ReasonForNotProgressing.NOT_ENOUGH_FLUID);
         }
 
         return Optional.empty();
