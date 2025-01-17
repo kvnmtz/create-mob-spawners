@@ -45,5 +45,12 @@
   "create_mob_spawners.waila.spawner_no_progress_reason.no_soul": "Keine Seele enthalten",
   "create_mob_spawners.waila.spawner_no_progress_reason.not_enough_fluid": "Nicht genug Flüssigkeit",
   "create_mob_spawners.waila.spawner_no_progress_reason.no_rotational_force": "Keine Rotationsenergie",
-  "create_mob_spawners.waila.spawner_title": "%s (%s)"
+  "create_mob_spawners.waila.spawner_title": "%s (%s)",
+
+  "create_mob_spawners.jei.spawning.title": "Kreaturen-Erschaffung",
+  "create_mob_spawners.jei.spawning.duration": "Spawn-Dauer:",
+  "create_mob_spawners.jei.spawning.at": "bei",
+  "create_mob_spawners.jei.spawning.rpm": "U/min",
+  "create_mob_spawners.jei.spawning.additional_spawn_tries": "Zusätzliche Spawn-Versuche: %d",
+  "create_mob_spawners.jei.spawning.question_mark": "Spawnt Kreaturen-Typ abhängig vom eingesetzten Seelenfänger"
 }
