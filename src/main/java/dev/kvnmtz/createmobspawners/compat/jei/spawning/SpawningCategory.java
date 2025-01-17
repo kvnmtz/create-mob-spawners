@@ -5,7 +5,7 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.blocks.entity.MechanicalSpawnerBlockEntity;
 import dev.kvnmtz.createmobspawners.blocks.registry.ModBlocks;
-import dev.kvnmtz.createmobspawners.compat.jei.AnimatedSpawner;
+import dev.kvnmtz.createmobspawners.gui.animations.AnimatedSpawner;
 import dev.kvnmtz.createmobspawners.gui.ModGuiTextures;
 import dev.kvnmtz.createmobspawners.items.registry.ModItems;
 import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;

@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.compat.jei;
+package dev.kvnmtz.createmobspawners.gui.animations;
 
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Axis;
