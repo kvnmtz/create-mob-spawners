@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.waila;
+package dev.kvnmtz.createmobspawners.compat.waila;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.blocks.entity.MechanicalSpawnerBlockEntity;

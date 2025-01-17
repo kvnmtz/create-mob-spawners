@@ -1,6 +1,7 @@
 package dev.kvnmtz.createmobspawners.utils;
 
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -52,5 +53,22 @@ public class ParticleUtils {
     public static int getParticleCountForBoundingBox(AABB boundingBox) {
         var volume = BoundingBoxUtils.getBoundingBoxVolume(boundingBox);
         return (int) (24.58 * Math.pow(volume, 0.35));
+    }
+
+    public static void drawPotionEffectLikeParticles(ParticleOptions particleType, Level level, AABB boundingBox, Vec3 position, Vec3 speed, int amount, float scale) {
+        var random = level.random;
+        for (var i = 0; i < amount; i++) {
+            var x = position.x + boundingBox.getXsize() * (((double)2.0F * random.nextDouble() - (double)1.0F) * scale);
+            var y = position.y + boundingBox.getYsize() * random.nextDouble();
+            var z = position.z + boundingBox.getZsize() * (((double)2.0F * random.nextDouble() - (double)1.0F) * scale);
+            level.addParticle(particleType, x, y, z, speed.x, speed.y, speed.z);
+        }
+    }
+
+    public static void drawPotionEffectParticles(Level level, AABB boundingBox, Vec3 position, int color, int amount) {
+        double d0 = (double)(color >> 16 & 255) / (double)255.0F;
+        double d1 = (double)(color >> 8 & 255) / (double)255.0F;
+        double d2 = (double)(color & 255) / (double)255.0F;
+        drawPotionEffectLikeParticles(ParticleTypes.ENTITY_EFFECT, level, boundingBox, position, new Vec3(d0, d1, d2), amount, 0.5f);
     }
 }

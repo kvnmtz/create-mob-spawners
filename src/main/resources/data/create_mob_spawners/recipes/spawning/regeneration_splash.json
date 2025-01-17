@@ -1,0 +1,13 @@
+{
+  "type": "create_mob_spawners:spawning",
+  "input": {
+    "amount": 200,
+    "fluid": "create:potion",
+    "nbt": {
+      "Potion": "minecraft:regeneration",
+      "Bottle": "SPLASH"
+    }
+  },
+  "base_spawning_duration_ticks": 1200,
+  "additional_spawn_tries": 0
+}

@@ -18,6 +18,7 @@ import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
 import dev.kvnmtz.createmobspawners.ponder.PonderIndex;
 import dev.kvnmtz.createmobspawners.ponder.scenes.SoulCatcherScenes;
+import dev.kvnmtz.createmobspawners.recipe.ModRecipes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -48,6 +49,7 @@ public class CreateMobSpawners
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
