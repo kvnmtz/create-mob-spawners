@@ -6,11 +6,18 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
+import snownee.jade.api.fluid.JadeFluidObject;
 import snownee.jade.api.theme.IThemeHelper;
+import snownee.jade.api.view.*;
 
-public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
+import java.util.List;
+
+public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor>, IServerExtensionProvider<MechanicalSpawnerBlockEntity, CompoundTag>, IClientExtensionProvider<CompoundTag, FluidView> {
     INSTANCE;
 
     @Override
@@ -65,6 +72,8 @@ public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvide
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
         var spawner = (MechanicalSpawnerBlockEntity) accessor.getBlockEntity();
+
+
         var optReasonForNotProgressingKey = spawner.getReasonForNotProgressingTranslationKey();
         if (optReasonForNotProgressingKey.isPresent()) {
             data.putString("NoProgressReason", optReasonForNotProgressingKey.get());
@@ -73,5 +82,17 @@ public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvide
         } else {
             data.putInt("Progress", spawner.getSpawnProgressPercentage());
         }
+    }
+
+    @Override
+    public List<ClientViewGroup<FluidView>> getClientGroups(Accessor<?> accessor, List<ViewGroup<CompoundTag>> groups) {
+        return ClientViewGroup.map(groups, FluidView::readDefault, null);
+    }
+
+    @Override
+    public @NotNull List<ViewGroup<CompoundTag>> getGroups(ServerPlayer player, ServerLevel world, MechanicalSpawnerBlockEntity blockEntity, boolean showDetails) {
+        var fluidStack = blockEntity.getFluidStack();
+        var tank = new ViewGroup<>(List.of(FluidView.writeDefault(JadeFluidObject.of(fluidStack.getFluid(), fluidStack.getAmount(), fluidStack.getTag()), blockEntity.getTank().getPrimaryHandler().getCapacity())));
+        return List.of(tank);
     }
 }
