@@ -31,6 +31,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import java.util.function.Function;
@@ -53,12 +54,12 @@ public class CreateMobSpawners
 
         modEventBus.addListener(this::commonSetup);
 
-        MinecraftForge.EVENT_BUS.register(this);
-
         MinecraftForge.EVENT_BUS.register(SoulCatcherItem.class);
         MinecraftForge.EVENT_BUS.register(MechanicalSpawnerBlock.class);
 
-        MinecraftForge.EVENT_BUS.register(SoulCatcherScenes.class);
+        if (FMLEnvironment.dist.isClient()) {
+            MinecraftForge.EVENT_BUS.register(SoulCatcherScenes.class);
+        }
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
