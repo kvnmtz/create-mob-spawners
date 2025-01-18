@@ -61,7 +61,7 @@ public class CreateMobSpawners
             MinecraftForge.EVENT_BUS.register(SoulCatcherScenes.class);
         }
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
 
     public static ResourceLocation asResource(String path) {
