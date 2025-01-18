@@ -75,12 +75,6 @@ public class CreateMobSpawners
 
             BlockStressDefaults.DEFAULT_IMPACTS.put(asResource("mechanical_spawner"), 4.0);
 
-            Function<Item, TooltipModifier> tooltipModifierFactory = item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.PURPLE)
-                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)));
-            TooltipModifier.REGISTRY.registerDeferred(ModBlocks.SPAWNER.get().asItem(), tooltipModifierFactory);
-            TooltipModifier.REGISTRY.registerDeferred(ModItems.EMPTY_SOUL_CATCHER.get(), tooltipModifierFactory);
-            TooltipModifier.REGISTRY.registerDeferred(ModItems.SOUL_CATCHER.get(), tooltipModifierFactory);
-
             try {
                 Class.forName("mezz.jei.api.JeiPlugin");
                 MysteriousItemConversionCategory.RECIPES.add(ConversionRecipe.create(ModItems.EMPTY_SOUL_CATCHER.get().getDefaultInstance(), ModItems.SOUL_CATCHER.get().getDefaultInstance()));
@@ -97,6 +91,12 @@ public class CreateMobSpawners
         {
             BlockEntityRenderers.register(ModBlockEntities.SPAWNER_BE.get(), MechanicalSpawnerBlockEntityRenderer::new);
             PonderIndex.register();
+
+            Function<Item, TooltipModifier> tooltipModifierFactory = item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.PURPLE)
+                    .andThen(TooltipModifier.mapNull(KineticStats.create(item)));
+            TooltipModifier.REGISTRY.registerDeferred(ModBlocks.SPAWNER.get().asItem(), tooltipModifierFactory);
+            TooltipModifier.REGISTRY.registerDeferred(ModItems.EMPTY_SOUL_CATCHER.get(), tooltipModifierFactory);
+            TooltipModifier.REGISTRY.registerDeferred(ModItems.SOUL_CATCHER.get(), tooltipModifierFactory);
         }
     }
 }
