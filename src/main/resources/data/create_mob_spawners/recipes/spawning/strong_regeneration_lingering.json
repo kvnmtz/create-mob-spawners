@@ -8,6 +8,6 @@
       "Bottle": "LINGERING"
     }
   },
-  "base_spawning_duration_ticks": 900,
-  "additional_spawn_tries": 3
+  "spawn_ticks_at_max_speed": 60,
+  "additional_spawn_attempts": 3
 }

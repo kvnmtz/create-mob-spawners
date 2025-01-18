@@ -8,6 +8,6 @@
       "Bottle": "REGULAR"
     }
   },
-  "base_spawning_duration_ticks": 1200,
-  "additional_spawn_tries": 0
+  "spawn_ticks_at_max_speed": 100,
+  "additional_spawn_attempts": 0
 }

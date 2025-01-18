@@ -8,6 +8,6 @@
       "Bottle": "SPLASH"
     }
   },
-  "base_spawning_duration_ticks": 1000,
-  "additional_spawn_tries": 2
+  "spawn_ticks_at_max_speed": 70,
+  "additional_spawn_attempts": 2
 }

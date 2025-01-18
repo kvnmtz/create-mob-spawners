@@ -21,13 +21,13 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class SpawningRecipe implements Recipe<RecipeWrapper> {
     protected final ResourceLocation id;
     protected final FluidIngredient fluidIngredient;
-    protected final int baseSpawningDurationTicks;
+    protected final int spawnTicksAtMaxSpeed;
     protected final int additionalSpawnTries;
 
-    public SpawningRecipe(ResourceLocation id, FluidIngredient fluidIngredient, int baseSpawningDurationTicks, int additionalSpawnTries) {
+    public SpawningRecipe(ResourceLocation id, FluidIngredient fluidIngredient, int spawnTicksAtMaxSpeed, int additionalSpawnTries) {
         this.id = id;
         this.fluidIngredient = fluidIngredient;
-        this.baseSpawningDurationTicks = baseSpawningDurationTicks;
+        this.spawnTicksAtMaxSpeed = spawnTicksAtMaxSpeed;
         this.additionalSpawnTries = additionalSpawnTries;
     }
 
@@ -35,8 +35,8 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
         return fluidIngredient;
     }
 
-    public int getBaseSpawningDurationTicks() {
-        return baseSpawningDurationTicks;
+    public int getSpawnTicksAtMaxSpeed() {
+        return spawnTicksAtMaxSpeed;
     }
 
     public int getAdditionalSpawnTries() {
@@ -88,23 +88,23 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
         @Override
         public SpawningRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
             var fluidIngredient = FluidIngredient.deserialize(jsonObject.get("input"));
-            var baseSpawningDurationTicks = jsonObject.get("base_spawning_duration_ticks").getAsInt();
+            var spawnTicksAtMaxSpeed = jsonObject.get("spawn_ticks_at_max_speed").getAsInt();
             var additionalSpawnTries = jsonObject.get("additional_spawn_tries").getAsInt();
-            return new SpawningRecipe(id, fluidIngredient, baseSpawningDurationTicks, additionalSpawnTries);
+            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries);
         }
 
         @Override
         public @Nullable SpawningRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
             var fluidIngredient = FluidIngredient.read(buffer);
-            var baseSpawningDurationTicks = buffer.readInt();
+            var spawnTicksAtMaxSpeed = buffer.readInt();
             var additionalSpawnTries = buffer.readInt();
-            return new SpawningRecipe(id, fluidIngredient, baseSpawningDurationTicks, additionalSpawnTries);
+            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, SpawningRecipe spawningRecipe) {
             spawningRecipe.fluidIngredient.write(buffer);
-            buffer.writeInt(spawningRecipe.baseSpawningDurationTicks);
+            buffer.writeInt(spawningRecipe.spawnTicksAtMaxSpeed);
             buffer.writeInt(spawningRecipe.additionalSpawnTries);
         }
     }

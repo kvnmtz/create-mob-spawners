@@ -161,8 +161,8 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         return Math.min(Math.round(spawnProgress * 100), 100);
     }
 
-    public static float getProgressForTick(float speed, int baseDuration) {
-        return (0.05f * Mth.abs(speed) + 0.95f) / (float) baseDuration;
+    public static float getProgressForTick(float speed, int ticksAtMaxSpeed) {
+        return (float) (0.0625 * Math.pow(1.0108892861, Math.abs(speed))) / (float) ticksAtMaxSpeed;
     }
 
     private void addProgressForTick() {
@@ -172,7 +172,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (optRecipe.isEmpty()) return;
 
         var recipe = optRecipe.get();
-        spawnProgress += getProgressForTick(speed, recipe.getBaseSpawningDurationTicks());
+        spawnProgress += getProgressForTick(speed, recipe.getSpawnTicksAtMaxSpeed());
     }
 
     private int delayTicks = -1;
