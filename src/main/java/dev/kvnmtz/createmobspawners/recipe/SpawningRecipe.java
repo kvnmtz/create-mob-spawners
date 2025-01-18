@@ -22,13 +22,13 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
     protected final ResourceLocation id;
     protected final FluidIngredient fluidIngredient;
     protected final int spawnTicksAtMaxSpeed;
-    protected final int additionalSpawnTries;
+    protected final int additionalSpawnAttempts;
 
-    public SpawningRecipe(ResourceLocation id, FluidIngredient fluidIngredient, int spawnTicksAtMaxSpeed, int additionalSpawnTries) {
+    public SpawningRecipe(ResourceLocation id, FluidIngredient fluidIngredient, int spawnTicksAtMaxSpeed, int additionalSpawnAttempts) {
         this.id = id;
         this.fluidIngredient = fluidIngredient;
         this.spawnTicksAtMaxSpeed = spawnTicksAtMaxSpeed;
-        this.additionalSpawnTries = additionalSpawnTries;
+        this.additionalSpawnAttempts = additionalSpawnAttempts;
     }
 
     public FluidIngredient getFluidIngredient() {
@@ -39,8 +39,8 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
         return spawnTicksAtMaxSpeed;
     }
 
-    public int getAdditionalSpawnTries() {
-        return additionalSpawnTries;
+    public int getAdditionalSpawnAttempts() {
+        return additionalSpawnAttempts;
     }
 
     @Override
@@ -89,8 +89,8 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
         public SpawningRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
             var fluidIngredient = FluidIngredient.deserialize(jsonObject.get("input"));
             var spawnTicksAtMaxSpeed = jsonObject.get("spawn_ticks_at_max_speed").getAsInt();
-            var additionalSpawnTries = jsonObject.get("additional_spawn_tries").getAsInt();
-            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries);
+            var additionalSpawnAttempts = jsonObject.get("additional_spawn_attempts").getAsInt();
+            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnAttempts);
         }
 
         @Override
@@ -105,7 +105,7 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
         public void toNetwork(FriendlyByteBuf buffer, SpawningRecipe spawningRecipe) {
             spawningRecipe.fluidIngredient.write(buffer);
             buffer.writeInt(spawningRecipe.spawnTicksAtMaxSpeed);
-            buffer.writeInt(spawningRecipe.additionalSpawnTries);
+            buffer.writeInt(spawningRecipe.additionalSpawnAttempts);
         }
     }
 }

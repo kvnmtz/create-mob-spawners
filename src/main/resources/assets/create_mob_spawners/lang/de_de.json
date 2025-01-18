@@ -53,6 +53,6 @@
   "create_mob_spawners.jei.spawning.duration": "Spawn-Dauer:",
   "create_mob_spawners.jei.spawning.at": "bei",
   "create_mob_spawners.jei.spawning.rpm": "U/min",
-  "create_mob_spawners.jei.spawning.additional_spawn_tries": "Zusätzliche Spawn-Versuche: %d",
+  "create_mob_spawners.jei.spawning.additional_spawn_attempts": "Zusätzliche Spawn-Versuche: %d",
   "create_mob_spawners.jei.spawning.question_mark": "Spawnt Kreaturen-Typ abhängig vom eingesetzten Seelenfänger"
 }

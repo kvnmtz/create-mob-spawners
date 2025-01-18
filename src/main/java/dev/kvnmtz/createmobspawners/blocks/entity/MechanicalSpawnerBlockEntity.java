@@ -306,7 +306,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (optRecipe.isEmpty()) return;
 
         var recipe = optRecipe.get();
-        var additionalSpawnTries = recipe.getAdditionalSpawnTries();
+        var additionalSpawnAttempts = recipe.getAdditionalSpawnAttempts();
 
         var result = spawnEntity();
         if (result instanceof EntitySpawnResult.Success successfulResult) {
@@ -315,7 +315,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), successfulResult.getEntity().getId()), center, 16, level.dimension());
             spawnProgress = 0;
 
-            for (var i = 0; i < additionalSpawnTries; i++) {
+            for (var i = 0; i < additionalSpawnAttempts; i++) {
                 var subsequentResult = spawnEntity();
                 if (subsequentResult instanceof EntitySpawnResult.Success subsequentSuccessfulResult) {
                     PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), subsequentSuccessfulResult.getEntity().getId()), center, 16, level.dimension());

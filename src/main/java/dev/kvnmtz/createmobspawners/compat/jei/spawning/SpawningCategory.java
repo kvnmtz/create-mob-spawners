@@ -150,6 +150,6 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
         );
         textY += font.lineHeight * 3;
 
-        graphics.drawString(font, Component.translatable("create_mob_spawners.jei.spawning.additional_spawn_tries", recipe.getAdditionalSpawnTries()).getString(), 9, textY, 0xFFFFFF, false);
+        graphics.drawString(font, Component.translatable("create_mob_spawners.jei.spawning.additional_spawn_attempts", recipe.getAdditionalSpawnAttempts()).getString(), 9, textY, 0xFFFFFF, false);
     }
 }
