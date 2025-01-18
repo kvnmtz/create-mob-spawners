@@ -47,7 +47,7 @@ It needs a minimum rotation speed of 128 RPM and its stress impact depends on th
 
 The exact stress impact is calculated using this graph (the cap at 80 SU / RPM is configurable):
 
-![Stress Impact Graph](docs/stress_impact_graph.png)
+<img alt="Stress Impact Graph" src="docs/stress_impact_graph.png" width="400">
 
 Some examples:
 
@@ -83,7 +83,7 @@ Displays:
 - Additional spawn attempts
   - 1 spawned entity is guaranteed, additional attempts rely on RNG to find a fitting spot for the mob, so a spawner without any obstruction in its range will work most efficiently
 
-![JEI](docs/jei.webp)
+<img alt="JEI" src="docs/jei.webp" width="687">
 
 ### Jade
 
@@ -93,7 +93,7 @@ Displays:
 - Progression status
 - Reason for stalling (if applicable)
 
-![Jade](docs/jade.png)
+<img alt="Jade" src="docs/jade.png" width="600">
 
 ### Recipes
 
