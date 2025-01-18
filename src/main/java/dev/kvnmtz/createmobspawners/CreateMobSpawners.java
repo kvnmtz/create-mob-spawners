@@ -73,7 +73,7 @@ public class CreateMobSpawners
         event.enqueueWork(() -> {
             PacketHandler.register();
 
-            BlockStressDefaults.DEFAULT_IMPACTS.put(asResource("mechanical_spawner"), 4.0);
+            BlockStressDefaults.DEFAULT_IMPACTS.put(asResource("mechanical_spawner"), 8.0);
 
             try {
                 Class.forName("mezz.jei.api.JeiPlugin");
@@ -94,9 +94,11 @@ public class CreateMobSpawners
 
             Function<Item, TooltipModifier> tooltipModifierFactory = item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.PURPLE)
                     .andThen(TooltipModifier.mapNull(KineticStats.create(item)));
-            TooltipModifier.REGISTRY.registerDeferred(ModBlocks.SPAWNER.get().asItem(), tooltipModifierFactory);
             TooltipModifier.REGISTRY.registerDeferred(ModItems.EMPTY_SOUL_CATCHER.get(), tooltipModifierFactory);
             TooltipModifier.REGISTRY.registerDeferred(ModItems.SOUL_CATCHER.get(), tooltipModifierFactory);
+
+            TooltipModifier.REGISTRY.registerDeferred(ModBlocks.SPAWNER.get().asItem(), item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.PURPLE)
+                    .andThen(TooltipModifier.mapNull(new MechanicalSpawnerBlock.KineticStats())));
         }
     }
 }

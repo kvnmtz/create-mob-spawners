@@ -3,6 +3,7 @@ package dev.kvnmtz.createmobspawners.blocks.entity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
+import dev.kvnmtz.createmobspawners.Config;
 import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
 import dev.kvnmtz.createmobspawners.blocks.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
@@ -51,6 +52,29 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     @Override
     public void setStoredEntityData(StoredEntityData entityData) {
         storedEntityData = entityData;
+        onStoredEntityDataChanged();
+    }
+
+    private float stressImpact = 8.f;
+
+    private void onStoredEntityDataChanged() {
+        stressImpact = calculateStressImpactForContainedSoulCatcher();
+    }
+
+    private float calculateStressImpactForContainedSoulCatcher() {
+        if (level == null) return 0.f;
+
+        var optEntityType = getEntityTypeFromStoredEntityData();
+        if (optEntityType.isEmpty()) return 0.f;
+
+        var entityType = (EntityType<? extends LivingEntity>) optEntityType.get();
+        var entity = entityType.create(level);
+        if (entity == null) return 0.f;
+
+        var health = entity.getMaxHealth();
+        entity.discard();
+        var rawImpact = (float) (0.0009652871 * Math.pow(health, 3) - 0.0548339331 * Math.pow(health, 2) + 1.5872319688 * health + 2.4666366772);
+        return Mth.clamp(rawImpact, 4, Config.mechanicalSpawnerMaxStressImpact);
     }
 
     private SmartFluidTankBehaviour tank;
@@ -122,7 +146,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             entityStorage.setStoredEntityData(storedEntityData);
             var droppedItems = DropUtils.dropItemStack(level, worldPosition.getX(), worldPosition.getY() + 1, worldPosition.getZ(), itemStack);
             droppedItems.stream().findFirst().ifPresent(itemEntity -> itemEntity.setGlowingTag(true));
-            storedEntityData = StoredEntityData.empty();
+            setStoredEntityData(StoredEntityData.empty());
         });
     }
 
@@ -304,11 +328,16 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         NO_SOUL,
         NOT_ENOUGH_FLUID,
         NO_ROTATIONAL_FORCE,
+        ROTATION_SPEED_TOO_LOW,
     }
 
     private Optional<ReasonForNotProgressing> getReasonForNotProgressing() {
         if (speed == 0) {
             return Optional.of(ReasonForNotProgressing.NO_ROTATIONAL_FORCE);
+        }
+
+        if (Mth.abs(speed) < Config.mechanicalSpawnerMinRpm) {
+            return Optional.of(ReasonForNotProgressing.ROTATION_SPEED_TOO_LOW);
         }
 
         if (storedEntityData.isEmpty()) {
@@ -363,5 +392,11 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
                 trySpawnEntity();
             }
         }
+    }
+
+    @Override
+    public float calculateStressApplied() {
+        lastStressApplied = stressImpact;
+        return stressImpact;
     }
 }

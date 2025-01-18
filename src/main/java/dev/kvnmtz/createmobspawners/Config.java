@@ -33,6 +33,16 @@ public class Config {
             .comment("Maximum distance at which entities can be captured")
             .define("max_distance", 10.f);
 
+    private static final ForgeConfigSpec.ConfigValue<Float> MECHANICAL_SPAWNER_MAX_STRESS_IMPACT = BUILDER
+            .pop()
+            .push("mechanical_spawner")
+            .comment("Maximum stress impact (impact scales with entity health)")
+            .define("max_stress_impact", 80.f);
+
+    private static final ForgeConfigSpec.ConfigValue<Float> MECHANICAL_SPAWNER_MIN_RPM = BUILDER
+            .comment("Minimum RPM required to progress")
+            .define("min_rpm", 128.f);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static Set<EntityType<?>> soulCatcherEntityBlacklist;
@@ -43,11 +53,16 @@ public class Config {
 
     public static float soulCatcherMaxDistance;
 
+    public static float mechanicalSpawnerMaxStressImpact;
+    public static float mechanicalSpawnerMinRpm;
+
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         soulCatcherEntityBlacklist = SOUL_CATCHER_ENTITY_BLACKLIST.get().stream()
                 .map(entityId -> ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(entityId)))
                 .collect(Collectors.toSet());
         soulCatcherMaxDistance = SOUL_CATCHER_MAX_DISTANCE.get();
+        mechanicalSpawnerMaxStressImpact = MECHANICAL_SPAWNER_MAX_STRESS_IMPACT.get();
+        mechanicalSpawnerMinRpm = MECHANICAL_SPAWNER_MIN_RPM.get();
     }
 }

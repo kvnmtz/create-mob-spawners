@@ -22,6 +22,7 @@
 
   "block.create_mob_spawners.mechanical_spawner": "Mechanischer Spawner",
   "block.create_mob_spawners.mechanical_spawner.tooltip.summary": "Nutzt die Kraft regenerativer Magie um Kreaturen zu erschaffen. Benötigt _Rotationsenergie_, muss mit _Trank der Regeneration_ betankt werden und ein _Seelenfänger_ muss darin platziert werden, um zu funktionieren.",
+  "block.create_mob_spawners.mechanical_spawner.tooltip.stress": "Abhängig von Kreaturen-Typ",
 
   "create_mob_spawners.ponder.spawner.header": "Mechanischer Spawner",
   "create_mob_spawners.ponder.spawner.text_1": "Rechtsklicke den Spawner mit einem Seelenfänger, um ihn darin zu platzieren",
@@ -45,6 +46,7 @@
   "create_mob_spawners.waila.spawner_no_progress_reason.no_soul": "Keine Seele enthalten",
   "create_mob_spawners.waila.spawner_no_progress_reason.not_enough_fluid": "Nicht genug Flüssigkeit",
   "create_mob_spawners.waila.spawner_no_progress_reason.no_rotational_force": "Keine Rotationsenergie",
+  "create_mob_spawners.waila.spawner_no_progress_reason.rotation_speed_too_low": "Rotationsgeschwindigkeit zu niedrig",
   "create_mob_spawners.waila.spawner_title": "%s (%s)",
 
   "create_mob_spawners.jei.spawning.title": "Kreaturen-Erschaffung",

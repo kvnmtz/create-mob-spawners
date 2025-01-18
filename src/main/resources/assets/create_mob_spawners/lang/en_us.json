@@ -22,6 +22,7 @@
 
   "block.create_mob_spawners.mechanical_spawner": "Mechanical Spawner",
   "block.create_mob_spawners.mechanical_spawner.tooltip.summary": "Utilizes the power of regenerative magic to spawn mobs. It needs _rotational force_, a supply of _Potion of Regeneration_ liquid and a _Soul Catcher_ placed inside to function.",
+  "block.create_mob_spawners.mechanical_spawner.tooltip.stress": "Depends on mob type",
 
   "create_mob_spawners.ponder.spawner.header": "Mechanical Spawner",
   "create_mob_spawners.ponder.spawner.text_1": "Right-click the Spawner with a Soul Catcher to place it inside",
@@ -45,6 +46,7 @@
   "create_mob_spawners.waila.spawner_no_progress_reason.no_soul": "No soul stored inside",
   "create_mob_spawners.waila.spawner_no_progress_reason.not_enough_fluid": "Not enough fluid",
   "create_mob_spawners.waila.spawner_no_progress_reason.no_rotational_force": "No rotational force",
+  "create_mob_spawners.waila.spawner_no_progress_reason.rotation_speed_too_low": "Rotation speed too low",
   "create_mob_spawners.waila.spawner_title": "%s (%s)",
 
   "create_mob_spawners.jei.spawning.title": "Mob Spawning",
