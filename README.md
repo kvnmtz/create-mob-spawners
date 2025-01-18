@@ -49,7 +49,19 @@ The exact stress impact is calculated using this graph (the cap at 80 SU / RPM i
 
 ![Stress Impact Graph](docs/stress_impact_graph.png)
 
-It can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
+Some examples:
+
+| Mob      | SU @ 128 RPM | SU @ 256 RPM |
+|----------|--------------|--------------|
+| Chicken  | 1,024        | 2,048        |
+| Ghast    | 1,769        | 3,538        |
+| Zombie   | 2,560        | 5,120        |
+| Enderman | 5,120        | 10,240       |
+| Ravager  | 10,240       | 20,480       |
+
+Note that the Ravagers stress impact is capped in this example, as the default configuration will cap everything at 80 SU / RPM.
+
+The Mechanical Spawner can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
 
 ![Mechanical Spawner Recipe](docs/recipe_mechanical_spawner.png)
 
