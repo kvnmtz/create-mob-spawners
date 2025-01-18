@@ -326,44 +326,44 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         }
     }
 
-    private enum ReasonForNotProgressing {
+    private enum StallingReason {
         NO_SOUL,
         NOT_ENOUGH_FLUID,
         NO_ROTATIONAL_FORCE,
         ROTATION_SPEED_TOO_LOW,
     }
 
-    private Optional<ReasonForNotProgressing> getReasonForNotProgressing() {
+    private Optional<StallingReason> getStallingReason() {
         if (speed == 0) {
-            return Optional.of(ReasonForNotProgressing.NO_ROTATIONAL_FORCE);
+            return Optional.of(StallingReason.NO_ROTATIONAL_FORCE);
         }
 
         if (Mth.abs(speed) < Config.mechanicalSpawnerMinRpm) {
-            return Optional.of(ReasonForNotProgressing.ROTATION_SPEED_TOO_LOW);
+            return Optional.of(StallingReason.ROTATION_SPEED_TOO_LOW);
         }
 
         if (storedEntityData.isEmpty()) {
-            return Optional.of(ReasonForNotProgressing.NO_SOUL);
+            return Optional.of(StallingReason.NO_SOUL);
         }
 
         var optRecipe = getCurrentRecipe();
         if (optRecipe.isEmpty()) {
-            return Optional.of(ReasonForNotProgressing.NOT_ENOUGH_FLUID);
+            return Optional.of(StallingReason.NOT_ENOUGH_FLUID);
         }
 
         var recipe = optRecipe.get();
         var fluid = tank.getPrimaryHandler().getFluid();
 
         if (fluid.getAmount() < recipe.getFluidIngredient().getRequiredAmount()) {
-            return Optional.of(ReasonForNotProgressing.NOT_ENOUGH_FLUID);
+            return Optional.of(StallingReason.NOT_ENOUGH_FLUID);
         }
 
         return Optional.empty();
     }
 
-    public Optional<String> getReasonForNotProgressingTranslationKey() {
-        var reason = getReasonForNotProgressing();
-        return reason.map(reasonForNotProgressing -> reasonForNotProgressing.name().toLowerCase());
+    public Optional<String> getStallingReasonTranslationKey() {
+        var reason = getStallingReason();
+        return reason.map(stallingReason -> stallingReason.name().toLowerCase());
     }
 
     @Override
@@ -372,7 +372,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
         if (level == null) return;
 
-        var unableToProgress = getReasonForNotProgressing().isPresent();
+        var unableToProgress = getStallingReason().isPresent();
         if (unableToProgress) return;
 
         if (level.isClientSide) {

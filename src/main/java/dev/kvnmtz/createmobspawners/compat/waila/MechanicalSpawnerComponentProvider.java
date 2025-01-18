@@ -33,8 +33,8 @@ public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvide
                 tooltip.add(0, IThemeHelper.get().title(title), Identifiers.CORE_OBJECT_NAME);
 
                 var serverData = accessor.getServerData();
-                if (serverData.contains("NoProgressReason")) {
-                    tooltip.add(Component.translatable("create_mob_spawners.waila.spawner_no_progress_reason." + serverData.getString("NoProgressReason")).withStyle(ChatFormatting.RED));
+                if (serverData.contains("StallingReason")) {
+                    tooltip.add(Component.translatable("create_mob_spawners.waila.spawner_stalling_reason." + serverData.getString("StallingReason")).withStyle(ChatFormatting.RED));
                 } else if (serverData.contains("Progress")) {
                     tooltip.add(
                             Component.translatable(
@@ -61,7 +61,7 @@ public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvide
             }
         }
 
-        tooltip.add(Component.translatable("create_mob_spawners.waila.spawner_no_progress_reason.no_soul").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("create_mob_spawners.waila.spawner_stalling_reason.no_soul").withStyle(ChatFormatting.RED));
     }
 
     @Override
@@ -72,11 +72,10 @@ public enum MechanicalSpawnerComponentProvider implements IBlockComponentProvide
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
         var spawner = (MechanicalSpawnerBlockEntity) accessor.getBlockEntity();
-
-
-        var optReasonForNotProgressingKey = spawner.getReasonForNotProgressingTranslationKey();
-        if (optReasonForNotProgressingKey.isPresent()) {
-            data.putString("NoProgressReason", optReasonForNotProgressingKey.get());
+        
+        var optStallingReasonKey = spawner.getStallingReasonTranslationKey();
+        if (optStallingReasonKey.isPresent()) {
+            data.putString("StallingReason", optStallingReasonKey.get());
         } else if (spawner.isDelayed()) {
             data.putString("DelayReason", spawner.getDelayReasonTranslationKey());
         } else {
