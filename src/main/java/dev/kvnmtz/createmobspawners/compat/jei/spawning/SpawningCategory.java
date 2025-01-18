@@ -118,15 +118,9 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
         graphics.drawString(font, Component.translatable("create_mob_spawners.jei.spawning.duration").getString(), 9, textY, 0xFFFFFF, false);
         textY += font.lineHeight;
 
-        var baseDurationInTicks = recipe.getBaseSpawningDurationTicks();
-        var secondsToSpawnBase = baseDurationInTicks / 20.f;
-        var spawnDurations = new String[] {
-                String.format(Locale.US, "%.1fs", secondsToSpawnBase),
-                String.format(Locale.US, "%.1fs", 1.f / MechanicalSpawnerBlockEntity.getProgressForTick(256, recipe.getBaseSpawningDurationTicks()) / 20.f)
-        };
-        var rpms = new String[] {
-                "1",
-                "256"
+        var rpms = new int[] {
+                128,
+                256
         };
         DrawStringUtils.drawTable(
                 graphics,
@@ -139,7 +133,7 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
                 4,
                 new DrawStringUtils.TableColumnDefinition(
                         DrawStringUtils.TableColumnDefinition.HorizontalAlignment.RIGHT,
-                        row -> spawnDurations[row]
+                        row -> String.format(Locale.US, "%.1fs", 1.f / MechanicalSpawnerBlockEntity.getProgressForTick(rpms[row], recipe.getSpawnTicksAtMaxSpeed()) / 20.f)
                 ),
                 new DrawStringUtils.TableColumnDefinition(
                         DrawStringUtils.TableColumnDefinition.HorizontalAlignment.LEFT,
@@ -147,7 +141,7 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
                 ),
                 new DrawStringUtils.TableColumnDefinition(
                         DrawStringUtils.TableColumnDefinition.HorizontalAlignment.RIGHT,
-                        row -> rpms[row]
+                        row -> String.valueOf(rpms[row])
                 ),
                 new DrawStringUtils.TableColumnDefinition(
                         DrawStringUtils.TableColumnDefinition.HorizontalAlignment.LEFT,
