@@ -75,6 +75,7 @@ public class MechanicalSpawnerBlock extends KineticBlock implements IBE<Mechanic
         }
 
         blockEntity.setChanged();
+        blockEntity.sendData();
 
         return InteractionResult.SUCCESS;
     }
