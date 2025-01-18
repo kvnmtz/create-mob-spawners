@@ -59,6 +59,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
     private void onStoredEntityDataChanged() {
         stressImpact = calculateStressImpactForContainedSoulCatcher();
+        spawnProgress = 0.f;
     }
 
     private float calculateStressImpactForContainedSoulCatcher() {
