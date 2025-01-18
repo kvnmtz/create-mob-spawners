@@ -17,8 +17,17 @@ public class Config {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
     private static final ForgeConfigSpec.ConfigValue<List<? extends String>> SOUL_CATCHER_ENTITY_BLACKLIST = BUILDER
-            .comment("Entity ids that should not be catchable with the Soul Catcher")
-            .defineListAllowEmpty("soul_catcher_entity_blacklist", List.of("minecraft:iron_golem", "minecraft:snow_golem"), Config::validateEntityId);
+            .push("soul_catcher")
+            .comment("Entity ids that should not be capturable")
+            .defineListAllowEmpty(
+                    "entity_blacklist",
+                    List.of(
+                            "minecraft:iron_golem",
+                            "minecraft:snow_golem",
+                            "minecraft:warden"
+                    ),
+                    Config::validateEntityId
+            );
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
