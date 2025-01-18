@@ -89,14 +89,15 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
     @Override
     protected void write(CompoundTag compound, boolean clientPacket) {
-        super.write(compound, clientPacket);
         compound.put("EntityStorage", storedEntityData.serializeNBT());
+        super.write(compound, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag compound, boolean clientPacket) {
-        super.read(compound, clientPacket);
         storedEntityData.deserializeNBT(compound.getCompound("EntityStorage"));
+        onStoredEntityDataChanged();
+        super.read(compound, clientPacket);
     }
 
     Optional<SpawningRecipe> getCurrentRecipe() {
