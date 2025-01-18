@@ -91,7 +91,6 @@ public class SoulCatcherItem extends Item implements IForgeItem {
     }
 
     private static final float CATCHING_LINE_DRAW_DELAY = 0.2f;
-    private static final float MAX_DISTANCE = 10.f;
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -355,7 +354,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return false;
         }
 
-        if (entity.distanceTo(player) > MAX_DISTANCE) {
+        if (entity.distanceTo(player) > Config.soulCatcherMaxDistance) {
             displayCallback.accept(Component.translatable(capturableStatusKeyPrefix + "too_far").withStyle(ChatFormatting.RED));
             return false;
         }

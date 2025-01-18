@@ -29,6 +29,10 @@ public class Config {
                     Config::validateEntityId
             );
 
+    private static final ForgeConfigSpec.ConfigValue<Float> SOUL_CATCHER_MAX_DISTANCE = BUILDER
+            .comment("Maximum distance at which entities can be captured")
+            .define("max_distance", 10.f);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static Set<EntityType<?>> soulCatcherEntityBlacklist;
@@ -37,10 +41,13 @@ public class Config {
         return obj instanceof final String entityId && ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityId));
     }
 
+    public static float soulCatcherMaxDistance;
+
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event) {
         soulCatcherEntityBlacklist = SOUL_CATCHER_ENTITY_BLACKLIST.get().stream()
                 .map(entityId -> ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(entityId)))
                 .collect(Collectors.toSet());
+        soulCatcherMaxDistance = SOUL_CATCHER_MAX_DISTANCE.get();
     }
 }
