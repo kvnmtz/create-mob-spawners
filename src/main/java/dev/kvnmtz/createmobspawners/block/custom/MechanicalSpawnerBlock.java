@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.blocks;
+package dev.kvnmtz.createmobspawners.block.custom;
 
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -8,10 +8,10 @@ import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import dev.kvnmtz.createmobspawners.Config;
-import dev.kvnmtz.createmobspawners.blocks.entity.registry.ModBlockEntities;
-import dev.kvnmtz.createmobspawners.blocks.entity.MechanicalSpawnerBlockEntity;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
-import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
+import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
+import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

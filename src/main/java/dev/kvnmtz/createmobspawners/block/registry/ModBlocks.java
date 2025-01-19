@@ -1,8 +1,8 @@
-package dev.kvnmtz.createmobspawners.blocks.registry;
+package dev.kvnmtz.createmobspawners.block.registry;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
+import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;

@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.items;
+package dev.kvnmtz.createmobspawners.item.custom;
 
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import dev.kvnmtz.createmobspawners.Config;
@@ -6,8 +6,8 @@ import dev.kvnmtz.createmobspawners.capabilities.entitystorage.EntityStorageItem
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
-import dev.kvnmtz.createmobspawners.items.renderer.SoulCatcherRenderer;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.renderer.SoulCatcherRenderer;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundEntityReleasePacket;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundEntityCatchPacket;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;

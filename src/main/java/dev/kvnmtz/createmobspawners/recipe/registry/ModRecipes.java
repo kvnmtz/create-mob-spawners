@@ -1,6 +1,7 @@
-package dev.kvnmtz.createmobspawners.recipe;
+package dev.kvnmtz.createmobspawners.recipe.registry;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
+import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;

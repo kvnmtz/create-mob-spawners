@@ -1,9 +1,9 @@
 package dev.kvnmtz.createmobspawners.compat.jei;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.blocks.registry.ModBlocks;
-import dev.kvnmtz.createmobspawners.compat.jei.spawning.SpawningCategory;
-import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;
+import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
+import dev.kvnmtz.createmobspawners.compat.jei.category.SpawningCategory;
+import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;

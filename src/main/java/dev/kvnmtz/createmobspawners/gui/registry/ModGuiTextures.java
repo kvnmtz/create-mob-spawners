@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.gui;
+package dev.kvnmtz.createmobspawners.gui.registry;
 
 import com.simibubi.create.foundation.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiGraphics;

@@ -1,6 +1,6 @@
 package dev.kvnmtz.createmobspawners.network.packet;
 
-import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
+import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;

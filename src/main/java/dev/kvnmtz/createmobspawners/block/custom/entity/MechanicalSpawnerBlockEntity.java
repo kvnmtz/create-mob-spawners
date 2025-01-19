@@ -1,19 +1,19 @@
-package dev.kvnmtz.createmobspawners.blocks.entity;
+package dev.kvnmtz.createmobspawners.block.custom.entity;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import dev.kvnmtz.createmobspawners.Config;
-import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
-import dev.kvnmtz.createmobspawners.blocks.entity.registry.ModBlockEntities;
+import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
+import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundSpawnerEventPacket;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
-import dev.kvnmtz.createmobspawners.recipe.ModRecipes;
-import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;
+import dev.kvnmtz.createmobspawners.recipe.registry.ModRecipes;
+import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import dev.kvnmtz.createmobspawners.utils.DropUtils;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
 import net.minecraft.core.BlockPos;

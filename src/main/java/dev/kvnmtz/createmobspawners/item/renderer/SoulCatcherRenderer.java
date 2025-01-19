@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.items.renderer;
+package dev.kvnmtz.createmobspawners.item.renderer;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -9,7 +9,7 @@ import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRendere
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;

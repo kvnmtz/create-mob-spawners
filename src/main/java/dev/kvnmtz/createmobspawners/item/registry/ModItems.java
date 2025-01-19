@@ -1,7 +1,7 @@
-package dev.kvnmtz.createmobspawners.items.registry;
+package dev.kvnmtz.createmobspawners.item.registry;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
+import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

@@ -1,8 +1,8 @@
-package dev.kvnmtz.createmobspawners.blocks.entity.registry;
+package dev.kvnmtz.createmobspawners.block.custom.entity.registry;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.blocks.entity.MechanicalSpawnerBlockEntity;
-import dev.kvnmtz.createmobspawners.blocks.registry.ModBlocks;
+import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
+import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

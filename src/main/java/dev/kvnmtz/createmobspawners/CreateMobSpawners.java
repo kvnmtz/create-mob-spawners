@@ -8,17 +8,17 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import dev.kvnmtz.createmobspawners.blocks.registry.ModBlocks;
-import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
-import dev.kvnmtz.createmobspawners.blocks.entity.renderer.MechanicalSpawnerBlockEntityRenderer;
-import dev.kvnmtz.createmobspawners.blocks.entity.registry.ModBlockEntities;
-import dev.kvnmtz.createmobspawners.items.ModCreativeModeTabs;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
-import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
+import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
+import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
+import dev.kvnmtz.createmobspawners.block.custom.entity.renderer.MechanicalSpawnerBlockEntityRenderer;
+import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
+import dev.kvnmtz.createmobspawners.item.registry.ModCreativeModeTabs;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
-import dev.kvnmtz.createmobspawners.ponder.PonderIndex;
+import dev.kvnmtz.createmobspawners.ponder.registry.AddonPonders;
 import dev.kvnmtz.createmobspawners.ponder.scenes.SoulCatcherScenes;
-import dev.kvnmtz.createmobspawners.recipe.ModRecipes;
+import dev.kvnmtz.createmobspawners.recipe.registry.ModRecipes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -90,7 +90,7 @@ public class CreateMobSpawners
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             BlockEntityRenderers.register(ModBlockEntities.SPAWNER_BE.get(), MechanicalSpawnerBlockEntityRenderer::new);
-            PonderIndex.register();
+            AddonPonders.register();
 
             Function<Item, TooltipModifier> tooltipModifierFactory = item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.PURPLE)
                     .andThen(TooltipModifier.mapNull(KineticStats.create(item)));
