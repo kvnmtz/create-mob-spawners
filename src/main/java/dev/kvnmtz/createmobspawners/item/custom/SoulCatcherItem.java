@@ -185,12 +185,12 @@ public class SoulCatcherItem extends Item implements IForgeItem {
     // instead of overriding interactLivingEntity, this event is necessary to block interactions with entities like villagers, wolves, donkeys...
     @SubscribeEvent(priority = EventPriority.LOWEST)
     protected static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
-        if (!(event.getLevel() instanceof ServerLevel)) return;
+        if (event.getLevel().isClientSide) return;
 
         var itemStack = event.getItemStack();
         if (itemStack.getItem() != ModItems.EMPTY_SOUL_CATCHER.get()) return;
 
-        event.setCancellationResult(InteractionResult.PASS);
+        event.setCancellationResult(InteractionResult.FAIL);
         event.setCanceled(true);
 
         var player = event.getEntity();
@@ -199,8 +199,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         if (!(targetEntity instanceof LivingEntity target)) return;
 
         if (!isItemAbleToCatch(itemStack)) return;
-        if (!isEntityCatchable(player, target, component -> player.displayClientMessage(component, true)))
-            return;
+        if (!isEntityCatchable(player, target, component -> player.displayClientMessage(component, true))) return;
 
         if (shrinkingEntities.containsKey(target)) return;
         for (var shrinkingEntityData : shrinkingEntities.values()) {
@@ -209,6 +208,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             }
         }
 
+        event.setCancellationResult(InteractionResult.SUCCESS);
         startCatchingEntity(target, player, itemStack);
     }
 
