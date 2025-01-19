@@ -53,11 +53,11 @@ public class ClientboundEntityCatchPacket {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientboundEntityCatchPacketHandler.handle(this)));
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHandler.handle(this)));
         ctx.get().setPacketHandled(true);
     }
 
-    private static class ClientboundEntityCatchPacketHandler {
+    private static class ClientHandler {
         public static void handle(ClientboundEntityCatchPacket packet) {
             var level = Minecraft.getInstance().level;
             if (level == null) return;
