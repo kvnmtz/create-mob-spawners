@@ -279,7 +279,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return InteractionResult.FAIL;
         }
 
-        var optEntity = releaseEntity(pContext.getLevel(), pContext.getItemInHand(), pContext.getClickedFace(), pContext.getClickedPos(), emptyCatcher -> player.setItemInHand(pContext.getHand(), emptyCatcher));
+        var optEntity = releaseEntity(pContext.getLevel(), pContext.getItemInHand(), pContext.getClickedFace(), pContext.getClickedPos(), emptyCatcher -> player.setItemInHand(pContext.getHand(), emptyCatcher), component -> player.displayClientMessage(component, true));
         optEntity.ifPresent(entity -> PacketHandler.sendToNearbyPlayers(new ClientboundEntityReleasePacket(entity.getId(), player.getId()), entity.position(), 16, entity.level().dimension()));
 
         return InteractionResult.SUCCESS;
@@ -325,7 +325,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isItemAbleToCatch(ItemStack soulCatcher) {
         var entityData = getEntityData(soulCatcher);
-        return entityData.isEmpty() || entityData.get().getEntityType().isEmpty();
+        return entityData.isEmpty() || entityData.get().getEntityTypeResourceLocation().isEmpty();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -381,7 +381,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         return catcher;
     }
 
-    private static Optional<Entity> releaseEntity(Level level, ItemStack catcher, Direction face, BlockPos pos, Consumer<ItemStack> emptyCatcherSetter) {
+    private static Optional<Entity> releaseEntity(Level level, ItemStack catcher, Direction face, BlockPos pos, Consumer<ItemStack> emptyCatcherSetter, Consumer<Component> displayCallback) {
         var spawnedEntity = new AtomicReference<Optional<Entity>>(Optional.empty());
 
         catcher.getCapability(ModCapabilities.ENTITY_STORAGE).ifPresent(entityStorage -> {
@@ -394,16 +394,23 @@ public class SoulCatcherItem extends Item implements IForgeItem {
 
                 var rotation = Mth.wrapDegrees(level.getRandom().nextFloat() * 360.0f);
 
-                var optEntity = EntityType.create(entityData.getEntityTag(), level);
+                var optEntityType = entityData.getEntityType();
+                if (optEntityType.isEmpty()) return;
 
+                var entityType = optEntityType.get();
+                if (!level.noCollision(entityType.getAABB(spawnX, spawnY, spawnZ))) {
+                    displayCallback.accept(Component.translatable("item.create_mob_spawners.soul_catcher.no_space").withStyle(ChatFormatting.RED));
+                    return;
+                }
+
+                var optEntity = EntityType.create(entityData.getEntityTag(), level);
                 optEntity.ifPresent(ent -> {
                     ent.setPos(spawnX, spawnY, spawnZ);
                     ent.setYRot(rotation);
                     level.addFreshEntity(ent);
+                    emptyCatcherSetter.accept(ModItems.EMPTY_SOUL_CATCHER.get().getDefaultInstance());
+                    spawnedEntity.set(optEntity);
                 });
-                emptyCatcherSetter.accept(ModItems.EMPTY_SOUL_CATCHER.get().getDefaultInstance());
-
-                spawnedEntity.set(optEntity);
             }
         });
 

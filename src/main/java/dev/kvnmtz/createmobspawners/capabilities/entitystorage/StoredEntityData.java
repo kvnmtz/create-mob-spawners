@@ -49,7 +49,7 @@ public class StoredEntityData implements INBTSerializable<Tag> {
         return maxHealth == 0.0f;
     }
 
-    public Optional<ResourceLocation> getEntityType() {
+    public Optional<ResourceLocation> getEntityTypeResourceLocation() {
         var tag = entityTag;
         if (tag.contains(KEY_ID)) {
             return Optional.of(new ResourceLocation(tag.getString(KEY_ID)));
@@ -58,8 +58,20 @@ public class StoredEntityData implements INBTSerializable<Tag> {
         return Optional.empty();
     }
 
+    public Optional<EntityType<?>> getEntityType() {
+        var optEntityTypeResourceLocation = getEntityTypeResourceLocation();
+        if (optEntityTypeResourceLocation.isEmpty()) return Optional.empty();
+
+        var entityTypeResourceLocation = optEntityTypeResourceLocation.get();
+
+        var tag = new CompoundTag();
+        tag.putString("id", entityTypeResourceLocation.toString());
+
+        return EntityType.by(tag);
+    }
+
     public Optional<String> getEntityDisplayName() {
-        var optEntityTypeResourceLocation = getEntityType();
+        var optEntityTypeResourceLocation = getEntityTypeResourceLocation();
         if (optEntityTypeResourceLocation.isPresent()) {
             var optEntityType = EntityType.byString(optEntityTypeResourceLocation.get().toString());
             if (optEntityType.isPresent()) {

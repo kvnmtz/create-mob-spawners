@@ -65,7 +65,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     private float calculateStressImpactForContainedSoulCatcher() {
         if (level == null) return 0.f;
 
-        var optEntityType = getEntityTypeFromStoredEntityData();
+        var optEntityType = storedEntityData.getEntityType();
         if (optEntityType.isEmpty()) return 0.f;
 
         var entityType = (EntityType<? extends LivingEntity>) optEntityType.get();
@@ -200,18 +200,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         fluid.setAmount(fluid.getAmount() - recipe.getFluidIngredient().getRequiredAmount());
     }
 
-    private Optional<EntityType<?>> getEntityTypeFromStoredEntityData() {
-        var optEntityTypeResourceLocation = storedEntityData.getEntityType();
-        if (optEntityTypeResourceLocation.isEmpty()) return Optional.empty();
-
-        var entityTypeResourceLocation = optEntityTypeResourceLocation.get();
-
-        var tag = new CompoundTag();
-        tag.putString("id", entityTypeResourceLocation.toString());
-
-        return EntityType.by(tag);
-    }
-
     private abstract static class EntitySpawnResult {
         private static class Success extends EntitySpawnResult {
             private final Entity entity;
@@ -260,7 +248,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (this.level == null) return new EntitySpawnResult.Delay(DelayReason.UNKNOWN);
         var level = (ServerLevel) this.level;
 
-        var optEntityType = getEntityTypeFromStoredEntityData();
+        var optEntityType = storedEntityData.getEntityType();
         if (optEntityType.isEmpty()) return new EntitySpawnResult.Delay(DelayReason.INVALID_ENTITY);
 
         var entityType = optEntityType.get();
