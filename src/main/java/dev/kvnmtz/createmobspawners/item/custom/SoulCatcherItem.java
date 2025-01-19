@@ -269,17 +269,19 @@ public class SoulCatcherItem extends Item implements IForgeItem {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
-        if (pContext.getLevel().isClientSide) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
+        if (context.getLevel().isClientSide) {
             return InteractionResult.FAIL;
         }
 
-        var player = pContext.getPlayer();
+        if (context.getItemInHand().getItem() != ModItems.SOUL_CATCHER.get()) return InteractionResult.FAIL;
+
+        var player = context.getPlayer();
         if (player == null) {
             return InteractionResult.FAIL;
         }
 
-        var optEntity = releaseEntity(pContext.getLevel(), pContext.getItemInHand(), pContext.getClickedFace(), pContext.getClickedPos(), emptyCatcher -> player.setItemInHand(pContext.getHand(), emptyCatcher), component -> player.displayClientMessage(component, true));
+        var optEntity = releaseEntity(context.getLevel(), context.getItemInHand(), context.getClickedFace(), context.getClickedPos(), emptyCatcher -> player.setItemInHand(context.getHand(), emptyCatcher), component -> player.displayClientMessage(component, true));
         optEntity.ifPresent(entity -> PacketHandler.sendToNearbyPlayers(new ClientboundEntityReleasePacket(entity.getId(), player.getId()), entity.position(), 16, entity.level().dimension()));
 
         return InteractionResult.SUCCESS;
