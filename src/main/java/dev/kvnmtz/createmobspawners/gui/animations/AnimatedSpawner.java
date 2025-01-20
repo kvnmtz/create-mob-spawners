@@ -39,7 +39,7 @@ public class AnimatedSpawner extends AnimatedKinetics {
                 .scale(scale)
                 .render(graphics);
 
-        blockElement(ModBlocks.SPAWNER.get().defaultBlockState()
+        blockElement(ModBlocks.MECHANICAL_SPAWNER.get().defaultBlockState()
                 .setValue(MechanicalSpawnerBlock.FACING, Direction.SOUTH))
                 .scale(scale)
                 .render(graphics);

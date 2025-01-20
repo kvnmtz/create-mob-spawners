@@ -38,6 +38,6 @@ public class CreateModSpawnersJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ModBlocks.SPAWNER.get(), SpawningCategory.SPAWNING_RECIPE_TYPE);
+        registration.addRecipeCatalyst(ModBlocks.MECHANICAL_SPAWNER.get(), SpawningCategory.SPAWNING_RECIPE_TYPE);
     }
 }

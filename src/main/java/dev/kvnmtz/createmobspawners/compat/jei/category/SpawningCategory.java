@@ -42,7 +42,7 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
     private final AnimatedSpawner spawner = new AnimatedSpawner();
 
     public SpawningCategory(IGuiHelper helper) {
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SPAWNER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.MECHANICAL_SPAWNER.get()));
     }
 
     @Override

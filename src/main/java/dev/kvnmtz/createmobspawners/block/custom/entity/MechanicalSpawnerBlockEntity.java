@@ -5,7 +5,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import dev.kvnmtz.createmobspawners.Config;
 import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
-import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
@@ -24,6 +23,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements IEntityStorage {
-    public MechanicalSpawnerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.SPAWNER_BE.get(), pPos, pBlockState);
+    public MechanicalSpawnerBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+        super(typeIn, pos, state);
     }
 
     private StoredEntityData storedEntityData = StoredEntityData.empty();

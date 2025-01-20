@@ -1,20 +1,29 @@
 package dev.kvnmtz.createmobspawners.item.registry;
 
-import dev.kvnmtz.createmobspawners.CreateMobSpawners;
+import com.simibubi.create.foundation.data.AssetLookup;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.Rarity;
+
+import java.util.Objects;
+
+import static dev.kvnmtz.createmobspawners.CreateMobSpawners.REGISTRATE;
 
 public class ModItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CreateMobSpawners.MOD_ID);
+    public static final ItemEntry<SoulCatcherItem> EMPTY_SOUL_CATCHER =
+            REGISTRATE.item("empty_soul_catcher", SoulCatcherItem::new)
+                    .properties(p -> p.stacksTo(1).rarity(Rarity.UNCOMMON))
+                    .model(AssetLookup.existingItemModel())
+                    .tab(Objects.requireNonNull(ModCreativeModeTabs.CREATE_MOB_SPAWNERS_TAB.getKey()))
+                    .register();
 
-    public static final RegistryObject<Item> EMPTY_SOUL_CATCHER = ITEMS.register("empty_soul_catcher", SoulCatcherItem::new);
-    public static final RegistryObject<Item> SOUL_CATCHER = ITEMS.register("soul_catcher", SoulCatcherItem::new);
+    public static final ItemEntry<SoulCatcherItem> SOUL_CATCHER =
+            REGISTRATE.item("soul_catcher", SoulCatcherItem::new)
+                    .properties(p -> p.stacksTo(1).rarity(Rarity.UNCOMMON))
+                    .model(AssetLookup.existingItemModel())
+                    .register();
 
-    public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
+    public static void register() {
+        // init class
     }
 }

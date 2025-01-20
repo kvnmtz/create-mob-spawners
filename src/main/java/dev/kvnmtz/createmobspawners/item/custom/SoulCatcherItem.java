@@ -2,6 +2,7 @@ package dev.kvnmtz.createmobspawners.item.custom;
 
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import dev.kvnmtz.createmobspawners.Config;
+import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.EntityStorageItemStackCapabilityProvider;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
@@ -17,7 +18,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -47,6 +47,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,9 +56,10 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+@Mod.EventBusSubscriber(modid = CreateMobSpawners.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SoulCatcherItem extends Item implements IForgeItem {
-    public SoulCatcherItem() {
-        super(new Item.Properties().stacksTo(1));
+    public SoulCatcherItem(Properties properties) {
+        super(properties);
     }
 
     private static class ShrinkingEntityData {

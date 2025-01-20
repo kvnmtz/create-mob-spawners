@@ -18,7 +18,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.create_mob_spawners_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.EMPTY_SOUL_CATCHER.get());
-                        output.accept(ModBlocks.SPAWNER.get());
+                        output.accept(ModBlocks.MECHANICAL_SPAWNER.get());
                     }).build()
             );
 
