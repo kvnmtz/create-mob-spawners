@@ -68,8 +68,8 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         var optEntityType = storedEntityData.getEntityType();
         if (optEntityType.isEmpty()) return 0.f;
 
-        var entityType = (EntityType<? extends LivingEntity>) optEntityType.get();
-        var entity = entityType.create(level);
+        var entityType = optEntityType.get();
+        var entity = (LivingEntity) entityType.create(level);
         if (entity == null) return 0.f;
 
         var health = entity.getMaxHealth();
