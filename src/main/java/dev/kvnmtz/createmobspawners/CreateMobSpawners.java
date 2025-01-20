@@ -3,7 +3,6 @@ package dev.kvnmtz.createmobspawners;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.MysteriousItemConversionCategory;
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipHelper;
@@ -25,7 +24,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
@@ -52,7 +50,7 @@ public class CreateMobSpawners {
         ModCreativeModeTabs.register(modEventBus);
         ModRecipes.register(modEventBus);
 
-        modEventBus.addListener(this::commonSetup);
+        PacketHandler.register();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
@@ -61,25 +59,17 @@ public class CreateMobSpawners {
         return new ResourceLocation(MOD_ID, path);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            PacketHandler.register();
-
-            BlockStressDefaults.DEFAULT_IMPACTS.put(asResource("mechanical_spawner"), 8.0);
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            AddonPonders.register();
 
             try {
                 Class.forName("mezz.jei.api.JeiPlugin");
                 MysteriousItemConversionCategory.RECIPES.add(ConversionRecipe.create(ModItems.EMPTY_SOUL_CATCHER.get().getDefaultInstance(), ModItems.SOUL_CATCHER.get().getDefaultInstance()));
             } catch (ClassNotFoundException ignored) {
             }
-        });
-    }
-
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            AddonPonders.register();
         }
     }
 }
