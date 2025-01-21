@@ -1,9 +1,5 @@
 <p align="center">
-  <img src="docs/title_image.png" alt="Title"/>
-</p>
-<div style="height: 32px"></div>
-<p align="center">
-  <img src="docs/addon_icon.png" alt="Icon"/>
+  <img src="docs/title_image.webp" alt="Title"/>
 </p>
 
 # ⚙️ Create: Mob Spawners
@@ -12,7 +8,7 @@ An addon for the [Create](https://github.com/Creators-of-Create/Create) mod for 
 ## 🆕 What does it add?
 ### Soul Catcher
 
-![Soul Catcher](docs/soul_catcher.png)
+![Soul Catcher](docs/soul_catcher.webp)
 
 The Soul Catcher is a new item that can capture a mob's soul.
 For this to work, the mob needs to have an active weakness effect which could be applied using a throwable potion of weakness.
@@ -24,7 +20,7 @@ While a mob is being captured, its AI will be disabled, so it will not be able t
 
 It can be crafted using this recipe:
 
-![Soul Catcher Recipe](docs/recipe_soul_catcher.png)
+![Soul Catcher Recipe](docs/recipe_soul_catcher.webp)
 
 This is how it looks ingame:
 
@@ -36,7 +32,7 @@ Ponder scene:
 
 ### Mechanical Spawner
 
-![Mechanical Spawner](docs/mechanical_spawner.png)
+![Mechanical Spawner](docs/mechanical_spawner.webp)
 
 The Mechanical Spawner is a new kinetic block that can spawn mobs according to the Soul Catcher placed inside.
 For this to work, it needs rotational force and a supply of liquid. Refer to recipes in JEI for more information about this.
@@ -45,9 +41,21 @@ The spawner will repeatedly spawn the contained mob type in the same range a van
 
 It needs a minimum rotation speed of 128 RPM and its stress impact depends on the contained mob types max health, so something like an enderman will require a lot more SU than a chicken.
 
+The Mechanical Spawner can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
+
+![Mechanical Spawner Recipe](docs/recipe_mechanical_spawner.webp)
+
+This is how it looks ingame:
+
+![Mechanical Spawner Screencast](docs/mechanical_spawner_anim.webp)
+
+Ponder scene:
+
+![Mechanical Spawner Ponder](docs/mechanical_spawner_ponder.webp)
+
 The exact stress impact is calculated using this graph (the cap at 80 SU / RPM is configurable):
 
-<img alt="Stress Impact Graph" src="docs/stress_impact_graph.png" width="400">
+<img alt="Stress Impact Graph" src="docs/stress_impact_graph.webp" width="400">
 
 Some examples:
 
@@ -60,18 +68,6 @@ Some examples:
 | Ravager  | 10,240       | 20,480       |
 
 Note that the Ravagers stress impact is capped in this example, as the default configuration will cap everything at 80 SU / RPM.
-
-The Mechanical Spawner can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
-
-![Mechanical Spawner Recipe](docs/recipe_mechanical_spawner.png)
-
-This is how it looks ingame:
-
-![Mechanical Spawner Screencast](docs/mechanical_spawner_anim.webp)
-
-Ponder scene:
-
-![Mechanical Spawner Ponder](docs/mechanical_spawner_ponder.webp)
 
 ## 🤝 Integrations / Compatibilities
 
@@ -93,7 +89,7 @@ Displays:
 - Progression status
 - Reason for stalling (if applicable)
 
-<img alt="Jade" src="docs/jade.png" width="600">
+<img alt="Jade" src="docs/jade.webp" width="600">
 
 ### Recipes
 
@@ -117,5 +113,5 @@ This is the recipe for spawning with standard Potion of Regeneration liquid:
 }
 ```
 
-- `input.nbt.Bottle` refers to the potion bottle type and can be either `REGULAR`, `SPLASH` or `LINGERING`.
+- `input.nbt.Bottle` refers to the potion bottle type and can be either `REGULAR`, `SPLASH` or `LINGERING`
 - everything else should be self-explanatory
