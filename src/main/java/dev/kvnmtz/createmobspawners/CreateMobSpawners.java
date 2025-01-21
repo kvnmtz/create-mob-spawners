@@ -4,14 +4,11 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.MysteriousItemConversionCategory;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.item.registry.ModCreativeModeTabs;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
-import dev.kvnmtz.createmobspawners.item.tooltip.CustomKineticStats;
+import dev.kvnmtz.createmobspawners.item.tooltip.AddonTooltipModifierFactory;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
 import dev.kvnmtz.createmobspawners.ponder.registry.AddonPonders;
 import dev.kvnmtz.createmobspawners.recipe.registry.ModRecipes;
@@ -32,11 +29,12 @@ public class CreateMobSpawners {
     public static final String MOD_ID = "create_mob_spawners";
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    @SuppressWarnings("DataFlowIssue")
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
 
     static {
-        REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.PURPLE).andThen(TooltipModifier.mapNull(CustomKineticStats.create(item))));
+        REGISTRATE.setTooltipModifierFactory(AddonTooltipModifierFactory::factory);
     }
 
     public CreateMobSpawners() {
