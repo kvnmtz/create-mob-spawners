@@ -1,5 +1,11 @@
 <p align="center">
   <img src="docs/title_image.webp" alt="Title"/>
+  <br><br>
+  <img src="https://cf.way2muchnoise.eu/versions/1175578(c70039).svg" alt="CurseForge"/>
+  <br><br>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/create-mob-spawners"><img src="https://cf.way2muchnoise.eu/1175578.svg" alt="CurseForge"/></a>
+  &nbsp
+  <a href="https://modrinth.com/mod/create-mob-spawners"><img src="https://img.shields.io/modrinth/dt/create-mob-spawners?logo=modrinth&label=&suffix=%20&style=flat&color=242629&labelColor=5ca424&logoColor=1c1c1c" alt="Modrinth"/></a>
 </p>
 
 # ⚙️ Create: Mob Spawners
