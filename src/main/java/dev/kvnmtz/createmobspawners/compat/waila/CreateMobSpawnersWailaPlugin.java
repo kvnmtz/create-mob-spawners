@@ -1,7 +1,7 @@
 package dev.kvnmtz.createmobspawners.compat.waila;
 
-import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
-import dev.kvnmtz.createmobspawners.blocks.entity.MechanicalSpawnerBlockEntity;
+import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
+import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;

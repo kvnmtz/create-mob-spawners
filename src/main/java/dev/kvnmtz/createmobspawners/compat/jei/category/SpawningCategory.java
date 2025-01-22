@@ -1,14 +1,14 @@
-package dev.kvnmtz.createmobspawners.compat.jei.spawning;
+package dev.kvnmtz.createmobspawners.compat.jei.category;
 
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.blocks.entity.MechanicalSpawnerBlockEntity;
-import dev.kvnmtz.createmobspawners.blocks.registry.ModBlocks;
+import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
+import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import dev.kvnmtz.createmobspawners.gui.animations.AnimatedSpawner;
-import dev.kvnmtz.createmobspawners.gui.ModGuiTextures;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
-import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;
+import dev.kvnmtz.createmobspawners.gui.registry.ModGuiTextures;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
+import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import dev.kvnmtz.createmobspawners.utils.DrawStringUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
@@ -42,7 +42,7 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
     private final AnimatedSpawner spawner = new AnimatedSpawner();
 
     public SpawningCategory(IGuiHelper helper) {
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SPAWNER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.MECHANICAL_SPAWNER.get()));
     }
 
     @Override

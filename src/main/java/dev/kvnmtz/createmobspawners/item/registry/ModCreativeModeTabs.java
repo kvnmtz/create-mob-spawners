@@ -1,8 +1,7 @@
-package dev.kvnmtz.createmobspawners.items;
+package dev.kvnmtz.createmobspawners.item.registry;
 
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.blocks.registry.ModBlocks;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
+import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -19,7 +18,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.create_mob_spawners_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.EMPTY_SOUL_CATCHER.get());
-                        output.accept(ModBlocks.SPAWNER.get());
+                        output.accept(ModBlocks.MECHANICAL_SPAWNER.get());
                     }).build()
             );
 

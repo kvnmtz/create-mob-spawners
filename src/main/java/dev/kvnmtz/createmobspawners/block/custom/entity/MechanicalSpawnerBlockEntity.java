@@ -1,19 +1,18 @@
-package dev.kvnmtz.createmobspawners.blocks.entity;
+package dev.kvnmtz.createmobspawners.block.custom.entity;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
 import dev.kvnmtz.createmobspawners.Config;
-import dev.kvnmtz.createmobspawners.blocks.MechanicalSpawnerBlock;
-import dev.kvnmtz.createmobspawners.blocks.entity.registry.ModBlockEntities;
+import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundSpawnerEventPacket;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
-import dev.kvnmtz.createmobspawners.recipe.ModRecipes;
-import dev.kvnmtz.createmobspawners.recipe.SpawningRecipe;
+import dev.kvnmtz.createmobspawners.recipe.registry.ModRecipes;
+import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import dev.kvnmtz.createmobspawners.utils.DropUtils;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
 import net.minecraft.core.BlockPos;
@@ -24,6 +23,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements IEntityStorage {
-    public MechanicalSpawnerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.SPAWNER_BE.get(), pPos, pBlockState);
+    public MechanicalSpawnerBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+        super(typeIn, pos, state);
     }
 
     private StoredEntityData storedEntityData = StoredEntityData.empty();
@@ -65,11 +65,11 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     private float calculateStressImpactForContainedSoulCatcher() {
         if (level == null) return 0.f;
 
-        var optEntityType = getEntityTypeFromStoredEntityData();
+        var optEntityType = storedEntityData.getEntityType();
         if (optEntityType.isEmpty()) return 0.f;
 
-        var entityType = (EntityType<? extends LivingEntity>) optEntityType.get();
-        var entity = entityType.create(level);
+        var entityType = optEntityType.get();
+        var entity = (LivingEntity) entityType.create(level);
         if (entity == null) return 0.f;
 
         var health = entity.getMaxHealth();
@@ -200,18 +200,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         fluid.setAmount(fluid.getAmount() - recipe.getFluidIngredient().getRequiredAmount());
     }
 
-    private Optional<EntityType<?>> getEntityTypeFromStoredEntityData() {
-        var optEntityTypeResourceLocation = storedEntityData.getEntityType();
-        if (optEntityTypeResourceLocation.isEmpty()) return Optional.empty();
-
-        var entityTypeResourceLocation = optEntityTypeResourceLocation.get();
-
-        var tag = new CompoundTag();
-        tag.putString("id", entityTypeResourceLocation.toString());
-
-        return EntityType.by(tag);
-    }
-
     private abstract static class EntitySpawnResult {
         private static class Success extends EntitySpawnResult {
             private final Entity entity;
@@ -260,7 +248,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (this.level == null) return new EntitySpawnResult.Delay(DelayReason.UNKNOWN);
         var level = (ServerLevel) this.level;
 
-        var optEntityType = getEntityTypeFromStoredEntityData();
+        var optEntityType = storedEntityData.getEntityType();
         if (optEntityType.isEmpty()) return new EntitySpawnResult.Delay(DelayReason.INVALID_ENTITY);
 
         var entityType = optEntityType.get();

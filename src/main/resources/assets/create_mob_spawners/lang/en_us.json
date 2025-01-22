@@ -13,6 +13,8 @@
   "item.create_mob_spawners.soul_catcher": "Soul Catcher",
   "item.create_mob_spawners.soul_catcher.tooltip.summary": "Contains a mob's soul. It can either be _released_ by right-clicking the desired position or placed inside a _Mechanical Spawner_.",
 
+  "item.create_mob_spawners.soul_catcher.no_space": "There is not enough room to release this entity here",
+
   "create_mob_spawners.ponder.soul_catcher.header": "Soul Catcher",
   "create_mob_spawners.ponder.soul_catcher.text_1": "See this innocent pig? Let's catch it.",
   "create_mob_spawners.ponder.soul_catcher.text_2": "In order to catch a mob's soul, it needs to be weakened (e.g. with a Splash Potion of Weakness)",

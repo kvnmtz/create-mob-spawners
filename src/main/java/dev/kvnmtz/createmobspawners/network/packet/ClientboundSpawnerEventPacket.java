@@ -39,11 +39,11 @@ public class ClientboundSpawnerEventPacket {
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientboundSpawnerEventPacketHandler.handle(this)));
+        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHandler.handle(this)));
         ctx.get().setPacketHandled(true);
     }
 
-    private static class ClientboundSpawnerEventPacketHandler {
+    private static class ClientHandler {
         public static void handle(ClientboundSpawnerEventPacket packet) {
             var level = Minecraft.getInstance().level;
             if (level == null) return;

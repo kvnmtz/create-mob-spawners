@@ -13,6 +13,8 @@
   "item.create_mob_spawners.soul_catcher": "Seelenfänger",
   "item.create_mob_spawners.soul_catcher.tooltip.summary": "Enthält die Seele einer Kreatur. Sie kann entweder durch einen Rechtsklick auf die gewünschte Position _freigelassen_ oder in einem _Mechanischen Spawner_ platziert werden.",
 
+  "item.create_mob_spawners.soul_catcher.no_space": "Nicht genug Platz, um die Kreatur freizulassen",
+
   "create_mob_spawners.ponder.soul_catcher.header": "Seelenfänger",
   "create_mob_spawners.ponder.soul_catcher.text_1": "Siehst du dieses unschuldige Schwein? Wir werden es einfangen.",
   "create_mob_spawners.ponder.soul_catcher.text_2": "Um die Seele einer Kreatur einzufangen, muss sie vorerst geschwächt werden (z.B. durch einen Wurftrank der Schwäche)",

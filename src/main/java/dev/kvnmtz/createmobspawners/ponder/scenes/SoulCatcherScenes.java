@@ -7,8 +7,8 @@ import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.ui.PonderUI;
 import com.simibubi.create.foundation.utility.Pointing;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
-import dev.kvnmtz.createmobspawners.items.SoulCatcherItem;
-import dev.kvnmtz.createmobspawners.items.registry.ModItems;
+import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
+import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -23,19 +23,19 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.joml.Quaternionf;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+@Mod.EventBusSubscriber(modid = CreateMobSpawners.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public abstract class SoulCatcherScenes {
     private static final Quaternionf alignedCameraOrientation = new Quaternionf().rotateYXZ((float) Math.toRadians(35.0), (float) Math.toRadians(25.0), 0.f);
     private static Quaternionf originalCameraOrientation;
 
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     protected static void preRenderScreen(ScreenEvent.Render.Pre event) {
         if (!(event.getScreen() instanceof PonderUI ponderUi)) return;
@@ -48,7 +48,6 @@ public abstract class SoulCatcherScenes {
         entityRendererDispatcher.overrideCameraOrientation(alignedCameraOrientation);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     protected static void postRenderScreen(ScreenEvent.Render.Post event) {
         if (!(event.getScreen() instanceof PonderUI ponderUi)) return;

@@ -1,4 +1,4 @@
-package dev.kvnmtz.createmobspawners.recipe;
+package dev.kvnmtz.createmobspawners.recipe.custom;
 
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
