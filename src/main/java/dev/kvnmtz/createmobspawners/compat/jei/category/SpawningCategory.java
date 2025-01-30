@@ -1,5 +1,6 @@
 package dev.kvnmtz.createmobspawners.compat.jei.category;
 
+import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
@@ -17,6 +18,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -43,6 +45,8 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
 
     public SpawningCategory(IGuiHelper helper) {
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.MECHANICAL_SPAWNER.get()));
+        // only for REI compatibility
+        this.background = new EmptyBackground(getWidth(), getHeight());
     }
 
     @Override
@@ -72,15 +76,24 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
 
     private static final int START_Y = 23;
 
+    // only for REI compatibility
+    private final IDrawable background;
+
+    // only for REI compatibility
+    @Override
+    public @Nullable IDrawable getBackground() {
+        return background;
+    }
+
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SpawningRecipe recipe, IFocusGroup iFocusGroup) {
         builder
-                .addInputSlot(getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2 - 16 - 16, START_Y - 8 - 10)
+                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2 - 16 - 16, START_Y - 8 - 10)
                 .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
                 .addIngredient(VanillaTypes.ITEM_STACK, ModItems.SOUL_CATCHER.get().getDefaultInstance());
 
         builder
-                .addInputSlot(getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2 - 16 - 16, START_Y - 8 + 10)
+                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2 - 16 - 16, START_Y - 8 + 10)
                 .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
                 .addIngredients(
                         ForgeTypes.FLUID_STACK,
