@@ -6,6 +6,7 @@ import dev.kvnmtz.createmobspawners.compat.jei.category.SpawningCategory;
 import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -38,6 +39,6 @@ public class CreateModSpawnersJEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ModBlocks.MECHANICAL_SPAWNER.get(), SpawningCategory.SPAWNING_RECIPE_TYPE);
+        registration.addRecipeCatalyst(VanillaTypes.ITEM_STACK, ModBlocks.MECHANICAL_SPAWNER.asStack(), SpawningCategory.SPAWNING_RECIPE_TYPE);
     }
 }
