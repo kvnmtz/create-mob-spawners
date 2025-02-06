@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -33,8 +34,15 @@ public class CreateMobSpawners {
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
 
+    public static final CreateMobSpawnersServerConfig SERVER_CONFIG;
+    public static final ForgeConfigSpec SERVER_CONFIG_SPEC;
+
     static {
         REGISTRATE.setTooltipModifierFactory(AddonTooltipModifierFactory::factory);
+
+        final var serverPair = new ForgeConfigSpec.Builder().configure(CreateMobSpawnersServerConfig::new);
+        SERVER_CONFIG = serverPair.getLeft();
+        SERVER_CONFIG_SPEC = serverPair.getRight();
     }
 
     public CreateMobSpawners() {
@@ -50,7 +58,7 @@ public class CreateMobSpawners {
 
         PacketHandler.register();
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_CONFIG_SPEC);
     }
 
     public static ResourceLocation asResource(String path) {

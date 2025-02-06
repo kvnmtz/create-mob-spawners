@@ -3,7 +3,7 @@ package dev.kvnmtz.createmobspawners.block.custom.entity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
-import dev.kvnmtz.createmobspawners.Config;
+import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.IEntityStorage;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
@@ -75,7 +75,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         var health = entity.getMaxHealth();
         entity.discard();
         var rawImpact = (float) (0.0009652871 * Math.pow(health, 3) - 0.0548339331 * Math.pow(health, 2) + 1.5872319688 * health + 2.4666366772);
-        return Mth.clamp(rawImpact, 4, Config.mechanicalSpawnerMaxStressImpact);
+        return Mth.clamp(rawImpact, 4, CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerMaxStressImpact.get().floatValue());
     }
 
     private SmartFluidTankBehaviour tank;
@@ -326,7 +326,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             return Optional.of(StallingReason.NO_ROTATIONAL_FORCE);
         }
 
-        if (Mth.abs(speed) < Config.mechanicalSpawnerMinRpm) {
+        if (Mth.abs(speed) < CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerMinRpm.get().floatValue()) {
             return Optional.of(StallingReason.ROTATION_SPEED_TOO_LOW);
         }
 
