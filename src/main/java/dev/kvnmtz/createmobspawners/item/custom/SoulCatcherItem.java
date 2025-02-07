@@ -1,7 +1,6 @@
 package dev.kvnmtz.createmobspawners.item.custom;
 
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
-import dev.kvnmtz.createmobspawners.Config;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.capabilities.entitystorage.EntityStorageItemStackCapabilityProvider;
 import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
@@ -315,7 +314,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return CapturableStatus.INCOMPATIBLE;
         }
 
-        if (Config.soulCatcherEntityBlacklist.contains(type)) {
+        if (CreateMobSpawners.SERVER_CONFIG.soulCatcherEntityBlacklist.get().contains(EntityType.getKey(type).toString())) {
             return CapturableStatus.BLACKLISTED;
         }
 
@@ -358,7 +357,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return false;
         }
 
-        if (entity.distanceTo(player) > Config.soulCatcherMaxDistance) {
+        if (entity.distanceTo(player) > CreateMobSpawners.SERVER_CONFIG.soulCatcherMaxDistance.get()) {
             displayCallback.accept(Component.translatable(capturableStatusKeyPrefix + "too_far").withStyle(ChatFormatting.RED));
             return false;
         }

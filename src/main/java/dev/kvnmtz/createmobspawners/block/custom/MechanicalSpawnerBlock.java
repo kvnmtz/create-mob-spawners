@@ -2,7 +2,7 @@ package dev.kvnmtz.createmobspawners.block.custom;
 
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import dev.kvnmtz.createmobspawners.Config;
+import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
@@ -119,6 +119,6 @@ public class MechanicalSpawnerBlock extends KineticBlock implements IBE<Mechanic
 
     @Override
     public SpeedLevel getMinimumRequiredSpeedLevel() {
-        return SpeedLevel.of(Config.mechanicalSpawnerMinRpm);
+        return SpeedLevel.of(CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerMinRpm.get().floatValue());
     }
 }
