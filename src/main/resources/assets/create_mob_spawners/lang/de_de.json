@@ -3,6 +3,7 @@
   "item.create_mob_spawners.empty_soul_catcher.tooltip.summary": "Nutzt die Kraft kondensierter Seelen, um Kreaturen zu fangen. Rechtsklicke eine Kreatur mit einem _Schwächeeffekt_, um sie _einzufangen_. Sie kann später mit einem Rechtsklick auf die gewünschte Position wieder _freigelassen_ werden.",
 
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.too_far": "Kreatur ist zu weit weg",
+  "item.create_mob_spawners.empty_soul_catcher.capturable_status.too_much_health": "Kreatur hat noch zu viele Gesundheitspunkte",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.dead": "Tote Kreaturen können nicht gefangen werden",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.no_weakness": "Kreatur ist nicht geschwächt. Versuche es mit einem Wurftrank der Schwäche.",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.player": "Spieler können nicht gefangen werden",

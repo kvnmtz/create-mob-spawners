@@ -9,6 +9,7 @@ import java.util.List;
 public class CreateMobSpawnersServerConfig {
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> soulCatcherEntityBlacklist;
     public final ForgeConfigSpec.DoubleValue soulCatcherMaxDistance;
+    public final ForgeConfigSpec.DoubleValue soulCatcherMaxHealthPercentage;
 
     public final ForgeConfigSpec.DoubleValue mechanicalSpawnerMaxStressImpact;
     public final ForgeConfigSpec.DoubleValue mechanicalSpawnerMinRpm;
@@ -18,6 +19,7 @@ public class CreateMobSpawnersServerConfig {
         {
             soulCatcherEntityBlacklist = builder.comment("Entity ids that should not be capturable").defineListAllowEmpty("entity_blacklist", List.of("minecraft:iron_golem", "minecraft:snow_golem", "minecraft:warden"), CreateMobSpawnersServerConfig::validateEntityId);
             soulCatcherMaxDistance = builder.comment("Maximum distance at which entities can be captured").defineInRange("max_distance", 15.0, 5.0, 50.0);
+            soulCatcherMaxHealthPercentage = builder.comment("Entity health needs to be at or below this percentage to be able to be caught", "1.0 = 100% -> Entities can be caught at full health", "0.0 = Entities can only be caught at half a heart").defineInRange("max_health_percentage", 1.0, 0.0, 1.0);
         }
         builder.pop();
 

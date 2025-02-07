@@ -3,6 +3,7 @@
   "item.create_mob_spawners.empty_soul_catcher.tooltip.summary": "Utilizes the power of condensed souls to capture mobs. Right-clicking a mob that has a _weakness_ potion effect will _capture_ its soul and store it inside. It can later be _released_ by right-clicking the desired position.",
 
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.too_far": "Entity is too far away",
+  "item.create_mob_spawners.empty_soul_catcher.capturable_status.too_much_health": "Entity has too much health left, it needs to be weakened more",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.dead": "Dead entities are not catchable",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.no_weakness": "Entity is not weakened. Try applying a potion of weakness on it.",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.player": "Players cannot be captured",

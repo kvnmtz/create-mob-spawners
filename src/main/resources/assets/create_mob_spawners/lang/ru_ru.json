@@ -3,6 +3,7 @@
   "item.create_mob_spawners.empty_soul_catcher.tooltip.summary": "Использует силу сжатых душ для захвата мобов. Щелкните правой кнопкой мыши по мобу с эффектом _слабости_, чтобы _захватить_ его душу и сохранить внутри. Душу можно _выпустить_, щелкнув правой кнопкой мыши по желаемой позиции.",
 
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.too_far": "Сущность слишком далеко",
+  "item.create_mob_spawners.empty_soul_catcher.capturable_status.too_much_health": "У сущности осталось слишком много здоровья, ее нужно ослабить еще больше",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.dead": "Мертвые сущности не подлежат захвату",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.no_weakness": "Сущность не ослаблена. Попробуйте применить к ней зелье слабости.",
   "item.create_mob_spawners.empty_soul_catcher.capturable_status.player": "Игроки не могут быть захвачены",
