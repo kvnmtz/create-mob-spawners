@@ -362,6 +362,24 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return false;
         }
 
+        var maxHealthPercentage = CreateMobSpawners.SERVER_CONFIG.soulCatcherMaxHealthPercentage.get().floatValue();
+        if (maxHealthPercentage != 1.f) {
+            var health = entity.getHealth();
+            if (maxHealthPercentage == 0.f) {
+                var hasHalfHeartLeft = health == 1.f;
+                if (!hasHalfHeartLeft) {
+                    displayCallback.accept(Component.translatable(capturableStatusKeyPrefix + "too_much_health").withStyle(ChatFormatting.RED));
+                    return false;
+                }
+            } else {
+                var percentageLeft = health / entity.getMaxHealth();
+                if (percentageLeft > maxHealthPercentage) {
+                    displayCallback.accept(Component.translatable(capturableStatusKeyPrefix + "too_much_health").withStyle(ChatFormatting.RED));
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
