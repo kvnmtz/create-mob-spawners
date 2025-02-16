@@ -8,7 +8,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public enum ModGuiTextures implements ScreenElement {
     JEI_INFO_FRAME_TILE_1("create", "jei/widgets", 0, 221, 2, 2),
-    JEI_INFO_FRAME_TILE_2("create", "jei/widgets", 1, 221, 2, 2);
+    JEI_INFO_FRAME_TILE_2("create", "jei/widgets", 1, 221, 2, 2),
+    SPAWNER("create_mob_spawners", "spawner", 0, 0, 188, 79);
 
     public final ResourceLocation location;
     public final int width, height;
