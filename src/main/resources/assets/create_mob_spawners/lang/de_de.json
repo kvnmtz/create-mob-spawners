@@ -34,6 +34,11 @@
   "create_mob_spawners.ponder.spawner.text_4": "Mit ein bisschen Zeit entstehen Kreaturen vom gleichen Typ des enthaltenen Seelenfängers um den Spawner herum.",
   "create_mob_spawners.ponder.spawner.text_5": "Der Seelenfänger kann durch einen Rechtsklick beim Schleichen auf den Spawner ausgeworfen werden",
 
+  "create_mob_spawners.gui.spawner.spawning_area": "Spawn-Bereich",
+  "create_mob_spawners.gui.spawner.width": "Breite",
+  "create_mob_spawners.gui.spawner.height": "Höhe",
+  "create_mob_spawners.gui.spawner.height_offset": "Höhenversatz von der Mitte",
+
   "creativetab.create_mob_spawners_tab": "Create: Mob Spawners",
 
   "config.jade.plugin_create_mob_spawners.spawner_progress": "Mechanischer Spawner Fortschritt",

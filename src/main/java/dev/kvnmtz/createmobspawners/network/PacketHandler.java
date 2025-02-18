@@ -4,10 +4,12 @@ import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundEntityCatchPacket;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundEntityReleasePacket;
 import dev.kvnmtz.createmobspawners.network.packet.ClientboundSpawnerEventPacket;
+import dev.kvnmtz.createmobspawners.network.packet.ServerboundConfigureSpawnerPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -41,6 +43,17 @@ public class PacketHandler {
                 .decoder(ClientboundEntityReleasePacket::new)
                 .consumerMainThread(ClientboundEntityReleasePacket::handle)
                 .add();
+
+        INSTANCE.messageBuilder(ServerboundConfigureSpawnerPacket.class, currentPacketId++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(ServerboundConfigureSpawnerPacket::write)
+                .decoder(ServerboundConfigureSpawnerPacket::new)
+                .consumerMainThread((packet, contextSupplier) -> {
+                    var context = contextSupplier.get();
+                    if (packet.handle(context)) {
+                        context.setPacketHandled(true);
+                    }
+                })
+                .add();
     }
 
     public static void sendToNearbyPlayers(Object packet, Vec3 position, double radius, ResourceKey<Level> dimension) {
@@ -49,5 +62,9 @@ public class PacketHandler {
 
     public static void sendToAllPlayers(Object packet) {
         INSTANCE.send(PacketDistributor.ALL.noArg(), packet);
+    }
+
+    public static void sendToServer(Object packet) {
+        INSTANCE.sendToServer(packet);
     }
 }
