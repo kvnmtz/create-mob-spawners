@@ -47,6 +47,8 @@ The spawner will repeatedly spawn the contained mob type in the same range a van
 
 It needs a minimum rotation speed of 128 RPM and its stress impact depends on the contained mob types max health, so something like an enderman will require a lot more SU than a chicken.
 
+The spawning area can be configured by right-clicking the block with either an empty hand or a wrench.
+
 The Mechanical Spawner can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
 
 ![Mechanical Spawner Recipe](docs/recipe_mechanical_spawner.webp)
