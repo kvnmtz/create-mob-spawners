@@ -1,12 +1,16 @@
 package dev.kvnmtz.createmobspawners.block.custom;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.gui.ScreenOpener;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
+import dev.kvnmtz.createmobspawners.gui.screens.SpawnerScreen;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -22,6 +26,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,15 +53,22 @@ public class MechanicalSpawnerBlock extends KineticBlock implements IBE<Mechanic
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull InteractionHand pHand, @NotNull BlockHitResult pHit) {
+        var sneaking = pPlayer.isShiftKeyDown();
         var itemStack = pPlayer.getMainHandItem();
+        var nothingInHand = itemStack.isEmpty();
         var blockEntity = getBlockEntity(pLevel, pPos);
         var hasStoredEntity = blockEntity.hasStoredEntity();
-        if (!hasStoredEntity && itemStack.getItem() == ModItems.SOUL_CATCHER.get()) {
-            var entityData = SoulCatcherItem.getEntityData(itemStack);
-            if (entityData.isEmpty()) return InteractionResult.FAIL;
-            blockEntity.setStoredEntityData(entityData.get());
-            itemStack.shrink(1);
-        } else if (hasStoredEntity && itemStack.isEmpty() && pPlayer.isShiftKeyDown()) {
+
+        if (!sneaking) {
+            if (CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerConfigurationAllowed.get() && (nothingInHand || itemStack.is(AllItems.WRENCH.asItem()))) {
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> withBlockEntityDo(pLevel, pPos, be -> this.displayScreen(be, pPlayer)));
+            } else if (itemStack.getItem() == ModItems.SOUL_CATCHER.get() && !hasStoredEntity) {
+                var entityData = SoulCatcherItem.getEntityData(itemStack);
+                if (entityData.isEmpty()) return InteractionResult.FAIL;
+                blockEntity.setStoredEntityData(entityData.get());
+                itemStack.shrink(1);
+            }
+        } else if (hasStoredEntity && nothingInHand) {
             blockEntity.ejectSoulCatcher();
         } else {
             return InteractionResult.PASS;
@@ -120,5 +134,11 @@ public class MechanicalSpawnerBlock extends KineticBlock implements IBE<Mechanic
     @Override
     public SpeedLevel getMinimumRequiredSpeedLevel() {
         return SpeedLevel.of(CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerMinRpm.get().floatValue());
+    }
+
+    @OnlyIn(value = Dist.CLIENT)
+    protected void displayScreen(MechanicalSpawnerBlockEntity be, Player player) {
+        if (player instanceof LocalPlayer)
+            ScreenOpener.open(new SpawnerScreen(be));
     }
 }

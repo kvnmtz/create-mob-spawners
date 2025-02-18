@@ -1,5 +1,6 @@
 package dev.kvnmtz.createmobspawners.block.custom.entity;
 
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
@@ -27,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -40,6 +42,9 @@ import java.util.Optional;
 public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements IEntityStorage {
     public MechanicalSpawnerBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);
+        spawningAreaWidth = CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerAreaDefaultWidth.get();
+        spawningAreaHeight = CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerAreaDefaultHeight.get();
+        spawningAreaHeightOffset = CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerAreaDefaultHeightOffset.get();
     }
 
     private StoredEntityData storedEntityData = StoredEntityData.empty();
@@ -78,6 +83,34 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         return Mth.clamp(rawImpact, 4, CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerMaxStressImpact.get().floatValue());
     }
 
+    private int spawningAreaWidth;
+    private int spawningAreaHeight;
+    private int spawningAreaHeightOffset;
+
+    public int getSpawningAreaWidth() {
+        return spawningAreaWidth;
+    }
+
+    public void setSpawningAreaWidth(int spawningAreaWidth) {
+        this.spawningAreaWidth = spawningAreaWidth;
+    }
+
+    public int getSpawningAreaHeight() {
+        return spawningAreaHeight;
+    }
+
+    public void setSpawningAreaHeight(int spawningAreaHeight) {
+        this.spawningAreaHeight = spawningAreaHeight;
+    }
+
+    public int getSpawningAreaHeightOffset() {
+        return spawningAreaHeightOffset;
+    }
+
+    public void setSpawningAreaHeightOffset(int spawningAreaHeightOffset) {
+        this.spawningAreaHeightOffset = spawningAreaHeightOffset;
+    }
+
     private SmartFluidTankBehaviour tank;
 
     public SmartFluidTankBehaviour getTank() {
@@ -91,6 +124,9 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     @Override
     protected void write(CompoundTag compound, boolean clientPacket) {
         compound.put("EntityStorage", storedEntityData.serializeNBT());
+        compound.putInt("SpawnAreaWidth", spawningAreaWidth);
+        compound.putInt("SpawnAreaHeight", spawningAreaHeight);
+        compound.putInt("SpawnAreaHeightOffset", spawningAreaHeightOffset);
         super.write(compound, clientPacket);
     }
 
@@ -98,6 +134,15 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     protected void read(CompoundTag compound, boolean clientPacket) {
         storedEntityData.deserializeNBT(compound.getCompound("EntityStorage"));
         onStoredEntityDataChanged();
+
+        spawningAreaWidth = compound.getInt("SpawnAreaWidth");
+        if (spawningAreaWidth == 0)
+            spawningAreaWidth = CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerAreaDefaultWidth.get();
+        spawningAreaHeight = compound.getInt("SpawnAreaHeight");
+        if (spawningAreaHeight == 0)
+            spawningAreaHeight = CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerAreaDefaultHeight.get();
+        spawningAreaHeightOffset = compound.contains("SpawnAreaHeightOffset") ? compound.getInt("SpawnAreaHeightOffset") : CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerAreaDefaultHeightOffset.get();
+
         super.read(compound, clientPacket);
     }
 
@@ -151,9 +196,6 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
             setStoredEntityData(StoredEntityData.empty());
         });
     }
-
-    private static final int SPAWN_RANGE = 4;
-    private static final int MAX_NEARBY_ENTITIES = 6;
 
     private float spawnProgress = 0;
 
@@ -257,15 +299,23 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         var entity = entityType.create(level);
         if (entity == null) return new EntitySpawnResult.Delay(DelayReason.ENTITY_CREATION_ERROR);
 
-        var nearbyEntities = level.getEntitiesOfClass(entity.getClass(), (new AABB(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX() + 1, blockPos.getY() + 1, blockPos.getZ() + 1)).inflate(SPAWN_RANGE)).size();
-        if (nearbyEntities >= MAX_NEARBY_ENTITIES)
+        var nearbyEntities = level.getEntitiesOfClass(
+                entity.getClass(),
+                new AABB(
+                        getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(),
+                        getBlockPos().getX() + 1, getBlockPos().getY() + 1, getBlockPos().getZ() + 1
+                )
+                        .inflate(Math.max(spawningAreaWidth, spawningAreaHeight) / 2.0)
+                        .move(new Vec3(0, spawningAreaHeightOffset, 0))
+        ).size();
+        if (nearbyEntities >= CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerMaxNearbyEntities.get())
             return new EntitySpawnResult.Delay(DelayReason.TOO_MANY_ENTITIES);
 
         var random = level.getRandom();
 
-        var x = (double) blockPos.getX() + (random.nextDouble() - random.nextDouble()) * (double) SPAWN_RANGE + (double) 0.5F;
-        var y = blockPos.getY() + random.nextInt(3) - 1;
-        var z = (double) blockPos.getZ() + (random.nextDouble() - random.nextDouble()) * (double) SPAWN_RANGE + (double) 0.5F;
+        var x = blockPos.getX() + (random.nextDouble() - random.nextDouble()) * (spawningAreaWidth - 1) / 2 + 0.5;
+        var y = blockPos.getY() + (random.nextDouble() - random.nextDouble()) * (spawningAreaHeight - 1) / 2 + spawningAreaHeightOffset + 0.5;
+        var z = blockPos.getZ() + (random.nextDouble() - random.nextDouble()) * (spawningAreaWidth - 1) / 2 + 0.5;
 
         if (!level.noCollision(entityType.getAABB(x, y, z)))
             return new EntitySpawnResult.Delay(DelayReason.SEARCHING_POSITION);
@@ -354,11 +404,52 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         return reason.map(stallingReason -> stallingReason.name().toLowerCase());
     }
 
+    private int spawnAreaHighlightingTicks = 0;
+
+    public void lingerSpawnAreaHighlighting(int width, int height, int yOffset) {
+        spawnAreaHighlightingTicks = 20 * 5;
+        lingerWidth = width;
+        lingerHeight = height;
+        lingerHeightOffset = yOffset;
+    }
+
+    public void stopLingerSpawnAreaHighlighting() {
+        spawnAreaHighlightingTicks = 0;
+    }
+
+    private int lingerWidth;
+    private int lingerHeight;
+    private int lingerHeightOffset;
+
+    private final Object spawnAreaOutlineSlot = new Object();
+
+    public void highlightSpawningArea(int width, int height, int yOffset) {
+        var spawningArea = AABB.ofSize(
+                getBlockPos().getCenter().add(0, yOffset, 0),
+                width,
+                height,
+                width
+        );
+
+        CreateClient.OUTLINER.chaseAABB(spawnAreaOutlineSlot, spawningArea)
+                .colored(0x9b59b6)
+                .lineWidth(1 / 16f);
+    }
+
+    private void highlightSpawningArea() {
+        highlightSpawningArea(lingerWidth, lingerHeight, lingerHeightOffset);
+    }
+
     @Override
     public void tick() {
         super.tick();
 
         if (level == null) return;
+
+        if (level.isClientSide && spawnAreaHighlightingTicks > 0) {
+            highlightSpawningArea();
+            spawnAreaHighlightingTicks--;
+        }
 
         var unableToProgress = getStallingReason().isPresent();
         if (unableToProgress) return;
