@@ -369,6 +369,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         NOT_ENOUGH_FLUID,
         NO_ROTATIONAL_FORCE,
         ROTATION_SPEED_TOO_LOW,
+        RECIPE_CANT_SPAWN_ENTITY,
     }
 
     private Optional<StallingReason> getStallingReason() {
@@ -394,6 +395,22 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
         if (fluid.getAmount() < recipe.getFluidIngredient().getRequiredAmount()) {
             return Optional.of(StallingReason.NOT_ENOUGH_FLUID);
+        }
+
+        //noinspection OptionalGetWithoutIsPresent
+        var storedEntityId = storedEntityData.getEntityTypeResourceLocation().get();
+
+        var isEntityBlacklistedByRecipe = recipe.getBlacklist().contains(storedEntityId);
+        if (isEntityBlacklistedByRecipe) {
+            return Optional.of(StallingReason.RECIPE_CANT_SPAWN_ENTITY);
+        }
+
+        var doesRecipeHaveWhitelist = !recipe.getWhitelist().isEmpty();
+        if (doesRecipeHaveWhitelist) {
+            var isEntityWhitelistedByRecipe = recipe.getWhitelist().contains(storedEntityId);
+            if (!isEntityWhitelistedByRecipe) {
+                return Optional.of(StallingReason.RECIPE_CANT_SPAWN_ENTITY);
+            }
         }
 
         return Optional.empty();

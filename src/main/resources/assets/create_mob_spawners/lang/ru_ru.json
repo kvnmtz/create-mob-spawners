@@ -55,6 +55,7 @@
   "create_mob_spawners.waila.spawner_stalling_reason.not_enough_fluid": "Недостаточно жидкости",
   "create_mob_spawners.waila.spawner_stalling_reason.no_rotational_force": "Нет вращательного усилия",
   "create_mob_spawners.waila.spawner_stalling_reason.rotation_speed_too_low": "Скорость вращения слишком низкая",
+  "create_mob_spawners.waila.spawner_stalling_reason.recipe_cant_spawn_entity": "Сущность не может быть создана содержащейся жидкостью",
   "create_mob_spawners.waila.spawner_title": "%s (%s)",
 
   "create_mob_spawners.jei.spawning.title": "Спавн мобов",
