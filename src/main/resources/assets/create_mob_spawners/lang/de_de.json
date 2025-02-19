@@ -55,6 +55,7 @@
   "create_mob_spawners.waila.spawner_stalling_reason.not_enough_fluid": "Nicht genug Flüssigkeit",
   "create_mob_spawners.waila.spawner_stalling_reason.no_rotational_force": "Keine Rotationsenergie",
   "create_mob_spawners.waila.spawner_stalling_reason.rotation_speed_too_low": "Rotationsgeschwindigkeit zu niedrig",
+  "create_mob_spawners.waila.spawner_stalling_reason.recipe_cant_spawn_entity": "Kreatur kann nicht von enthaltener Flüssigkeit erschaffen werden",
   "create_mob_spawners.waila.spawner_title": "%s (%s)",
 
   "create_mob_spawners.jei.spawning.title": "Kreaturen-Erschaffung",

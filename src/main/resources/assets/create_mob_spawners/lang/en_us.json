@@ -55,6 +55,7 @@
   "create_mob_spawners.waila.spawner_stalling_reason.not_enough_fluid": "Not enough fluid",
   "create_mob_spawners.waila.spawner_stalling_reason.no_rotational_force": "No rotational force",
   "create_mob_spawners.waila.spawner_stalling_reason.rotation_speed_too_low": "Rotation speed too low",
+  "create_mob_spawners.waila.spawner_stalling_reason.recipe_cant_spawn_entity": "Entity cannot be spawned by contained fluid",
   "create_mob_spawners.waila.spawner_title": "%s (%s)",
 
   "create_mob_spawners.jei.spawning.title": "Mob Spawning",
