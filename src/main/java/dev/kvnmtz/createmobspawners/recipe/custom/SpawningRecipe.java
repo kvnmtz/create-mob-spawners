@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -27,8 +28,9 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
     protected final int additionalSpawnAttempts;
     private final List<ResourceLocation> blacklist;
     private final List<ResourceLocation> whitelist;
+    private final @Nullable Integer particleColor;
 
-    public SpawningRecipe(ResourceLocation id, FluidIngredient fluidIngredient, int spawnTicksAtMaxSpeed, int additionalSpawnAttempts, List<ResourceLocation> blacklist, List<ResourceLocation> whitelist) {
+    public SpawningRecipe(ResourceLocation id, FluidIngredient fluidIngredient, int spawnTicksAtMaxSpeed, int additionalSpawnAttempts, List<ResourceLocation> blacklist, List<ResourceLocation> whitelist, @Nullable Integer particleColor) {
         if (!blacklist.isEmpty() && !whitelist.isEmpty()) {
             throw new IllegalArgumentException("Spawning recipe cannot have both blacklist and whitelist");
         }
@@ -39,6 +41,7 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
         this.additionalSpawnAttempts = additionalSpawnAttempts;
         this.blacklist = blacklist;
         this.whitelist = whitelist;
+        this.particleColor = particleColor;
     }
 
     public FluidIngredient getFluidIngredient() {
@@ -59,6 +62,10 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
 
     public List<ResourceLocation> getWhitelist() {
         return whitelist;
+    }
+
+    public @Nullable Integer getParticleColor() {
+        return particleColor;
     }
 
     @Override
@@ -108,7 +115,6 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
             var fluidIngredient = FluidIngredient.deserialize(jsonObject.get("input"));
             var spawnTicksAtMaxSpeed = jsonObject.get("spawn_ticks_at_max_speed").getAsInt();
             var additionalSpawnAttempts = jsonObject.get("additional_spawn_attempts").getAsInt();
-            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnAttempts);
 
             var blacklist = new ArrayList<ResourceLocation>();
             var whitelist = new ArrayList<ResourceLocation>();
@@ -123,7 +129,17 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
                 whitelist.addAll(whitelistObj.getAsJsonArray().asList().stream().map(e -> new ResourceLocation(e.getAsString())).toList());
             }
 
-            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnAttempts, blacklist, whitelist);
+            Integer optParticleColor = null;
+            var particleColorObj = jsonObject.get("particle_color");
+            if (particleColorObj != null) {
+                var particleColorHex = particleColorObj.getAsString();
+                if (particleColorHex.startsWith("#")) {
+                    particleColorHex = particleColorHex.substring(1);
+                }
+                optParticleColor = Integer.parseInt(particleColorHex, 16);
+            }
+
+            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnAttempts, blacklist, whitelist, optParticleColor);
         }
 
         @Override
@@ -131,7 +147,6 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
             var fluidIngredient = FluidIngredient.read(buffer);
             var spawnTicksAtMaxSpeed = buffer.readInt();
             var additionalSpawnTries = buffer.readInt();
-            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries);
 
             var blacklist = new ArrayList<ResourceLocation>();
             var whitelist = new ArrayList<ResourceLocation>();
@@ -143,7 +158,9 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
                 whitelist.add(buffer.readResourceLocation());
             }
 
-            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries, blacklist, whitelist);
+            var particleColor = buffer.readOptional(friendlyByteBuf -> buffer.readInt());
+
+            return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries, blacklist, whitelist, particleColor.orElse(null));
         }
 
         @Override
@@ -161,6 +178,8 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
             for (var entityId : spawningRecipe.whitelist) {
                 buffer.writeResourceLocation(entityId);
             }
+
+            buffer.writeOptional(Optional.ofNullable(spawningRecipe.particleColor), FriendlyByteBuf::writeInt);
         }
     }
 }
