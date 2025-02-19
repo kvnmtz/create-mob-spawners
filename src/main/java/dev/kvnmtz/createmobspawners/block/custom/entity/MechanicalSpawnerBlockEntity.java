@@ -472,7 +472,21 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (unableToProgress) return;
 
         if (level.isClientSide) {
-            ParticleUtils.drawPotionEffectParticles(level, getRenderBoundingBox(), getBlockPos().getCenter().subtract(0, 0.5, 0), PotionUtils.getColor(Potions.REGENERATION), 1);
+            int color = PotionUtils.getColor(Potions.REGENERATION);
+
+            //noinspection OptionalGetWithoutIsPresent
+            var recipe = getCurrentRecipe().get();
+
+            if (recipe.getParticleColor() != null) {
+                color = recipe.getParticleColor();
+            } else {
+                var fluidStack = recipe.getFluidIngredient().matchingFluidStacks.get(0);
+                if (fluidStack.hasTag()) {
+                    color = PotionUtils.getColor(PotionUtils.getAllEffects(fluidStack.getTag()));
+                }
+            }
+
+            ParticleUtils.drawPotionEffectParticles(level, getRenderBoundingBox(), getBlockPos().getCenter().subtract(0, 0.5, 0), color, 1);
             return;
         }
 
