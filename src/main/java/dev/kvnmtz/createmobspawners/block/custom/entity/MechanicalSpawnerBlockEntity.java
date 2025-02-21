@@ -146,7 +146,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         super.read(compound, clientPacket);
     }
 
-    Optional<SpawningRecipe> getCurrentRecipe() {
+    private Optional<SpawningRecipe> getCurrentRecipe() {
         if (level == null) return Optional.empty();
 
         var potentialRecipes = level.getRecipeManager().getAllRecipesFor(ModRecipes.SPAWNING.get());
@@ -157,6 +157,27 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         }
 
         return Optional.empty();
+    }
+
+    public Optional<Integer> getParticleColor() {
+        int color = PotionUtils.getColor(Potions.REGENERATION);
+
+        if (getCurrentRecipe().isEmpty()) {
+            return Optional.empty();
+        }
+
+        var recipe = getCurrentRecipe().get();
+
+        if (recipe.getParticleColor() != null) {
+            color = recipe.getParticleColor();
+        } else {
+            var fluidStack = recipe.getFluidIngredient().matchingFluidStacks.get(0);
+            if (fluidStack.hasTag()) {
+                color = PotionUtils.getColor(PotionUtils.getAllEffects(fluidStack.getTag()));
+            }
+        }
+
+        return Optional.of(color);
     }
 
     @Override
@@ -472,21 +493,8 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (unableToProgress) return;
 
         if (level.isClientSide) {
-            int color = PotionUtils.getColor(Potions.REGENERATION);
-
-            //noinspection OptionalGetWithoutIsPresent
-            var recipe = getCurrentRecipe().get();
-
-            if (recipe.getParticleColor() != null) {
-                color = recipe.getParticleColor();
-            } else {
-                var fluidStack = recipe.getFluidIngredient().matchingFluidStacks.get(0);
-                if (fluidStack.hasTag()) {
-                    color = PotionUtils.getColor(PotionUtils.getAllEffects(fluidStack.getTag()));
-                }
-            }
-
-            ParticleUtils.drawPotionEffectParticles(level, getRenderBoundingBox(), getBlockPos().getCenter().subtract(0, 0.5, 0), color, 1);
+            var optColor = getParticleColor();
+            optColor.ifPresent(color -> ParticleUtils.drawPotionEffectParticles(level, getRenderBoundingBox(), getBlockPos().getCenter().subtract(0, 0.5, 0), color, 1));
             return;
         }
 
