@@ -63,5 +63,7 @@
   "create_mob_spawners.jei.spawning.at": "bei",
   "create_mob_spawners.jei.spawning.rpm": "U/min",
   "create_mob_spawners.jei.spawning.additional_spawn_attempts": "Zusätzliche Spawn-Versuche: %d",
-  "create_mob_spawners.jei.spawning.question_mark": "Spawnt Kreaturen-Typ abhängig vom eingesetzten Seelenfänger"
+  "create_mob_spawners.jei.spawning.question_mark": "Spawnt Kreaturen-Typ abhängig vom eingesetzten Seelenfänger",
+  "create_mob_spawners.jei.spawning.blacklist": "Funktioniert §lnicht §rmit:",
+  "create_mob_spawners.jei.spawning.whitelist": "Funktioniert §lnur §rmit:"
 }

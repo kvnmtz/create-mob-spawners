@@ -63,5 +63,7 @@
   "create_mob_spawners.jei.spawning.at": "на",
   "create_mob_spawners.jei.spawning.rpm": "об/мин",
   "create_mob_spawners.jei.spawning.additional_spawn_attempts": "Дополнительные попытки спавна: %d",
-  "create_mob_spawners.jei.spawning.question_mark": "Спавнит тип моба, содержащийся в Ловце Душ"
+  "create_mob_spawners.jei.spawning.question_mark": "Спавнит тип моба, содержащийся в Ловце Душ",
+  "create_mob_spawners.jei.spawning.blacklist": "§lНе §rработает с:",
+  "create_mob_spawners.jei.spawning.whitelist": "§lТолько §rработает с:"
 }
