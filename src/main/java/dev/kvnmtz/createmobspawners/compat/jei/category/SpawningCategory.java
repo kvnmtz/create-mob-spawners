@@ -27,10 +27,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -116,8 +118,31 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
         var questionMarkRect = new Rect2i(questionMarkPosX, questionMarkPosY, AllGuiTextures.JEI_QUESTION_MARK.width, AllGuiTextures.JEI_QUESTION_MARK.height);
         AllGuiTextures.JEI_QUESTION_MARK.render(graphics, questionMarkPosX, questionMarkPosY);
         if (questionMarkRect.contains((int) mouseX, (int) mouseY)) {
-            var display = Component.translatable("create_mob_spawners.jei.spawning.question_mark");
-            graphics.renderComponentTooltip(font, List.of(display), (int) mouseX - font.width(display.getString()) / 2 - 12, (int) mouseY - 12);
+            List<Component> components = new ArrayList<>();
+            components.add(Component.translatable("create_mob_spawners.jei.spawning.question_mark"));
+            if (!recipe.getBlacklist().isEmpty()) {
+                components.add(Component.translatable("create_mob_spawners.jei.spawning.blacklist"));
+                for (var entityId : recipe.getBlacklist()) {
+                    var optEntityType = EntityType.byString(entityId.toString());
+                    optEntityType.ifPresent(entityType -> components.add(Component.literal(" - " + entityType.getDescription().getString())));
+                }
+            } else if (!recipe.getWhitelist().isEmpty()) {
+                components.add(Component.translatable("create_mob_spawners.jei.spawning.whitelist"));
+                for (var entityId : recipe.getWhitelist()) {
+                    var optEntityType = EntityType.byString(entityId.toString());
+                    optEntityType.ifPresent(entityType -> components.add(Component.literal(" - " + entityType.getDescription().getString())));
+                }
+            }
+
+            int longestComponent = 0;
+            for (var component : components) {
+                var width = font.width(component.getString());
+                if (width > longestComponent) {
+                    longestComponent = width;
+                }
+            }
+
+            graphics.renderComponentTooltip(font, components, (int) mouseX - longestComponent / 2 - 12, (int) mouseY - 12);
         }
 
         spawner
