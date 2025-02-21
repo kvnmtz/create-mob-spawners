@@ -47,7 +47,7 @@ The spawner will repeatedly spawn the contained mob type in the same range a van
 
 It needs a minimum rotation speed of 128 RPM and its stress impact depends on the contained mob types max health, so something like an enderman will require a lot more SU than a chicken.
 
-The spawning area can be configured by right-clicking the block with either an empty hand or a wrench.
+**(NEW!)** The spawning area can be configured by right-clicking the block with either an empty hand or a wrench.
 
 The Mechanical Spawner can be crafted in a 5x5 Mechanical Crafter grid using this recipe:
 
@@ -123,3 +123,30 @@ This is the recipe for spawning with standard Potion of Regeneration liquid:
 
 - `input.nbt.Bottle` refers to the potion bottle type and can be either `REGULAR`, `SPLASH` or `LINGERING`
 - everything else should be self-explanatory
+
+This is an example of how a more advanced recipe could look like, just to show which fields can be used:
+
+```json
+{
+  "type": "create_mob_spawners:spawning",
+  "input": {
+    "amount": 100,
+    "fluid": "minecraft:lava"
+  },
+  "particle_color": "#fc7303",
+  "spawn_ticks_at_max_speed": 100,
+  "additional_spawn_attempts": 1,
+  "spawnable_entity_whitelist": [
+    "minecraft:magma_cube"
+  ]
+}
+```
+
+This recipe would use 100mb of lava to be able to spawn magma cubes (and only magma cubes) using the `spawnable_entity_whitelist` array.
+It is also possible to use a blacklist instead in order to exclude selected mobs using `spawnable_entity_blacklist`.
+The particle color also has been customized to an orange lava-like color using the `particle_color` field.
+If a potion is used as fluid, the particle color will always reflect the effect color of this potion, if no custom color is specified.
+
+The result would look like this:
+
+![Custom Recipe Example](docs/custom_recipe_example.webp)
