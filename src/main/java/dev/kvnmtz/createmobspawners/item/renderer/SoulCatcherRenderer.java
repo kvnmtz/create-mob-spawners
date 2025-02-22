@@ -37,11 +37,6 @@ public class SoulCatcherRenderer extends CustomRenderedItemModelRenderer {
             ms.mulPose(Axis.XP.rotationDegrees(45));
             ms.translate(0, yOffset, zOffset);
 
-            // X & Y pivots need to be centered (8) in order to rotate around Z
-            ms.translate(0, -yOffset, 0);
-            ms.mulPose(Axis.ZP.rotationDegrees(ScrollValueHandler.getScroll(AnimationTickHolder.getPartialTicks()) * 15));
-            ms.translate(0, yOffset, 0);
-
             renderer.render(GEAR_EMPTY.get(), light);
         } else {
             // X pivot is already 8
@@ -49,7 +44,9 @@ public class SoulCatcherRenderer extends CustomRenderedItemModelRenderer {
 
             // X & Y pivots need to be centered (8) in order to rotate around Z
             ms.translate(0, -yOffset, 0);
-            ms.mulPose(Axis.ZP.rotationDegrees(ScrollValueHandler.getScroll(AnimationTickHolder.getPartialTicks()) * 15));
+            float worldTime = AnimationTickHolder.getRenderTime() / 10;
+            float angle = worldTime * 25;
+            ms.mulPose(Axis.ZP.rotationDegrees(angle));
             ms.translate(0, yOffset, 0);
 
             renderer.render(GEAR.get(), light);
