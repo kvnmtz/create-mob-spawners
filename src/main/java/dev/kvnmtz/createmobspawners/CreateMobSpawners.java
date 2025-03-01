@@ -4,14 +4,16 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.category.MysteriousItemConversionCategory;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.ponder.CreatePonderPlugin;
 import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.item.registry.ModCreativeModeTabs;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.item.tooltip.AddonTooltipModifierFactory;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
-import dev.kvnmtz.createmobspawners.ponder.registry.AddonPonders;
+import dev.kvnmtz.createmobspawners.ponder.AddonPonderPlugin;
 import dev.kvnmtz.createmobspawners.recipe.registry.ModRecipes;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -69,7 +71,7 @@ public class CreateMobSpawners {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            AddonPonders.register();
+            PonderIndex.addPlugin(new AddonPonderPlugin());
 
             try {
                 Class.forName("mezz.jei.api.JeiPlugin");

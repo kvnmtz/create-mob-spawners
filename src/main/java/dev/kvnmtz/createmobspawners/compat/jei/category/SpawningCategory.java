@@ -90,18 +90,18 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SpawningRecipe recipe, IFocusGroup iFocusGroup) {
         builder
-                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2 - 16 - 16, START_Y - 8 - 10)
+                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2 - 16 - 16, START_Y - 8 - 10)
                 .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
                 .addIngredient(VanillaTypes.ITEM_STACK, ModItems.SOUL_CATCHER.get().getDefaultInstance());
 
         builder
-                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2 - 16 - 16, START_Y - 8 + 10)
+                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2 - 16 - 16, START_Y - 8 + 10)
                 .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
                 .addIngredients(
                         ForgeTypes.FLUID_STACK,
                         CreateRecipeCategory.withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks())
                 )
-                .addTooltipCallback(
+                .addRichTooltipCallback(
                         CreateRecipeCategory.addFluidTooltip(recipe.getFluidIngredient().getRequiredAmount())
                 );
     }
@@ -110,12 +110,12 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
     public void draw(SpawningRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
         var font = Minecraft.getInstance().font;
 
-        AllGuiTextures.JEI_SHADOW.render(graphics, getWidth() / 2 - AllGuiTextures.JEI_SHADOW.width / 2, START_Y - AllGuiTextures.JEI_SHADOW.height / 2 + 9);
-        AllGuiTextures.JEI_LONG_ARROW.render(graphics, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.width / 2, START_Y - AllGuiTextures.JEI_LONG_ARROW.height / 2);
+        AllGuiTextures.JEI_SHADOW.render(graphics, getWidth() / 2 - AllGuiTextures.JEI_SHADOW.getWidth() / 2, START_Y - AllGuiTextures.JEI_SHADOW.getHeight() / 2 + 9);
+        AllGuiTextures.JEI_LONG_ARROW.render(graphics, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2, START_Y - AllGuiTextures.JEI_LONG_ARROW.getHeight() / 2);
 
-        var questionMarkPosX = getWidth() / 2 + AllGuiTextures.JEI_LONG_ARROW.width / 2 + 16;
-        var questionMarkPosY = START_Y - AllGuiTextures.JEI_QUESTION_MARK.height / 2;
-        var questionMarkRect = new Rect2i(questionMarkPosX, questionMarkPosY, AllGuiTextures.JEI_QUESTION_MARK.width, AllGuiTextures.JEI_QUESTION_MARK.height);
+        var questionMarkPosX = getWidth() / 2 + AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2 + 16;
+        var questionMarkPosY = START_Y - AllGuiTextures.JEI_QUESTION_MARK.getHeight() / 2;
+        var questionMarkRect = new Rect2i(questionMarkPosX, questionMarkPosY, AllGuiTextures.JEI_QUESTION_MARK.getWidth(), AllGuiTextures.JEI_QUESTION_MARK.getHeight());
         AllGuiTextures.JEI_QUESTION_MARK.render(graphics, questionMarkPosX, questionMarkPosY);
         if (questionMarkRect.contains((int) mouseX, (int) mouseY)) {
             List<Component> components = new ArrayList<>();

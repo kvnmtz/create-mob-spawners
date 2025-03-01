@@ -49,7 +49,7 @@ public class MechanicalSpawnerBlockEntityRenderer extends KineticBlockEntityRend
         ms.pushPose();
         ms.translate(0.5f, 0.5f, 0.5f);
         ms.scale(0.8f, 0.8f, 0.8f);
-        ms.mulPose(Axis.YP.rotationDegrees(getAngleForTe(be, be.getBlockPos(), Direction.Axis.Y) * 180 / (float) Math.PI));
+        ms.mulPose(Axis.YP.rotationDegrees(getAngleForBe(be, be.getBlockPos(), Direction.Axis.Y) * 180 / (float) Math.PI));
         itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, ms, buffer, be.getLevel(), 1);
         ms.popPose();
     }
@@ -82,7 +82,7 @@ public class MechanicalSpawnerBlockEntityRenderer extends KineticBlockEntityRend
             var zMax = tankHullWidth + width - 2 * tankHullWidth;
             ms.pushPose();
             ms.translate(0.0F, clampedLevel - totalHeight, 0.0F);
-            FluidRenderer.renderFluidBox(fluidStack, tankHullWidth, yMin, tankHullWidth, xMax, yMax, zMax, buffer, ms, light, false);
+            FluidRenderer.renderFluidBox(fluidStack.getFluid(), fluidStack.getAmount(), tankHullWidth, yMin, tankHullWidth, xMax, yMax, zMax, buffer, ms, light, false, true, fluidStack.getTag());
             ms.popPose();
         }
     }

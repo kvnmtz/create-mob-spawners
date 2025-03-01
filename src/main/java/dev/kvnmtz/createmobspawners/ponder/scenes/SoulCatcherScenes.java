@@ -1,15 +1,15 @@
 package dev.kvnmtz.createmobspawners.ponder.scenes;
 
-import com.simibubi.create.foundation.ponder.PonderWorld;
-import com.simibubi.create.foundation.ponder.SceneBuilder;
-import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
-import com.simibubi.create.foundation.ponder.element.InputWindowElement;
-import com.simibubi.create.foundation.ponder.ui.PonderUI;
-import com.simibubi.create.foundation.utility.Pointing;
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
+import net.createmod.catnip.math.Pointing;
+import net.createmod.ponder.api.level.PonderLevel;
+import net.createmod.ponder.api.scene.SceneBuilder;
+import net.createmod.ponder.api.scene.SceneBuildingUtil;
+import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -57,7 +57,9 @@ public abstract class SoulCatcherScenes {
         entityRendererDispatcher.overrideCameraOrientation(originalCameraOrientation);
     }
 
-    public static void soulCatcher(SceneBuilder scene, SceneBuildingUtil ignoredUtil) {
+    public static void soulCatcher(SceneBuilder builder, SceneBuildingUtil ignoredUtil) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        
         scene.title("soul_catcher", "Soul Catcher");
         scene.showBasePlate();
 
@@ -66,7 +68,7 @@ public abstract class SoulCatcherScenes {
         var pigPosition = new Vec3(2.5, 1, 2.5);
         var pigCenter = pigPosition.add(0, 0.45f, 0);
         var pigReference = new AtomicReference<Pig>();
-        var pigEntity = scene.world.createEntity(w -> {
+        var pigEntity = scene.world().createEntity(w -> {
             var pig = EntityType.PIG.create(w);
             if (pig == null) return null;
 
@@ -79,16 +81,16 @@ public abstract class SoulCatcherScenes {
             return pig;
         });
 
-        scene.overlay.showText(60).placeNearTarget().pointAt(pigCenter).text("See this innocent pig? Let's catch it.");
+        scene.overlay().showText(60).placeNearTarget().pointAt(pigCenter).text("See this innocent pig? Let's catch it.");
 
         scene.idleSeconds(3);
 
-        scene.overlay.showText(80).attachKeyFrame().placeNearTarget().pointAt(pigCenter).text("In order to catch a mob's soul, it needs to be weakened (e.g. with a Splash Potion of Healing)");
+        scene.overlay().showText(80).attachKeyFrame().placeNearTarget().pointAt(pigCenter).text("In order to catch a mob's soul, it needs to be weakened (e.g. with a Splash Potion of Healing)");
 
         scene.idleSeconds(4);
 
         var potionColor = new AtomicReference<>(0);
-        var potionEntity = scene.world.createEntity(w -> {
+        var potionEntity = scene.world().createEntity(w -> {
             var potion = EntityType.POTION.create(w);
             if (potion == null) return null;
 
@@ -111,7 +113,7 @@ public abstract class SoulCatcherScenes {
 
         scene.idle(14);
 
-        scene.world.modifyEntity(potionEntity, e -> {
+        scene.world().modifyEntity(potionEntity, e -> {
             var potion = (ThrownPotion) e;
 
             var itemStack = potion.getItem();
@@ -143,35 +145,35 @@ public abstract class SoulCatcherScenes {
                     particle.setPower((float) d13);
                 }
 
-                ((PonderWorld) potion.level()).addParticle(particle);
+                ((PonderLevel) potion.level()).addParticle(particle);
             }
 
             potion.discard();
         });
 
-        scene.effects.emitParticles(Vec3.ZERO, (level, unused1, unused2, unused3) -> {
+        scene.effects().emitParticles(Vec3.ZERO, (level, unused1, unused2, unused3) -> {
             var pig = pigReference.get();
             ParticleUtils.drawPotionEffectParticles(level, pig.getBoundingBox(), pig.position(), potionColor.get(), 1);
         }, 1, 107);
 
         scene.idleSeconds(3);
 
-        scene.overlay.showText(40).attachKeyFrame().placeNearTarget().pointAt(pigCenter).text("Now, right-click it with an empty Soul Catcher to start catching its soul");
+        scene.overlay().showText(40).attachKeyFrame().placeNearTarget().pointAt(pigCenter).text("Now, right-click it with an empty Soul Catcher to start catching its soul");
 
         scene.idleSeconds(2);
 
-        scene.overlay.showControls((new InputWindowElement(pigCenter.add(0, 0.5f, 0), Pointing.DOWN)).rightClick().withItem(ModItems.EMPTY_SOUL_CATCHER.get().getDefaultInstance()), 40);
+        scene.overlay().showControls(pigCenter.add(0, 0.5f, 0), Pointing.DOWN, 40).rightClick().withItem(ModItems.EMPTY_SOUL_CATCHER.get().getDefaultInstance());
 
         scene.idle(7);
 
-        scene.world.modifyEntity(pigEntity, pig -> {
+        scene.world().modifyEntity(pigEntity, pig -> {
             SoulCatcherItem.addShrinkingEntity(pig);
             ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, pig.level(), pig.getBoundingBox(), pig.position(), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(pig), 0.75f);
         });
 
         scene.idle(SoulCatcherItem.getCatchingDurationInTicks(AABB.ofSize(Vec3.ZERO, 0.9f, 0.9f, 0.9f)));
 
-        scene.world.modifyEntity(pigEntity, pig -> {
+        scene.world().modifyEntity(pigEntity, pig -> {
             var bb = pigReference.get().getBoundingBox();
             ParticleUtils.drawParticles(ParticleTypes.REVERSE_PORTAL, pig.level(), pigCenter, ParticleUtils.getParticleCountForEntity(pig), bb.getXsize() / 3, bb.getYsize() / 3, bb.getZsize() / 3, Vec3.ZERO);
             pig.discard();
@@ -179,17 +181,17 @@ public abstract class SoulCatcherScenes {
 
         scene.idleSeconds(1);
 
-        scene.overlay.showText(40).independent(0).placeNearTarget().text("Gotcha! The pig was caught.");
+        scene.overlay().showText(40).independent(0).placeNearTarget().text("Gotcha! The pig was caught.");
         scene.idle(10);
-        scene.overlay.showText(60).attachKeyFrame().independent(24).placeNearTarget().text("If you want to release it again, just right-click the desired position with the Soul Catcher");
+        scene.overlay().showText(60).attachKeyFrame().independent(24).placeNearTarget().text("If you want to release it again, just right-click the desired position with the Soul Catcher");
 
         scene.idleSeconds(3);
 
-        scene.overlay.showControls((new InputWindowElement(pigPosition, Pointing.DOWN)).rightClick().withItem(ModItems.SOUL_CATCHER.get().getDefaultInstance()), 20);
+        scene.overlay().showControls(pigPosition, Pointing.DOWN, 20).rightClick().withItem(ModItems.SOUL_CATCHER.get().getDefaultInstance());
 
         scene.idle(30);
 
-        scene.world.createEntity(w -> {
+        scene.world().createEntity(w -> {
             var pig = EntityType.PIG.create(w);
             if (pig == null) return null;
 
