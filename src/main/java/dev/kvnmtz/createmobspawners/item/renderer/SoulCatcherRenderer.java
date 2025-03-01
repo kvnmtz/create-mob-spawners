@@ -1,15 +1,14 @@
 package dev.kvnmtz.createmobspawners.item.renderer;
 
-import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueHandler;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModel;
 import com.simibubi.create.foundation.item.render.CustomRenderedItemModelRenderer;
 import com.simibubi.create.foundation.item.render.PartialItemModelRenderer;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
+import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +17,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class SoulCatcherRenderer extends CustomRenderedItemModelRenderer {
-    protected static final PartialModel GEAR = new PartialModel(CreateMobSpawners.asResource("item/soul_catcher/gear"));
-    protected static final PartialModel GEAR_EMPTY = new PartialModel(CreateMobSpawners.asResource("item/soul_catcher/gear_empty"));
+    protected static final PartialModel GEAR = PartialModel.of(CreateMobSpawners.asResource("item/soul_catcher/gear"));
+    protected static final PartialModel GEAR_EMPTY = PartialModel.of(CreateMobSpawners.asResource("item/soul_catcher/gear_empty"));
 
     @Override
     protected void render(ItemStack itemStack, CustomRenderedItemModel model, PartialItemModelRenderer renderer, ItemDisplayContext itemDisplayContext, PoseStack ms, MultiBufferSource multiBufferSource, int light, int overlay) {

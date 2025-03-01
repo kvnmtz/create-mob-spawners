@@ -1,6 +1,5 @@
 package dev.kvnmtz.createmobspawners.block.custom.entity;
 
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.fluid.SmartFluidTankBehaviour;
@@ -16,6 +15,7 @@ import dev.kvnmtz.createmobspawners.recipe.registry.ModRecipes;
 import dev.kvnmtz.createmobspawners.recipe.custom.SpawningRecipe;
 import dev.kvnmtz.createmobspawners.utils.DropUtils;
 import dev.kvnmtz.createmobspawners.utils.ParticleUtils;
+import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -469,7 +469,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
                 width
         );
 
-        CreateClient.OUTLINER.chaseAABB(spawnAreaOutlineSlot, spawningArea)
+        Outliner.getInstance().chaseAABB(spawnAreaOutlineSlot, spawningArea)
                 .colored(0x9b59b6)
                 .lineWidth(1 / 16f);
     }

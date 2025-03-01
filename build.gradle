@@ -134,6 +134,9 @@ repositories {
         url = 'https://maven.tterrag.com/'
     }
 
+    // Ponder, Flywheel
+    maven { url = "https://maven.createmod.net" }
+
     // JEI
     maven {
         // location of the maven that hosts JEI files since January 2023
@@ -159,9 +162,11 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Create
-    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}:slim") { transitive = false }
-    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
-    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    compileOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${flywheel_minecraft_version}:${flywheel_version}")
+    runtimeOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
+    implementation fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}") { transitive = false }
 
     // JEI
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")

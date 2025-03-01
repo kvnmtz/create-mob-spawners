@@ -1,23 +1,24 @@
 package dev.kvnmtz.createmobspawners.gui.screens;
 
-import com.simibubi.create.foundation.gui.AbstractSimiScreen;
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.gui.widget.TooltipArea;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Pair;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
 import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import dev.kvnmtz.createmobspawners.gui.registry.ModGuiTextures;
 import dev.kvnmtz.createmobspawners.network.PacketHandler;
 import dev.kvnmtz.createmobspawners.network.packet.ServerboundConfigureSpawnerPacket;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.gui.AbstractSimiScreen;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class SpawnerScreen extends AbstractSimiScreen {
     }
 
     @Override
-    protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    protected void renderWindow(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         int x = guiLeft;
         int y = guiTop;
 
@@ -76,7 +77,7 @@ public class SpawnerScreen extends AbstractSimiScreen {
         );
 
         for (int i = 0; i < 3; i++) {
-            var label = new Label(x + 82 + i * 20, y + 28, Components.immutableEmpty()).withShadow();
+            var label = new Label(x + 82 + i * 20, y + 28, CommonComponents.EMPTY).withShadow();
 
             int finalIdx = i;
             var input = new ScrollInput(x + 73 + i * 20, y + 23, 18, 18)
