@@ -117,6 +117,11 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
         var questionMarkPosY = START_Y - AllGuiTextures.JEI_QUESTION_MARK.getHeight() / 2;
         var questionMarkRect = new Rect2i(questionMarkPosX, questionMarkPosY, AllGuiTextures.JEI_QUESTION_MARK.getWidth(), AllGuiTextures.JEI_QUESTION_MARK.getHeight());
         AllGuiTextures.JEI_QUESTION_MARK.render(graphics, questionMarkPosX, questionMarkPosY);
+
+        if (!recipe.getBlacklist().isEmpty() || !recipe.getWhitelist().isEmpty()) {
+            ModGuiTextures.WARNING.render(graphics, questionMarkPosX + questionMarkRect.getWidth() - 4, questionMarkPosY - questionMarkRect.getHeight() + 4);
+        }
+
         if (questionMarkRect.contains((int) mouseX, (int) mouseY)) {
             List<Component> components = new ArrayList<>();
             components.add(Component.translatable("create_mob_spawners.jei.spawning.question_mark"));
