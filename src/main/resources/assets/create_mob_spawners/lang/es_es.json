@@ -64,6 +64,6 @@
   "create_mob_spawners.jei.spawning.rpm": "RPM",
   "create_mob_spawners.jei.spawning.additional_spawn_attempts": "Intentos de aparición adicionales: %d",
   "create_mob_spawners.jei.spawning.question_mark": "Aparición de un tipo de monstruo contenido en el Atrapa almas",
-  "create_mob_spawners.jei.spawning.blacklist": "§lno §rfunciona con:",
-  "create_mob_spawners.jei.spawning.whitelist": "Funciona §solamente§ con:"
+  "create_mob_spawners.jei.spawning.blacklist": "§lNo §rfunciona con:",
+  "create_mob_spawners.jei.spawning.whitelist": "Funciona §lsolamente §rcon:"
 }
