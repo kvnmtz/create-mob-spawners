@@ -63,7 +63,7 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
 
     @Override
     public int getWidth() {
-        return 177;
+        return 196;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
                 .withFluid(recipe.getFluidIngredient().getMatchingFluidStacks().get(0))
                 .draw(graphics, getWidth() / 2 - 13, START_Y + 8);
 
-        ModGuiTextures.renderFrameBorder(graphics, 4, 48, 169, 55);
+        ModGuiTextures.renderFrameBorder(graphics, 4, 48, getWidth() - 8, 55);
 
         var textY = 54;
 
