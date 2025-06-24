@@ -306,7 +306,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
     }
 
     private static CapturableStatus getCapturableStatus(EntityType<? extends LivingEntity> type, @Nullable Entity entity) {
-        if (entity != null && isBlacklistedBoss(entity)) {
+        if (entity != null && isBoss(entity) && !CreateMobSpawners.SERVER_CONFIG.soulCatcherAllowBosses.get()) {
             return CapturableStatus.BOSS;
         }
 
@@ -321,7 +321,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         return CapturableStatus.CAPTURABLE;
     }
 
-    public static boolean isBlacklistedBoss(Entity entity) {
+    public static boolean isBoss(Entity entity) {
         return entity.getType().is(Tags.EntityTypes.BOSSES);
     }
 
@@ -347,7 +347,16 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return false;
         }
 
-        if (!entity.hasEffect(MobEffects.WEAKNESS)) {
+        /*
+        Bosses cannot be weakened -> check needs to depend on their remaining health
+
+        To make this more robust, instead of checking isBoss, a pseudo addEffect could be called -> bosses just return false here
+        (if it returned true, the effect has to be removed again or restored to whatever the previous state was)
+
+        As this is just for a very niche config option (allowing bosses to be captured), this should be enough for now
+        */
+        var isBoss = isBoss(entity);
+        if (!entity.hasEffect(MobEffects.WEAKNESS) && !isBoss) {
             displayCallback.accept(Component.translatable(capturableStatusKeyPrefix + "no_weakness").withStyle(ChatFormatting.RED));
             return false;
         }
@@ -362,7 +371,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
             return false;
         }
 
-        var maxHealthPercentage = CreateMobSpawners.SERVER_CONFIG.soulCatcherMaxHealthPercentage.get().floatValue();
+        var maxHealthPercentage = isBoss ? CreateMobSpawners.SERVER_CONFIG.soulCatcherBossMaxHealthPercentage.get().floatValue() : CreateMobSpawners.SERVER_CONFIG.soulCatcherMaxHealthPercentage.get().floatValue();
         if (maxHealthPercentage != 1.f) {
             var health = entity.getHealth();
             if (maxHealthPercentage == 0.f) {
