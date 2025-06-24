@@ -3,9 +3,9 @@ package dev.kvnmtz.createmobspawners.block.custom.entity.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.fluid.FluidRenderer;
 import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -82,7 +82,7 @@ public class MechanicalSpawnerBlockEntityRenderer extends KineticBlockEntityRend
             var zMax = tankHullWidth + width - 2 * tankHullWidth;
             ms.pushPose();
             ms.translate(0.0F, clampedLevel - totalHeight, 0.0F);
-            FluidRenderer.renderFluidBox(fluidStack.getFluid(), fluidStack.getAmount(), tankHullWidth, yMin, tankHullWidth, xMax, yMax, zMax, buffer, ms, light, false, true, fluidStack.getTag());
+            ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fluidStack, tankHullWidth, yMin, tankHullWidth, xMax, yMax, zMax, buffer, ms, light, false, true);
             ms.popPose();
         }
     }
