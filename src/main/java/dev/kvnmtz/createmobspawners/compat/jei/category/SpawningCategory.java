@@ -94,16 +94,18 @@ public class SpawningCategory implements IRecipeCategory<SpawningRecipe> {
                 .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
                 .addIngredient(VanillaTypes.ITEM_STACK, ModItems.SOUL_CATCHER.get().getDefaultInstance());
 
-        builder
-                .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2 - 16 - 16, START_Y - 8 + 10)
-                .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
-                .addIngredients(
-                        ForgeTypes.FLUID_STACK,
-                        CreateRecipeCategory.withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks())
-                )
-                .addRichTooltipCallback(
-                        CreateRecipeCategory.addFluidTooltip(recipe.getFluidIngredient().getRequiredAmount())
-                );
+        CreateRecipeCategory.addFluidSlot(builder, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2 - 16 - 16, START_Y - 8 + 10, recipe.getFluidIngredient());
+
+        //builder
+        //        .addSlot(RecipeIngredientRole.INPUT, getWidth() / 2 - AllGuiTextures.JEI_LONG_ARROW.getWidth() / 2 - 16 - 16, START_Y - 8 + 10)
+        //        .setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1)
+        //        .addIngredients(
+        //                ForgeTypes.FLUID_STACK,
+        //                CreateRecipeCategory.withImprovedVisibility(recipe.getFluidIngredient().getMatchingFluidStacks())
+        //        )
+        //        .addRichTooltipCallback(
+        //                CreateRecipeCategory.addFluidTooltip(recipe.getFluidIngredient().getRequiredAmount())
+        //        );
     }
 
     @Override

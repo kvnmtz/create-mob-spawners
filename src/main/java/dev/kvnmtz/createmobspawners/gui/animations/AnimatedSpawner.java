@@ -8,6 +8,7 @@ import dev.kvnmtz.createmobspawners.block.custom.MechanicalSpawnerBlock;
 import dev.kvnmtz.createmobspawners.block.registry.ModBlocks;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import net.createmod.catnip.gui.UIRenderHelper;
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
@@ -62,7 +63,7 @@ public class AnimatedSpawner extends AnimatedKinetics {
             matrixStack.scale(scale, scale, scale);
             float from = 2/16f;
             float to = 1f - from;
-            FluidRenderer.renderFluidBox(fluid.getFluid(), fluid.getAmount(), from, from, from, to, to, to, buffer, matrixStack, LightTexture.FULL_BRIGHT, false, true, fluid.getTag());
+            ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fluid, from, from, from, to, to, to, buffer, matrixStack, LightTexture.FULL_BRIGHT, false, true);
             buffer.endBatch();
         }
 
