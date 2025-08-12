@@ -151,14 +151,17 @@ public class SpawningRecipe implements Recipe<RecipeWrapper> {
             var blacklist = new ArrayList<ResourceLocation>();
             var whitelist = new ArrayList<ResourceLocation>();
 
-            for (int i = 0; i < buffer.readInt(); i++) {
+            var blacklistLength = buffer.readInt();
+            for (int i = 0; i < blacklistLength; i++) {
                 blacklist.add(buffer.readResourceLocation());
             }
-            for (int i = 0; i < buffer.readInt(); i++) {
+
+            var whitelistLength = buffer.readInt();
+            for (int i = 0; i < whitelistLength; i++) {
                 whitelist.add(buffer.readResourceLocation());
             }
 
-            var particleColor = buffer.readOptional(friendlyByteBuf -> buffer.readInt());
+            var particleColor = buffer.readOptional(FriendlyByteBuf::readInt);
 
             return new SpawningRecipe(id, fluidIngredient, spawnTicksAtMaxSpeed, additionalSpawnTries, blacklist, whitelist, particleColor.orElse(null));
         }
