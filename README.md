@@ -150,3 +150,26 @@ If a potion is used as fluid, the particle color will always reflect the effect 
 The result would look like this:
 
 ![Custom Recipe Example](docs/custom_recipe_example.webp)
+
+It is also possible to use Soul Catchers containing specific entities in recipes. An example could look like this:
+
+```json
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "type": "create_mob_spawners:soul_catcher",
+      "entity_type": "minecraft:pufferfish"
+    }
+  ],
+  "result": {
+    "item": "minecraft:poisonous_potato"
+  }
+}
+```
+
+Here, a potato and a Soul Catcher containing a pufferfish could be combined into a poisonous potato. After crafting, the Soul Catcher will turn into an Empty Soul Catcher, so only the entity contained inside will be "consumed".
