@@ -356,7 +356,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
         As this is just for a very niche config option (allowing bosses to be captured), this should be enough for now
         */
         var isBoss = isBoss(entity);
-        if (!entity.hasEffect(MobEffects.WEAKNESS) && !isBoss) {
+        if (CreateMobSpawners.SERVER_CONFIG.soulCatcherRequireWeakness.get() && !entity.hasEffect(MobEffects.WEAKNESS) && !isBoss) {
             displayCallback.accept(Component.translatable(capturableStatusKeyPrefix + "no_weakness").withStyle(ChatFormatting.RED));
             return false;
         }
