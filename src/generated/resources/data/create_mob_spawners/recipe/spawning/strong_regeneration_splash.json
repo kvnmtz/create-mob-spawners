@@ -1,0 +1,19 @@
+{
+  "type": "create_mob_spawners:spawning",
+  "additional_spawn_attempts": 2,
+  "input": {
+    "amount": 200,
+    "ingredient": {
+      "type": "neoforge:components",
+      "components": {
+        "create:potion_fluid_bottle_type": "splash",
+        "minecraft:potion_contents": {
+          "potion": "minecraft:strong_regeneration"
+        }
+      },
+      "fluids": "create:potion",
+      "strict": true
+    }
+  },
+  "spawn_ticks_at_max_speed": 70
+}

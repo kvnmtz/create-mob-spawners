@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "dev.kvnmtz.createmobspawners.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+    "EntityInvoker"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

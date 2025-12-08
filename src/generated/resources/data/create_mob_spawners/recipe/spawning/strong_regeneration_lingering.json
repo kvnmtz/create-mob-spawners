@@ -1,0 +1,19 @@
+{
+  "type": "create_mob_spawners:spawning",
+  "additional_spawn_attempts": 3,
+  "input": {
+    "amount": 100,
+    "ingredient": {
+      "type": "neoforge:components",
+      "components": {
+        "create:potion_fluid_bottle_type": "lingering",
+        "minecraft:potion_contents": {
+          "potion": "minecraft:strong_regeneration"
+        }
+      },
+      "fluids": "create:potion",
+      "strict": true
+    }
+  },
+  "spawn_ticks_at_max_speed": 60
+}

@@ -1,0 +1,47 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "create:brass_casing"
+    },
+    "B": [
+      {
+        "item": "create:brass_sheet"
+      },
+      {
+        "tag": "c:plates/brass"
+      }
+    ],
+    "C": {
+      "item": "create:shaft"
+    },
+    "D": {
+      "tag": "c:chains"
+    },
+    "E": {
+      "tag": "c:ingots/netherite"
+    },
+    "F": {
+      "item": "minecraft:end_crystal"
+    },
+    "G": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "H": {
+      "item": "create:precision_mechanism"
+    }
+  },
+  "pattern": [
+    "ABCBA",
+    "DEFED",
+    "DEGED",
+    "DEHED",
+    "ABCBA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_mob_spawners:mechanical_spawner"
+  }
+}

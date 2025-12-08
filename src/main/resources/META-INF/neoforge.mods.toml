@@ -1,0 +1,55 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+issueTrackerURL = "https://github.com/kvnmtz/create-mob-spawners"
+license = "ARR"
+
+[[mods]]
+modId = "create_mob_spawners"
+version = "$version"
+displayName = "Create: Mob Spawners"
+authors = "3xpl01t"
+description = '''
+An addon for the Create mod which adds a way to capture and spawn mobs using magic.
+'''
+logoFile = "icon.png"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "create"
+type = "required"
+versionRange = "[$create_version_short,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "jei"
+type = "optional"
+versionRange = "[jei_version,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "jade"
+type = "optional"
+versionRange = "[$jade_version,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "create_mob_spawners.client.mixins.json"
+
+[[mixins]]
+config = "create_mob_spawners.common.mixins.json"
