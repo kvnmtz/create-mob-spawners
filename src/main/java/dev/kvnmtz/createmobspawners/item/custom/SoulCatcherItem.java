@@ -121,7 +121,7 @@ public class SoulCatcherItem extends Item implements IForgeItem {
 
             var currentItem = player.getMainHandItem();
 
-            if (!currentItem.equals(itemStack, true) || !isItemAbleToCatch(currentItem)) {
+            if (currentItem.getItem() != ModItems.EMPTY_SOUL_CATCHER.get() || !currentItem.equals(itemStack, true) || !isItemAbleToCatch(currentItem)) {
                 cancelCatch(shrinkingEntity);
                 continue;
             }
@@ -247,10 +247,18 @@ public class SoulCatcherItem extends Item implements IForgeItem {
 
         PacketHandler.sendToAllPlayers(new ClientboundEntityCatchPacket(entity.getId(), data.player.getId(), ClientboundEntityCatchPacket.EntityCatchState.FINISHED));
 
-        var newItemStack = catchEntity(data.itemStack, entity, data.hadAi);
-
         var player = data.player;
-        player.setItemInHand(InteractionHand.MAIN_HAND, newItemStack);
+        var currentItem = player.getMainHandItem();
+        
+        var newItemStack = catchEntity(currentItem, entity, data.hadAi);
+
+        if (currentItem.isEmpty()) {
+            player.setItemInHand(InteractionHand.MAIN_HAND, newItemStack);
+        } else {
+            if (!player.getInventory().add(newItemStack)) {
+                player.drop(newItemStack, false);
+            }
+        }
 
         shrinkingEntities.remove(entity);
     }
