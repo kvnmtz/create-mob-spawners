@@ -349,6 +349,10 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
             //noinspection deprecation,OverrideOnly
             mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
+
+            if (CreateMobSpawners.SERVER_CONFIG.mechanicalSpawnerDespawnImmunityTicks.get() != 0) {
+                mob.getPersistentData().putBoolean("FromMechanicalSpawner", true);
+            }
         }
 
         level.addFreshEntity(entity);
