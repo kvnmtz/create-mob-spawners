@@ -38,6 +38,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.entity.living.MobDespawnEvent;
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -288,6 +290,10 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity {
             //noinspection deprecation,OverrideOnly
             mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()),
                     MobSpawnType.SPAWNER, null);
+
+            if (ModServerConfig.CONFIG.mechanicalSpawnerDespawnImmunityTicks.get() != 0) {
+                mob.getPersistentData().putBoolean("FromMechanicalSpawner", true);
+            }
         }
 
         serverLevel.addFreshEntity(entity);
@@ -415,6 +421,25 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity {
                     return null;
                 }
         );
+    }
+
+    @SubscribeEvent
+    public static void preventInstantDespawning(MobDespawnEvent event) {
+        int despawnImmunityTicks = ModServerConfig.CONFIG.mechanicalSpawnerDespawnImmunityTicks.get();
+        if (despawnImmunityTicks == 0) {
+            return;
+        }
+
+        var mob = event.getEntity();
+        if (!mob.getPersistentData().getBoolean("FromMechanicalSpawner")) {
+            return;
+        }
+
+        if (mob.tickCount < despawnImmunityTicks) {
+            event.setResult(MobDespawnEvent.Result.DENY);
+        } else {
+            mob.getPersistentData().remove("FromMechanicalSpawner");
+        }
     }
 
     @Override

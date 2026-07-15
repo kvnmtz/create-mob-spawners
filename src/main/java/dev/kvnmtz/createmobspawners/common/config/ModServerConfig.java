@@ -38,6 +38,7 @@ public class ModServerConfig {
     public final ModConfigSpec.IntValue mechanicalSpawnerAreaMinHeightOffset;
     public final ModConfigSpec.IntValue mechanicalSpawnerAreaMaxHeightOffset;
     public final ModConfigSpec.IntValue mechanicalSpawnerAreaDefaultHeightOffset;
+    public final ModConfigSpec.IntValue mechanicalSpawnerDespawnImmunityTicks;
 
     private ModServerConfig(ModConfigSpec.Builder builder) {
         builder.push("soul_catcher");
@@ -140,6 +141,10 @@ public class ModServerConfig {
             mechanicalSpawnerAreaDefaultHeightOffset = builder
                     .comment("Default height offset of the spawning area")
                     .defineInRange("spawn_area_default_height_offset", 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            mechanicalSpawnerDespawnImmunityTicks = builder
+                    .comment("Time (in ticks) of immunity against despawning for mobs spawned by the Mechanical Spawner", "0 = Vanilla despawn mechanics apply")
+                    .defineInRange("despawn_immunity_ticks", 600, 0, 72000);
         }
         builder.pop();
     }
