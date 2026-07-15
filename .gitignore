@@ -27,4 +27,3 @@ forge*changelog.txt
 
 # Semver
 node_modules/
-package-*.json

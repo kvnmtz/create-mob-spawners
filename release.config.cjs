@@ -3,34 +3,75 @@
  */
 module.exports = {
   branches: ['main'],
+  tagFormat: "1.20.1-v${version}",
   plugins: [
-    '@semantic-release/commit-analyzer',
-    '@semantic-release/release-notes-generator',
-    './update-version.js',
     [
-      '@semantic-release/git',
+      '@semantic-release/commit-analyzer',
       {
-        assets: ['gradle.properties'],
-        message: 'chore(release): update version for ${nextRelease.version} [skip ci]',
+        preset: 'angular',
+        releaseRules: [
+          { type: 'tweak', release: 'patch' }
+        ]
+      }
+    ],
+    // --------------------
+    [
+      '@semantic-release/release-notes-generator',
+      {
+        preset: 'conventionalcommits',
+        presetConfig: {
+          types: [
+            { type: 'feat', section: '✨ Features' },
+            { type: 'fix', section: '🐛 Bug Fixes' },
+            { type: 'perf', section: '⚡ Performance Improvements' },
+            { type: 'revert', section: '↩️ Reverts' },
+            { type: 'tweak', section: '⚙️ Tweaks', hidden: false },
+            { type: 'docs', section: '📝 Documentation', hidden: true },
+            { type: 'chore', section: '🧹 Miscellaneous Chores', hidden: true },
+            { type: 'refactor', section: '🪄 Code Refactoring', hidden: true },
+            { type: 'test', section: '✅ Tests', hidden: true },
+            { type: 'ci', section: '🔁 Continuous Integration', hidden: true },
+          ],
+        },
       },
     ],
+    // --------------------
+    [
+      '@semantic-release/changelog',
+      {
+        changelogFile: 'CHANGELOG.md',
+      },
+    ],
+    // --------------------
+    './update-version.js',
+    // --------------------
     [
       '@semantic-release/exec',
       {
-        prepareCmd: './build.sh ${nextRelease.version}',
+        prepareCmd: './gradlew build --build-cache',
       },
     ],
+    // --------------------
     [
       '@semantic-release/github',
       {
-        'assets': [
-          {
-            'path': 'build/reobfJar/create-mob-spawners-1.20.1-*.jar',
-          },
+        assets: [
+          'fabric/build/libs/!(*-@(dev-shadow|sources)).jar',
+          'neoforge/build/libs/!(*-@(dev-shadow|sources)).jar',
         ],
       },
     ],
-    './create_version_modrinth.js',
-    './create_version_curseforge.js',
+    // --------------------
+    [
+      '@semantic-release/git',
+      {
+        assets: [
+          'gradle.properties',
+        ],
+        message: 'chore(release): ${nextRelease.version} [skip ci]',
+      },
+    ],
+    // --------------------
+    'semantic-release-export-data',
   ],
 };
