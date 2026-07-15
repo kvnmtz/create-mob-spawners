@@ -66,7 +66,7 @@ public class SoulCatcherItem extends Item {
 
             var currentItem = player.getMainHandItem();
 
-            if (!ItemStack.matches(currentItem, itemStack) || !isItemAbleToCatch(currentItem)) {
+            if (currentItem.getItem() != ModItems.EMPTY_SOUL_CATCHER.get() || !ItemStack.matches(currentItem, itemStack) || !isItemAbleToCatch(currentItem)) {
                 cancelCatch(shrinkingEntity);
                 continue;
             }
@@ -187,10 +187,18 @@ public class SoulCatcherItem extends Item {
         PacketDistributor.sendToAllPlayers(new ClientboundCatchEntityPacket(entity.getId(), data.player.getId(),
                 ClientboundCatchEntityPacket.EntityCatchState.FINISHED));
 
-        var newItemStack = catchEntity(data.itemStack, entity, data.hadAi);
-
         var player = data.player;
-        player.setItemInHand(InteractionHand.MAIN_HAND, newItemStack);
+        var currentItem = player.getMainHandItem();
+
+        var newItemStack = catchEntity(currentItem, entity, data.hadAi);
+
+        if (currentItem.isEmpty()) {
+            player.setItemInHand(InteractionHand.MAIN_HAND, newItemStack);
+        } else {
+            if (!player.getInventory().add(newItemStack)) {
+                player.drop(newItemStack, false);
+            }
+        }
 
         shrinkingEntities.remove(entity);
     }
