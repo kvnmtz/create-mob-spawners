@@ -6,6 +6,8 @@ import com.simibubi.create.foundation.block.IBE;
 import dev.kvnmtz.createmobspawners.CreateMobSpawners;
 import dev.kvnmtz.createmobspawners.block.custom.entity.registry.ModBlockEntities;
 import dev.kvnmtz.createmobspawners.block.custom.entity.MechanicalSpawnerBlockEntity;
+import dev.kvnmtz.createmobspawners.capabilities.entitystorage.StoredEntityData;
+import dev.kvnmtz.createmobspawners.capabilities.registry.ModCapabilities;
 import dev.kvnmtz.createmobspawners.gui.screens.SpawnerScreen;
 import dev.kvnmtz.createmobspawners.item.registry.ModItems;
 import dev.kvnmtz.createmobspawners.item.custom.SoulCatcherItem;
@@ -16,6 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -25,12 +28,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class MechanicalSpawnerBlock extends KineticBlock implements IBE<MechanicalSpawnerBlockEntity> {
     public MechanicalSpawnerBlock(Properties properties) {
@@ -81,13 +88,21 @@ public class MechanicalSpawnerBlock extends KineticBlock implements IBE<Mechanic
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            var blockEntity = getBlockEntity(pLevel, pPos);
-            blockEntity.ejectSoulCatcher();
+    public List<ItemStack> getDrops(@NotNull BlockState state, @NotNull LootParams.Builder params) {
+        var drops = super.getDrops(state, params);
+
+        var blockEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockEntity instanceof MechanicalSpawnerBlockEntity spawner && spawner.hasStoredEntity()) {
+            var itemStack = ModItems.SOUL_CATCHER.get().getDefaultInstance();
+            itemStack.getCapability(ModCapabilities.ENTITY_STORAGE).ifPresent(entityStorage -> {
+                entityStorage.setStoredEntityData(spawner.getStoredEntityData());
+            });
+
+            spawner.setStoredEntityData(StoredEntityData.empty());
+            drops.add(itemStack);
         }
 
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+        return drops;
     }
 
     @Override

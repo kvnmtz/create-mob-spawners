@@ -13,6 +13,10 @@ public class ParticleUtils {
         var direction = pos2.subtract(pos1).normalize();
         var distance = pos1.distanceTo(pos2);
 
+        if (distance > 128) {
+            return;
+        }
+
         var lastPosition = pos1;
         for (double i = 0; i < distance; i += space) {
             var position = lastPosition.add(direction.scale(space));

@@ -266,13 +266,19 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
     private abstract static class EntitySpawnResult {
         private static class Success extends EntitySpawnResult {
             private final Entity entity;
+            private final Vec3 entityCenter;
 
-            private Success(Entity entity) {
+            private Success(Entity entity, Vec3 entityCenter) {
                 this.entity = entity;
+                this.entityCenter = entityCenter;
             }
 
             public Entity getEntity() {
                 return entity;
+            }
+
+            public Vec3 getEntityCenter() {
+                return entityCenter;
             }
         }
 
@@ -359,7 +365,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
 
         level.gameEvent(entity, GameEvent.ENTITY_PLACE, BlockPos.containing(x, y, z));
 
-        return new EntitySpawnResult.Success(entity);
+        return new EntitySpawnResult.Success(entity, new Vec3(x, y + entity.getBbHeight() / 2.0, z));
     }
 
     private void trySpawnEntity() {
@@ -375,13 +381,13 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity implements 
         if (result instanceof EntitySpawnResult.Success successfulResult) {
             useFluid();
             var center = getBlockPos().getCenter();
-            PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), successfulResult.getEntity().getId()), center, 16, level.dimension());
+            PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), successfulResult.getEntity().getId(), successfulResult.getEntityCenter()), center, 16, level.dimension());
             spawnProgress = 0;
 
             for (var i = 0; i < additionalSpawnAttempts; i++) {
                 var subsequentResult = spawnEntity();
                 if (subsequentResult instanceof EntitySpawnResult.Success subsequentSuccessfulResult) {
-                    PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), subsequentSuccessfulResult.getEntity().getId()), center, 16, level.dimension());
+                    PacketHandler.sendToNearbyPlayers(new ClientboundSpawnerEventPacket(getBlockPos(), subsequentSuccessfulResult.getEntity().getId(), subsequentSuccessfulResult.getEntityCenter()), center, 16, level.dimension());
                 }
             }
         } else if (result instanceof EntitySpawnResult.Delay delayResult) {

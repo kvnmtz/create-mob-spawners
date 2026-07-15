@@ -13,30 +13,22 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientboundSpawnerEventPacket {
-    private final BlockPos spawnerPosition;
-    private final int spawnedEntityId;
-
-    public ClientboundSpawnerEventPacket(BlockPos spawnerPosition, int spawnedEntityId) {
-        this.spawnerPosition = spawnerPosition;
-        this.spawnedEntityId = spawnedEntityId;
-    }
+public record ClientboundSpawnerEventPacket(BlockPos spawnerPosition, int spawnedEntityId, Vec3 spawnedEntityCenter) {
 
     public ClientboundSpawnerEventPacket(FriendlyByteBuf buffer) {
-        this(buffer.readBlockPos(), buffer.readInt());
-    }
-
-    public BlockPos getSpawnerPosition() {
-        return spawnerPosition;
-    }
-
-    public int getSpawnedEntityId() {
-        return spawnedEntityId;
+        this(
+                buffer.readBlockPos(),
+                buffer.readInt(),
+                new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble())
+        );
     }
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeBlockPos(spawnerPosition);
         buffer.writeInt(spawnedEntityId);
+        buffer.writeDouble(spawnedEntityCenter.x);
+        buffer.writeDouble(spawnedEntityCenter.y);
+        buffer.writeDouble(spawnedEntityCenter.z);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -49,23 +41,46 @@ public class ClientboundSpawnerEventPacket {
             var level = Minecraft.getInstance().level;
             if (level == null) return;
 
-            var entity = Minecraft.getInstance().level.getEntity(packet.getSpawnedEntityId());
+            var entity = Minecraft.getInstance().level.getEntity(packet.spawnedEntityId());
             if (entity == null) return;
 
             var entityBoundingBox = entity.getBoundingBox();
-            var entityCenter = entityBoundingBox.getCenter();
-            var spawnerCenter = packet.getSpawnerPosition().getCenter();
+            var spawnerCenter = packet.spawnerPosition().getCenter();
 
-            ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, spawnerCenter, entityCenter, 0.5, Vec3.ZERO);
-            ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, level, entityBoundingBox, entity.position(), new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(entity), 0.75f);
-            if (level.getBlockEntity(packet.getSpawnerPosition()) instanceof MechanicalSpawnerBlockEntity be) {
+            ParticleUtils.drawParticleLine(
+                    ParticleTypes.WITCH,
+                    level,
+                    spawnerCenter,
+                    packet.spawnedEntityCenter,
+                    0.5,
+                    Vec3.ZERO
+            );
+            ParticleUtils.drawPotionEffectLikeParticles(
+                    ParticleTypes.WITCH,
+                    level,
+                    entityBoundingBox,
+                    entity.position(),
+                    new Vec3(0.1, 0.1, 0.1),
+                    ParticleUtils.getParticleCountForEntity(entity),
+                    0.75f
+            );
+            if (level.getBlockEntity(packet.spawnerPosition()) instanceof MechanicalSpawnerBlockEntity be) {
                 var optColor = be.getParticleColor();
                 if (optColor.isPresent()) {
                     int color = optColor.get();
                     var r = (color >> 16) & 0xFF;
                     var g = (color >> 8) & 0xFF;
                     var b = color & 0xFF;
-                    ParticleUtils.drawParticles(ParticleTypes.ENTITY_EFFECT, level, spawnerCenter, 40, 0.5, 0.5, 0.5, new Vec3(r / 255.0, g / 255.0, b / 255.0));
+                    ParticleUtils.drawParticles(
+                            ParticleTypes.ENTITY_EFFECT,
+                            level,
+                            spawnerCenter,
+                            40,
+                            0.5,
+                            0.5,
+                            0.5,
+                            new Vec3(r / 255.0, g / 255.0, b / 255.0)
+                    );
                 }
             }
         }
