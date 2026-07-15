@@ -72,3 +72,7 @@ jobs:
           version: ${{ steps.semantic-release.outputs.new-release-version }}
           version-type: release
           changelog-file: CHANGELOG.md
+
+          loaders: |
+            forge
+            neoforge
