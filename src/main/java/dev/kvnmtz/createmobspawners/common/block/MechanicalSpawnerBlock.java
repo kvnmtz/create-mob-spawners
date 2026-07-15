@@ -18,6 +18,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -30,10 +31,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -131,15 +135,19 @@ public class MechanicalSpawnerBlock extends KineticBlock implements IBE<Mechanic
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (!pState.is(pNewState.getBlock())) {
-            var blockEntity = getBlockEntity(pLevel, pPos);
-            if (blockEntity != null) {
-                blockEntity.ejectSoulCatcher();
-            }
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        var drops = super.getDrops(state, params);
+
+        var blockEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockEntity instanceof MechanicalSpawnerBlockEntity spawner && spawner.hasStoredEntity()) {
+            var stack = ModItems.SOUL_CATCHER.asStack();
+            stack.set(DataComponents.ENTITY_DATA, CustomData.of(spawner.getStoredEntity()));
+
+            drops.add(stack);
+            spawner.clearStoredEntity();
         }
 
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        return drops;
     }
 
     @Override

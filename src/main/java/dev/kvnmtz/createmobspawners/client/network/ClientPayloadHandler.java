@@ -106,10 +106,13 @@ public abstract class ClientPayloadHandler {
         }
 
         var entityBoundingBox = entity.getBoundingBox();
-        var entityCenter = entityBoundingBox.getCenter();
         var spawnerCenter = payload.spawnerPosition().getCenter();
 
-        ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, spawnerCenter, entityCenter, 0.5, Vec3.ZERO);
+        System.out.println("spawnerCenter = " + spawnerCenter);
+        System.out.println("spawnedEntityCenter = " + payload.spawnedEntityCenter());
+        System.out.println("distance = " + spawnerCenter.distanceTo(payload.spawnedEntityCenter()));
+
+        ParticleUtils.drawParticleLine(ParticleTypes.WITCH, level, spawnerCenter, payload.spawnedEntityCenter(), 0.5, Vec3.ZERO);
         ParticleUtils.drawPotionEffectLikeParticles(ParticleTypes.WITCH, level, entityBoundingBox, new Vec3(0.1, 0.1, 0.1), ParticleUtils.getParticleCountForEntity(entity));
 
         if (level.getBlockEntity(payload.spawnerPosition()) instanceof MechanicalSpawnerBlockEntity be) {

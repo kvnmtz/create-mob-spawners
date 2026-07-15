@@ -39,7 +39,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.living.MobDespawnEvent;
-import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -140,7 +139,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity {
         setStoredEntity(storedEntity, true);
     }
 
-    private void clearStoredEntity() {
+    public void clearStoredEntity() {
         setStoredEntity(new CompoundTag());
     }
 
@@ -224,14 +223,14 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity {
 
             var center = getBlockPos().getCenter();
             PacketDistributor.sendToPlayersNear(serverLevel, null, center.x, center.y, center.z, 16,
-                    new ClientboundSpawnerEventPacket(getBlockPos(), successfulResult.getEntity().getId()));
+                    new ClientboundSpawnerEventPacket(getBlockPos(), successfulResult.getEntity().getId(), successfulResult.getEntityCenter()));
 
             for (var i = 0; i < additionalSpawnAttempts; i++) {
                 var subsequentResult = trySpawnEntity();
                 if (subsequentResult instanceof EntitySpawnResult.Success subsequentSuccessfulResult) {
                     PacketDistributor.sendToPlayersNear(serverLevel, null, center.x, center.y, center.z, 16,
                             new ClientboundSpawnerEventPacket(getBlockPos(),
-                                    subsequentSuccessfulResult.getEntity().getId()));
+                                    subsequentSuccessfulResult.getEntity().getId(), subsequentSuccessfulResult.getEntityCenter()));
                 }
             }
         } else if (result instanceof EntitySpawnResult.Delay delayResult) {
@@ -299,7 +298,7 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity {
         serverLevel.addFreshEntity(entity);
         serverLevel.gameEvent(entity, GameEvent.ENTITY_PLACE, BlockPos.containing(x, y, z));
 
-        return new EntitySpawnResult.Success(entity);
+        return new EntitySpawnResult.Success(entity, new Vec3(x, y + entity.getBbHeight() / 2.0, z));
     }
 
     public void lingerSpawnAreaHighlighting(int width, int height, int yOffset) {
@@ -598,13 +597,19 @@ public class MechanicalSpawnerBlockEntity extends KineticBlockEntity {
     private abstract static class EntitySpawnResult {
         private static class Success extends EntitySpawnResult {
             private final Entity entity;
+            private final Vec3 entityCenter;
 
-            private Success(Entity entity) {
+            private Success(Entity entity, Vec3 entityCenter) {
                 this.entity = entity;
+                this.entityCenter = entityCenter;
             }
 
             public Entity getEntity() {
                 return entity;
+            }
+
+            public Vec3 getEntityCenter() {
+                return entityCenter;
             }
         }
 
